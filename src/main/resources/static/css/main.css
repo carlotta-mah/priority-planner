@@ -21,7 +21,7 @@ body {
     height: 100%;
 }
 
-body:before {
+/*body:before {
     height: 50%;
     width: 100%;
     position: absolute;
@@ -30,7 +30,7 @@ body:before {
     background: #128ff2;
     content: "";
     z-index: 0;
-}
+}*/
 
 .clearfix:after {
     display: block;
@@ -296,3 +296,5 @@ button.accent {
         font-size: 1.1em;
     }
 }
+
+

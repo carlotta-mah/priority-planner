@@ -1,19 +1,47 @@
 <!DOCTYPE html>
-<html>
+<html class="no-js" lang="en" dir="ltr">
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <title></title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Priority Planning</title>
+    <link rel="stylesheet" href="./css/foundation.css">
+    <link rel="stylesheet" href="./css/app.css">
+    <link rel="stylesheet" href="./css/main.css">
 </head>
 
 <body>
-
-<input id="name" type="text" placeholder="Username">
-<button id="createRoomButton">New Room</button>
-<button id="joinRoomButton">Join Room</button>
-<input id="room-id" placeholder="Room ID">
-
+<div class="grid-container">
+    <div class="grid-x grid-padding-x">
+        <div class="large-12 cell">
+            <h1>The One and Only Priority Planner</h1>
+        </div>
+    </div>
+    <div class="grid-x grid-padding-x">
+        <div id="create-box" class="large-6 medium-6 cell">
+            <div class="primary callout">
+                <h3>Erstelle einen neuen Raum</h3>
+                <input id="creator-name" type="text" placeholder="Username">
+                <button class="button" id="createRoomButton">New Room</button>
+            </div>
+        </div>
+        <div id="join-box" class="large-6 medium-6 cell">
+            <div class="callout">
+                <h3>Trete einem exsistierenden Raum bei</h3>
+                <label for="joiner-name">Name</label>
+                <input id="joiner-name" type="text" placeholder="Username">
+                <label for="room-id">Raum-ID</label>
+                <input id="room-id" type="text" placeholder="Room ID">
+                <button class="button" id="joinRoomButton">Join Room</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="static/js/vendor/jquery.js"></script>
+<script src="static/js/vendor/what-input.js"></script>
+<script src="static/js/vendor/foundation.js"></script>
+<script src="static/js/app.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="/js/main.js"></script>
 </body>

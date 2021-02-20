@@ -1,6 +1,6 @@
 'use strict';
 
-let nameInput = $('#name');
+let nameInput = $('#joiner-name');
 let roomInput = $('#room-id');
 let createRoomButton = $('#createRoomButton');
 let joinRoomButton = $('#joinRoomButton');
@@ -14,7 +14,8 @@ async function createRoom() {
     roomId = await fetch('/create-room')
         .then(r => r.json())
         .catch()
-
+    admin = true;
+    nameInput = $('#creator-name');
     joinRoom(roomId);
 }
 
@@ -22,7 +23,6 @@ async function createRoom() {
 function joinRoom(roomId) {
     if (roomId) {
         username = nameInput.val();
-        admin = true;
 
         // store variables for next page (there is other ways to store variables, eg cookies)
         sessionStorage.setItem("roomId", roomId);
