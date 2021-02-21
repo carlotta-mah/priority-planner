@@ -1,26 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html class="no-js" lang="en" dir="ltr">
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <title></title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Priority Planning - add Features</title>
+    <link rel="stylesheet" href="../css/foundation.css">
+    <link rel="stylesheet" href="../css/app.css">
+    <link rel="stylesheet" href="../css/main.css">
 </head>
 
 <body>
-<div id="pageContainer">
-    <p>Create User Stories</p>
-    <p>... with some JS Magic</p>
-    <div>
-        <div id="usernames"/>
+<div id="pageContainer" class="grid-container">
+    <div class="grid-x grid-padding-x">
+        <div class="large-6 cell">
+            <h3>Create User Stories</h3>
+            <p>... with some JS Magic</p>
+        </div>
+
+        <div class="cell large-6">
+            <h3>Users in the Room</h3>
+            <div id="usernames"/>
+        </div>
     </div>
-    <input type="text" value="UserStory1" id="userStoryInput" placeholder="User Story">
-    <button id="addUserStoryButton">Add UserStory</button>
-    <div id="userStoryBoard"/>
-    <button id="sendUserStoriesButton">Send</button>
-    <button id="forceSendButton" style="visibility: hidden">Force Send</button>
+        <div class="grid-container grid-padding-x">
+            <div class="cell large-9">
+                <input type="text" value="UserStory1" id="userStoryInput" placeholder="User Story">
+
+                <button class="button" id="addUserStoryButton">Add UserStory</button>
+                <div><div id="userStoryBoard"/></div>
+                <button class="button" id="sendUserStoriesButton">Send</button>
+                <button class="button" id="forceSendButton" style="visibility: hidden">Force Send</button>
+            </div>
+        </div>
+    </div>
 </div>
 
+<script src="../js/vendor/jquery.js"></script> <!--TODO: .. ersetzen durch annotation (auch in index.html)-->
+<script src="../js/vendor/what-input.js"></script>
+<script src="../js/vendor/foundation.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.0/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
