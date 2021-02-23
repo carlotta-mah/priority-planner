@@ -30,6 +30,17 @@
 
                 <button class="button" id="addUserStoryButton">Add UserStory</button>
                 <div><div id="userStoryBoard"/></div>
+
+                <label for="beschreibung">Beschreibung:</label><br>
+                <input type="text" id="beschreibung" name="beschreibung" value="Beschreibung"><br>
+                <label for="bewertung1">erste Bewertzung:</label><br>
+                <input type="text" id="bewertung1" name="bewertung" value="Zahl von 1 bis 100">
+                <label for="bewertung2">zweite Bewertung:</label><br>
+                <input type="text" id="bewertung2" name="bewertung2" value="Zahl von 1 bis 100">
+                <label for="zeit">wie viel Zeit wird benötigt:</label><br>
+                <input type="text" id="zeit" name="zeit" value="zeit in Stunden">
+
+
                 <button class="button" id="sendUserStoriesButton">Send</button>
                 <button class="button" id="forceSendButton" style="visibility: hidden">Force Send</button>
             </div>
@@ -44,6 +55,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.0/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script src="/js/screen2.js"></script>
+<script src="/js/UserStory.js"></script>
 </body>
 
 </html>

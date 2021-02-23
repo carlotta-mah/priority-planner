@@ -4,6 +4,7 @@ import de.projekt.priorityplanner.Database;
 import de.projekt.priorityplanner.model.MessagePhase;
 import de.projekt.priorityplanner.model.MessageToClient;
 import de.projekt.priorityplanner.model.MessageToServer;
+import de.projekt.priorityplanner.model.UserStory;
 import org.jsoup.Jsoup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,17 +75,26 @@ public class RoomController {
         switch (message.getPhase()) {
             // SEND Phase: add user stories to Database
             case SEND:
-                message.getUserStories().forEach(
+                /*message.getUserStories().forEach(
                         userStory -> Database.addUserStory(room, userStory)
-                );
+                );*/
 
-                File input = new ClassPathResource("templates/wait.html").getFile();
+                UserStory userStory = message.createUserStory();
+                Database.addUserStory(room, userStory);
+
+
+                File input = new ClassPathResource("templates/screen2.html").getFile();
                 String html = Jsoup.parse(input, "UTF-8", "").toString();
 
-                MessageToClient messageC = new MessageToClient(MessagePhase.WAIT, null, html, false);
+                MessageToClient messageC = new MessageToClient(
+                        MessagePhase.SEND, Database.getUsernames(room), html, true);
+                messagingTemplate.convertAndSend("/queue/" + room, messageC);
+
+
+                //MessageToClient messageC = new MessageToClient(MessagePhase.WAIT, null, html, false);
 
                 // update client in room
-                messagingTemplate.convertAndSendToUser(sessionId, "/queue/" + room, messageC, createHeaders(sessionId));
+               // messagingTemplate.convertAndSendToUser(sessionId, "/queue/" + room, messageC, createHeaders(sessionId));
 
                 // reduce counter of amount of user who haven't send
                 allSend(Database.reduceCounter(room), room);

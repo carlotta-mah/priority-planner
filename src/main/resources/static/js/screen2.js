@@ -89,11 +89,16 @@ function addUserStory() {
 }
 
 function sendUserStories() {
-    let allUserStories = []
+    let allUserStories
 
-    userStoryBoard.children('p').each(function () {
-        allUserStories.push(this.textContent);
-    });
+        let name = document.getElementById("userStoryInput").value;
+        let beschreibung = document.getElementById("beschreibung").value;
+        let bewertung1 = document.querySelector("#bewertung1").value;
+        let bewertung2 = document.querySelector("#bewertung2").value;
+        let zeit = document.querySelector("#zeit").value;
+
+        //allUserStories.push(this.textContent);
+        allUserStories =  [name, beschreibung, bewertung1, bewertung2, zeit];
 
     if (stompClient) {
         let message = {

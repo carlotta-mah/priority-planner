@@ -1,6 +1,8 @@
 package de.projekt.priorityplanner;
 
 
+import de.projekt.priorityplanner.model.UserStory;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,7 +24,7 @@ public class Database {
     static public int addRoom() {
         n++;
         rooms.put(n, new LinkedList<String>());
-        userStories.put(n, new LinkedList<String>());
+        userStories.put(n, new LinkedList<UserStory>());
         admins.put(n, null);
         counters.put(n, 0);
         return n;
@@ -60,7 +62,7 @@ public class Database {
         return rooms.get(i) != null;
     }
 
-    static public void addUserStory(int roomId, String UserStory) {
+    static public void addUserStory(int roomId, UserStory UserStory) {
         userStories.get(roomId).add(UserStory);
     }
 
