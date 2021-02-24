@@ -16,7 +16,6 @@
     <div class="grid-x grid-padding-x">
         <div class="large-6 cell">
             <h3>Create User Stories</h3>
-            <p>... with some JS Magic</p>
         </div>
 
         <div class="cell large-6">
@@ -26,20 +25,23 @@
     </div>
         <div class="grid-container grid-padding-x">
             <div class="cell large-9">
+                <label for="userStoryInput">Name der UserStory:</label><br>
                 <input type="text" value="UserStory1" id="userStoryInput" placeholder="User Story">
-
-                <button class="button" id="addUserStoryButton">Add UserStory</button>
-                <div><div id="userStoryBoard"/></div>
-
                 <label for="beschreibung">Beschreibung:</label><br>
                 <input type="text" id="beschreibung" name="beschreibung" value="Beschreibung"><br>
-                <label for="bewertung1">erste Bewertzung:</label><br>
-                <input type="text" id="bewertung1" name="bewertung" value="Zahl von 1 bis 100">
-                <label for="bewertung2">zweite Bewertung:</label><br>
-                <input type="text" id="bewertung2" name="bewertung2" value="Zahl von 1 bis 100">
+
+
+                <label for="bewertung1">erste Bewertung:</label><br>
+                <input type="range" name="bewertung1" min="0" max="100" onchange="updateTextInput(this.value);">
+                <input type="text" id="bewertung1" value="50" disabled>
+
+                <label for="bewertung2">erste Bewertung:</label><br>
+                <input type="range" name="bewertung2" min="0" max="100" onchange="updateTextInput2(this.value);">
+                <input type="text" id="bewertung2" value="50" disabled>
+
                 <label for="zeit">wie viel Zeit wird benötigt:</label><br>
                 <input type="text" id="zeit" name="zeit" value="zeit in Stunden">
-
+                <div><div id="userStoryBoard"/></div>
 
                 <button class="button" id="sendUserStoriesButton">Send</button>
                 <button class="button" id="forceSendButton" style="visibility: hidden">Force Send</button>

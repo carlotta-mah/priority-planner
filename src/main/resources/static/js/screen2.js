@@ -2,7 +2,6 @@ let pageContainer = $('#pageContainer');
 let userStoryInput = $('#userStoryInput');
 let userStoryBoard = $('#userStoryBoard');
 let usernames = $('#usernames');
-let addUserStoryButton = $('#addUserStoryButton');
 let sendUserStoriesButton = $('#sendUserStoriesButton');
 let forceSendButton = $('#forceSendButton');
 
@@ -61,9 +60,20 @@ function onMessageReceived(payload) {
                 forceSendButton.css('visibility', 'visible');
             }
             break;
-        case 'WAIT':
-            updateHTML(message.html);
+        case 'SEND':
+            updateUsernames(message.usernames);
+            //admin = message.admin; // TODO: doesn't work? admin still undefined.
+            admin = (sessionStorage.getItem("admin"));
+            if(admin == "true") {
+                forceSendButton.css('visibility', 'visible');
+            }
+
+
+            fillBoard(message.userStories);
             break;
+//        case 'WAIT':
+  //          updateHTML(message.html);
+    //        break;
         case 'FORCE_SEND':
             if(!send) {
                 sendUserStories();
@@ -74,10 +84,12 @@ function onMessageReceived(payload) {
             updateHTML(null);
             fillBoard(userStories);
             break;
+
+
         // TODO: other cases
     }
 }
-
+/*
 function addUserStory() {
     let userStory = userStoryInput.val().trim();
 
@@ -86,8 +98,10 @@ function addUserStory() {
         userStoryInput.value = '';
         userStoryInput.text = '';
     }
-}
 
+
+}
+*/
 function sendUserStories() {
     let allUserStories
 
@@ -134,9 +148,18 @@ function updateUsernames(users) {
 
 // fill board after merge
 function fillBoard(userStories) {
+    userStoryBoard.empty();
     userStories.forEach(
-        userStory => pageContainer.append(`<p>${userStory}<\p>`)
+        userStory => userStoryBoard.append(`<h4>${userStory.name}<\h4>`, `<p>${userStory.beschreibung}<\p>`)
     )
+}
+
+function listToObjList(userStoryList){
+    let list = [];
+    userStoryList.forEach(
+        userStory => list.push(new UserStory(userStory.name, userStory.beschreibung, userStory.value1, userStory.value2, userStory.zeit))
+    )
+    return list;
 }
 
 function updateHTML(html) {
@@ -145,6 +168,7 @@ function updateHTML(html) {
 }
 
 $(document).ready(function () {
+
     // get session variables
     roomId = parseInt(sessionStorage.getItem("roomId"));
     username = sessionStorage.getItem("username");
@@ -152,7 +176,6 @@ $(document).ready(function () {
 
     topic = `/app/room/${roomId}`; // /app
 
-    addUserStoryButton.click(() => addUserStory(userStoryInput.val()));
     sendUserStoriesButton.click(sendUserStories);
     forceSendButton.click(forceSend);
 
@@ -163,3 +186,11 @@ $(document).ready(function () {
     }
     connect();
 });
+
+function updateTextInput(val) {
+    document.getElementById('bewertung1').value=val;
+}
+
+function updateTextInput2(val) {
+    document.getElementById('bewertung2').value=val;
+}

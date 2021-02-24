@@ -11,6 +11,7 @@ class UserStory{
      }
 
 
+
      get name() {
          return this._name;
      }
@@ -50,4 +51,10 @@ class UserStory{
      set zeit(value) {
          this._zeit = value;
      }
+
+     get string(){
+         let string = [this.name, this.beschreibung, this.value1, this.value2, this.zeit];
+         //return string.join(", ");
+         console.log(string.join(", "));
+    }
  }

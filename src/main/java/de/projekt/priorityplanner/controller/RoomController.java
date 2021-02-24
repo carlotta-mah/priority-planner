@@ -61,7 +61,7 @@ public class RoomController {
 
         // update all clients in room
         MessageToClient messageC = new MessageToClient(
-                MessagePhase.ADDED_USER, Database.getUsernames(room), null, admin);
+                MessagePhase.ADDED_USER, Database.getUsernames(room), null, admin, Database.getUserStories(room));
         messagingTemplate.convertAndSend("/queue/" + room, messageC);
     }
 
@@ -87,7 +87,7 @@ public class RoomController {
                 String html = Jsoup.parse(input, "UTF-8", "").toString();
 
                 MessageToClient messageC = new MessageToClient(
-                        MessagePhase.SEND, Database.getUsernames(room), html, true);
+                        MessagePhase.SEND, Database.getUsernames(room), null, true, Database.getUserStories(room));
                 messagingTemplate.convertAndSend("/queue/" + room, messageC);
 
 
@@ -97,7 +97,7 @@ public class RoomController {
                // messagingTemplate.convertAndSendToUser(sessionId, "/queue/" + room, messageC, createHeaders(sessionId));
 
                 // reduce counter of amount of user who haven't send
-                allSend(Database.reduceCounter(room), room);
+             //   allSend(Database.reduceCounter(room), room);
                 break;
             // TODO: other cases
         }
@@ -112,7 +112,7 @@ public class RoomController {
     public void mergeStories(int room) {
         // update all clients in room
         MessageToClient messageC = new MessageToClient(
-                MessagePhase.MERGE, Database.getUserStories(room), null, false);
+                MessagePhase.MERGE, Database.getUserStories(room), null, false, Database.getUserStories(room));
         messagingTemplate.convertAndSend("/queue/" + room, messageC);
     }
 
@@ -123,7 +123,7 @@ public class RoomController {
 
         // update all clients in room
         MessageToClient messageC = new MessageToClient(
-                MessagePhase.FORCE_SEND, null, null, false);
+                MessagePhase.FORCE_SEND, null, null, false, Database.getUserStories(room));
         messagingTemplate.convertAndSend("/queue/" + room, messageC);
     }
 

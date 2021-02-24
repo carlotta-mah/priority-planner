@@ -21,11 +21,11 @@ public class MessageToServer {
         bewertung1 = Integer.parseInt(bew1);
 
         int bewertung2;
-        String bew2 = userStories.get(2);
+        String bew2 = userStories.get(3);
         bewertung2 = Integer.parseInt(bew2);
 
         int zeit;
-        String z = userStories.get(2);
+        String z = userStories.get(4);
         zeit = Integer.parseInt(z);
 
         return new UserStory(userStories.get(0),userStories.get(1),bewertung1,bewertung2, zeit );
