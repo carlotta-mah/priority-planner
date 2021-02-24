@@ -14,41 +14,59 @@
 <body>
 <div id="pageContainer" class="grid-container">
     <div class="grid-x grid-padding-x">
-        <div class="large-6 cell">
-            <h3>Create User Stories</h3>
-        </div>
-
-        <div class="cell large-6">
-            <h3>Users in the Room</h3>
-            <div id="usernames"/>
+        <div class="large-12 cell">
+            <h1>PriorityPlanner: ROOM ROOMID</h1>
         </div>
     </div>
-        <div class="grid-container grid-padding-x">
-            <div class="cell large-9">
-                <label for="userStoryInput">Name der UserStory:</label><br>
-                <input type="text" value="UserStory1" id="userStoryInput" placeholder="User Story">
-                <label for="beschreibung">Beschreibung:</label><br>
-                <input type="text" id="beschreibung" name="beschreibung" value="Beschreibung"><br>
-
-
-                <label for="bewertung1">erste Bewertung:</label><br>
+    <div class="grid-x grid-padding-x">
+        <div class="cell large-3">
+            <h3>Users in the Room</h3>
+            <div id="usernames"/>
+        </div></div>
+        <div class="cell large-5">
+            <div>
+                <h3>FeatureName</h3>
+                <label for="bewertung1">erste Bewertung:</label>
                 <input type="range" name="bewertung1" min="0" max="100" onchange="updateTextInput(this.value);">
                 <input type="text" id="bewertung1" value="50" disabled>
 
-                <label for="bewertung2">erste Bewertung:</label><br>
+                <label for="bewertung2">erste Bewertung:</label>
                 <input type="range" name="bewertung2" min="0" max="100" onchange="updateTextInput2(this.value);">
                 <input type="text" id="bewertung2" value="50" disabled>
 
-                <label for="zeit">wie viel Zeit wird benötigt:</label><br>
-                <input type="text" id="zeit" name="zeit" value="zeit in Stunden">
-                <div><div id="userStoryBoard"/></div>
+                <label for="zeit">wie viel Zeit wird benötigt:</label>
+                <input type="text" id="zeit" name="zeit" value="0">
 
-                <button class="button" id="sendUserStoriesButton">Send</button>
-                <button class="button" id="forceSendButton" style="visibility: hidden">Force Send</button>
+                <button class="button" id="voteButton">Vote</button>
+            </div>
+
+
+        </div>
+        <div class="cell large-4">
+            <div class="grid-x grid-padding-x">
+                <div class="cell large-6">
+                    <h3>Features</h3>
+                </div>
+                <div class="cell large-6">
+                    <button class="button" id="sendUserStoriesButton">Add Userstory</button>
+                </div>
+
+            </div>
+            <div>
+                <label for="userStoryInput">Name der UserStory:</label>
+                <input type="text" value="UserStory1" id="userStoryInput" placeholder="User Story">
+                <label for="beschreibung">Beschreibung:</label>
+                <input type="text" id="beschreibung" name="beschreibung" value="Beschreibung">
+
+<!--                <button class="button" id="forceSendButton" style="visibility: hidden">Force Send</button>-->
+            </div>
+            <div>
+                <div id="userStoryBoard"/>
             </div>
         </div>
     </div>
 </div>
+
 
 <script src="../js/vendor/jquery.js"></script> <!--TODO: .. ersetzen durch annotation (auch in index.html)-->
 <script src="../js/vendor/what-input.js"></script>
