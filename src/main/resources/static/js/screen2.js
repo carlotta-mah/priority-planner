@@ -14,6 +14,8 @@ let admin;
 let send;
 let userStories;
 
+let bewertung = [];
+
 // connect via websocket with server for bidirectional communication
 function connect() {
     let socket = new SockJS('/ws');
@@ -193,4 +195,20 @@ function updateTextInput(val) {
 
 function updateTextInput2(val) {
     document.getElementById('bewertung2').value=val;
+}
+
+function addBewertung(userStory){
+        let i = -1;
+        bewertung.forEach(
+            story => {
+                i++;
+                if(story.name == userStory.name) {
+                    bewertung.splice(i,1);
+                    bewertung.push(userStory);
+                    return;
+                }
+            }
+        )
+        bewertung.push(userStory);
+
 }
