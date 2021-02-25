@@ -3,8 +3,10 @@ let userStoryInput = $('#userStoryInput');
 let userStoryBoard = $('#userStoryBoard');
 let usernames = $('#usernames');
 let sendUserStoriesButton = $('#sendUserStoriesButton');
+let addButton = $('#addToVoteButton');
 let forceSendButton = $('#forceSendButton');
 
+let zuBewertung;
 let username;
 let roomId;
 let topic;
@@ -129,6 +131,27 @@ function sendUserStories() {
     send = true;
 }
 
+
+function addBewertung() {
+    let bewertung
+
+    let name = document.getElementById("featureBewertung").value;
+    let beschreibung = document.getElementById("beschrebungBewertung").value;
+
+    bewertung =  [name, beschreibung];
+
+    if (stompClient) {
+        let message = {
+            zuBewertung: bewertung,
+            roomId: roomId,
+            phase: 'ADDVOTE'
+        }
+
+        stompClient.send(`${topic}/sendMessage`, {}, JSON.stringify(message));
+    }
+    send = true;
+}
+
 function forceSend() {
     let message = {
         username: username,
@@ -179,6 +202,7 @@ $(document).ready(function () {
     topic = `/app/room/${roomId}`; // /app
 
     sendUserStoriesButton.click(sendUserStories);
+    addButton.click(addBewertung);
     forceSendButton.click(forceSend);
 
     //if user has created the room show force send button
@@ -195,20 +219,4 @@ function updateTextInput(val) {
 
 function updateTextInput2(val) {
     document.getElementById('bewertung2').value=val;
-}
-
-function addBewertung(userStory){
-        let i = -1;
-        bewertung.forEach(
-            story => {
-                i++;
-                if(story.name == userStory.name) {
-                    bewertung.splice(i,1);
-                    bewertung.push(userStory);
-                    return;
-                }
-            }
-        )
-        bewertung.push(userStory);
-
 }

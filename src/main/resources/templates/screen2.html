@@ -26,6 +26,9 @@
         <div class="cell large-5">
             <div>
                 <h3>FeatureName</h3>
+                <input type="text" id="featureBewertung" value="UserStory1" disabled>
+                <input type="text" id="beschrebungBewertung" value="eine tolle beschreibung" disabled>
+
                 <label for="bewertung1">erste Bewertung:</label>
                 <input type="range" name="bewertung1" min="0" max="100" onchange="updateTextInput(this.value);">
                 <input type="text" id="bewertung1" value="50" disabled>
@@ -38,6 +41,10 @@
                 <input type="text" id="zeit" name="zeit" value="0">
 
                 <button class="button" id="voteButton">Vote</button>
+                <select>
+                    <option value="UserStory1">UserStory1</option>
+                </select>
+                <button class="button" id="addToVoteButton">add to Vote</button>
             </div>
 
 

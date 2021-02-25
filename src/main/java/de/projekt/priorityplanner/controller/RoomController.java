@@ -99,6 +99,8 @@ public class RoomController {
                 // reduce counter of amount of user who haven't send
              //   allSend(Database.reduceCounter(room), room);
                 break;
+            case ADDVOTE:
+                UserStory userStory1 = message.createUserStory();
             // TODO: other cases
         }
     }
