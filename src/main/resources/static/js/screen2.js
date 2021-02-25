@@ -89,6 +89,9 @@ function onMessageReceived(payload) {
             fillBoard(userStories);
             break;
 
+        case 'ADDVOTE':
+            document.getElementById('featureBewertung').value=message.userStories[0];
+            document.getElementById('beschrebungBewertung').value=message.userStories[1];
 
         // TODO: other cases
     }
@@ -142,7 +145,7 @@ function addBewertung() {
 
     if (stompClient) {
         let message = {
-            zuBewertung: bewertung,
+            userStories: bewertung,
             roomId: roomId,
             phase: 'ADDVOTE'
         }

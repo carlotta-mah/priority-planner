@@ -24,6 +24,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 // Controller for creating a room and adding a user to it
 @Controller
@@ -100,7 +103,16 @@ public class RoomController {
              //   allSend(Database.reduceCounter(room), room);
                 break;
             case ADDVOTE:
-                UserStory userStory1 = message.createUserStory();
+                UserStory userStory1 = message.createUserStoryHead();
+
+                List<String> list = new ArrayList<>();
+
+                list.add(userStory1.getName());
+                list.add(userStory1.getBeschreibung());
+
+                MessageToClient messageD = new MessageToClient(
+                        MessagePhase.ADDVOTE,list);
+                messagingTemplate.convertAndSend("/queue/" + room, messageD);
             // TODO: other cases
         }
     }

@@ -30,4 +30,8 @@ public class MessageToServer {
 
         return new UserStory(userStories.get(0),userStories.get(1),bewertung1,bewertung2, zeit );
     }
+
+    public UserStory createUserStoryHead() {
+        return new UserStory(userStories.get(0),userStories.get(1));
+    }
 }

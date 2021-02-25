@@ -15,6 +15,14 @@ public class UserStory {
         this.zeit = zeit;
     }
 
+    public UserStory(String name, String beschreibung) {
+        this.name = name;
+        this.beschreibung = beschreibung;
+        this.value1 = -1;
+        this.value2 = -1;
+        this.zeit = -1;
+    }
+
     public String getName() {
         return name;
     }

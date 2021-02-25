@@ -14,6 +14,11 @@ public class MessageToClient {
     private boolean admin;
     private List userStories;
 
+    public MessageToClient(MessagePhase event, List userStories) {
+        this.event = event;
+        this.userStories = userStories;
+    }
+
     public MessageToClient(de.projekt.priorityplanner.model.MessagePhase event) {
         this.event = event;
     }
