@@ -19,5 +19,5 @@ public class Feature {
     @Column(name = "description")
     String featureDescription;
     @Column(name = "roomid")
-    int featureRoom;
+    int roomNo;
 }

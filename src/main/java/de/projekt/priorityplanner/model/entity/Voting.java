@@ -2,14 +2,12 @@ package de.projekt.priorityplanner.model.entity;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 @Data
 @Entity
+@IdClass(VotingID.class)
 @Table(name="voting")
 public class Voting {
     @Id
@@ -18,6 +16,7 @@ public class Voting {
     @Id
     @Column(name = "feature")
     int featureNo;
+
     @Column(name = "boost")
     int boost;
     @Column(name = "rip")

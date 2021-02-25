@@ -16,6 +16,6 @@ public class User {
     int userNo;
     @Column(name = "username")
     String userName;
-    @Column(name = "room")
-    int featureRoom;
+    @Column(name = "roomid")
+    int roomNo;
 }
