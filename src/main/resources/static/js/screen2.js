@@ -51,6 +51,10 @@ function onError() {
     window.location.href = "";
 }
 
+function addToBoard(userstory) {
+    userStoryBoard.append(`<h4>${userstory.name}<\h4>`, `<p>${userstory.beschreibung}<\p>`)
+}
+
 // called when server calls
 function onMessageReceived(payload) {
     let message = JSON.parse(payload.body);
@@ -92,10 +96,15 @@ function onMessageReceived(payload) {
         case 'ADDVOTE':
             document.getElementById('featureBewertung').value=message.userStories[0];
             document.getElementById('beschrebungBewertung').value=message.userStories[1];
+            break;
+        case 'FEATURE':
+            let userstory = new UserStory(message.title, message.description, 0,0,0 );
+            addToBoard(userstory);
 
         // TODO: other cases
     }
 }
+
 /*
 function addUserStory() {
     let userStory = userStoryInput.val().trim();
@@ -205,7 +214,8 @@ function sendFeature() {
     if (stompClient) {
         let message = {
             title: name,
-            description: beschreibung
+            description: beschreibung,
+            event: 'FEATURE'
         }
 
         stompClient.send(`${topic}/addFeature`, {}, JSON.stringify(message));

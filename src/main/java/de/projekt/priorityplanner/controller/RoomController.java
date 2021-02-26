@@ -76,9 +76,8 @@ public class RoomController {
        //return feature;
 
         // update all clients in room
-        MessageToClient messageC = new MessageToClient(
-                MessagePhase.ADDED_USER, Database.getUsernames(room), null, admin, Database.getUserStories(room));
-        messagingTemplate.convertAndSend("/queue/" + room, messageC);
+
+        messagingTemplate.convertAndSend("/queue/" + room, feature);
 
 
     }
