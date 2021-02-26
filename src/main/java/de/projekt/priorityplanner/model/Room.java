@@ -19,5 +19,8 @@ public class Room {
         features.add(newFeature);
     }
 
+    public void removeUser(String username) {
+        users.remove(username);
+    }
 }
 

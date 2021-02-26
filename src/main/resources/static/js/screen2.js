@@ -105,6 +105,7 @@ function updateFeatures(userStories) {
     )
 }
 
+
 // called when server calls
 function onMessageReceived(payload) {
     let message = JSON.parse(payload.body);
@@ -155,6 +156,8 @@ function onMessageReceived(payload) {
             document.getElementById('featureBewertung').value=message.userStories[0];
             document.getElementById('beschrebungBewertung').value=message.userStories[1];
             break;
+        case 'LEAVE':
+            updateUsernames(message.usernames);
 
         // TODO: other cases
     }

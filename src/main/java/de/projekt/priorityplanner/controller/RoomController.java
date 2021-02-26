@@ -60,6 +60,8 @@ public class RoomController {
             Database.setAdmin(roomId, headerAccessor.getSessionId());
             admin = true;
         }
+        headerAccessor.getSessionAttributes().put("username", message.getUsername());
+        headerAccessor.getSessionAttributes().put("room_id", message.getRoomId());
         log.info("Received greeting message {}", message);
 
         // update all clients in room

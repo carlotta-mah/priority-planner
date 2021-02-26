@@ -105,4 +105,10 @@ public class Database {
         Room room = rooms1.get(roomId);
         return room.getFeatures();
     }
+
+    public static List<String> removeUser(int roomId, String username) {
+        Room room = rooms1.get(roomId);
+        room.removeUser(username);
+        return room.getUsers();
+    }
 }

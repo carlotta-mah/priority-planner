@@ -1,6 +1,8 @@
 package de.projekt.priorityplanner.controller;
 
-import de.projekt.priorityplanner.model.MessageToServer;
+import de.projekt.priorityplanner.Database;
+import de.projekt.priorityplanner.model.MessagePhase;
+import de.projekt.priorityplanner.model.MessageToClient;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +13,8 @@ import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
+
+import java.util.List;
 
 @Component
 public class WebSocketEventListener {
@@ -30,15 +34,16 @@ public class WebSocketEventListener {
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
 
         String username = (String) headerAccessor.getSessionAttributes().get("username");
-        String roomId = (String) headerAccessor.getSessionAttributes().get("room_id");
+        int roomId = (int) headerAccessor.getSessionAttributes().get("room_id");
         if (username != null) {
             logger.info("User Disconnected: " + username);
 
-//            MessageToServer message = new MessageToServer();
+            List<String> users= Database.removeUser(roomId, username);
+            MessageToClient message = new MessageToClient(MessagePhase.LEAVE, users, null, false, null);
 //            message.setPhase(ADD);
 //            message.setSender(username);
+            messagingTemplate.convertAndSend("/queue/" + roomId, message);
 
-            //messagingTemplate.convertAndSend(format("/channel/%s", roomId), chatMessage);
         }
     }
 }
