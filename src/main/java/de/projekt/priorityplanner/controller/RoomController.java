@@ -2,30 +2,32 @@ package de.projekt.priorityplanner.controller;
 
 import de.projekt.priorityplanner.Database;
 import de.projekt.priorityplanner.model.*;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.handler.annotation.*;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.SimpMessageType;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 // Controller for creating a room and adding a user to it
+@Slf4j
 @Controller
 public class RoomController {
 
@@ -45,42 +47,58 @@ public class RoomController {
 
     // adds a username to a room and sends a updateMessage to all users of that room
     @MessageMapping("/room/{roomId}/addUser")
-    public void addUser(@DestinationVariable String roomId, @Payload MessageToServer message,
+    public void addUser(@DestinationVariable int roomId, Principal user, @Payload MessageToServer message,
                         SimpMessageHeaderAccessor headerAccessor) {
-        int room = message.getRoomId();
+        //int room = message.getRoomId();
         boolean admin = false;
         //int id=  roomId;
         // TODO: add username to actual Database
-        Database.addUsername(room, message.getUsername());
+        Database.addUsername(roomId, message.getUsername());
 
         // add Admin
-        if (Database.adminNull(room)) {
-            Database.setAdmin(room, headerAccessor.getSessionId());
+        if (Database.adminNull(roomId)) {
+            Database.setAdmin(roomId, headerAccessor.getSessionId());
             admin = true;
         }
+        log.info("Received greeting message {}", message);
 
         // update all clients in room
         MessageToClient messageC = new MessageToClient(
-                MessagePhase.ADDED_USER, Database.getUsernames(room), null, admin, Database.getUserStories(room));
-        messagingTemplate.convertAndSend("/queue/" + room, messageC);
+                MessagePhase.ADDED_USER, Database.getUsernames(roomId), null, admin, Database.getUserStories(roomId));
+        messagingTemplate.convertAndSend("/queue/" + roomId, messageC);
+
+//        MessageToClient messageS = new MessageToClient(
+//                MessagePhase.UPDATE, Database.getUsernames(roomId), null, admin, Database.getUserStories(roomId));
+//        messagingTemplate.convertAndSend("/queue/" + user, messageS);
+
+    }
+
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
+
+    @MessageMapping("/room/{roomId}/addTest")
+    @SendTo("/topic/update")
+    public void test(@DestinationVariable int roomId, Principal user, @Payload MessageToServer message,
+                                @Header("simpSessionId") String sessionId){
+//        return new MessageToClient(
+//                MessagePhase.UPDATE, Database.getUsernames(roomId), null, false, Database.getUserStories(roomId));
+        MessageToClient out = new MessageToClient(
+                MessagePhase.UPDATE, Database.getUsernames(roomId), null, false, Database.getUserStories(roomId));
+        simpMessagingTemplate.convertAndSendToUser(
+                user.getName(), "/user/queue/specific-user", out);
+
     }
 
     @MessageMapping("/room/{roomId}/addFeature")
     public void addFeature(@DestinationVariable int roomId, @Payload Feature feature,
                               SimpMessageHeaderAccessor headerAccessor){
-        int room = roomId;
-        if (Database.adminNull(room)) {
+        if (Database.adminNull(roomId)) {
            // TODO fehlermeldung
         }
-        Boolean admin = false;
-       //return feature;
-
-        // update all clients in room
-
-        messagingTemplate.convertAndSend("/queue/" + room, feature);
-
-
+        Database.addUserStory(roomId, feature);
+        messagingTemplate.convertAndSend("/queue/" + roomId, feature);
     }
+
     @MessageMapping("/room/{roomId}/sendMessage")
     @SendTo("/queue/{roomId}")
     public void sendMessage(@DestinationVariable String roomId, @Payload MessageToServer message,

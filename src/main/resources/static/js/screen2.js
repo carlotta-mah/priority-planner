@@ -20,13 +20,6 @@ let idGenerator = 0;
 
 let bewertung = [];
 
-function getId(){
-    idGenerator++;
-    return idGenerator;
-}
-
-document.body.set
-
 // connect via websocket with server for bidirectional communication
 function connect() {
     let socket = new SockJS('/ws');
@@ -98,6 +91,13 @@ function addToBoard(userstory) {
     //userStoryBoard.append(`<h4>${userstory.name}<\h4>`, `<p>${userstory.beschreibung}<\p>`)
 }
 
+function updateFeatures(userStories) {
+    userStoryBoard.empty();
+    userStories.forEach(
+        story => addToBoard(new UserStory(story.title, story.description, 0,0,0))
+    )
+}
+
 // called when server calls
 function onMessageReceived(payload) {
     let message = JSON.parse(payload.body);
@@ -105,11 +105,19 @@ function onMessageReceived(payload) {
     switch (message.event) {
         case 'ADDED_USER':
             updateUsernames(message.usernames);
+            updateFeatures(message.userStories);
             //admin = message.admin; // TODO: doesn't work? admin still undefined.
             admin = (sessionStorage.getItem("admin"));
             // if(admin == "true") {
             //     forceSendButton.css('visibility', 'visible');
             // }
+            break;
+        case 'FEATURE':
+            let userstory = new UserStory(message.title, message.description, 0,0,0 );
+            addToBoard(userstory);
+            break;
+        case 'UPDATE':
+            updateFeatures(message.userStories);
             break;
         case 'SEND':
             updateUsernames(message.usernames);
@@ -140,9 +148,6 @@ function onMessageReceived(payload) {
             document.getElementById('featureBewertung').value=message.userStories[0];
             document.getElementById('beschrebungBewertung').value=message.userStories[1];
             break;
-        case 'FEATURE':
-            let userstory = new UserStory(message.title, message.description, 0,0,0 );
-            addToBoard(userstory);
 
         // TODO: other cases
     }
