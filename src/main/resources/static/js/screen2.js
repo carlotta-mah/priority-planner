@@ -53,10 +53,16 @@ function onError() {
     window.location.href = "";
 }
 
+function getId() {
+    return idGenerator++;
+}
+
 function addToBoard(userstory) {
     const newDiv = document.createElement("div");
     let name = userstory.name;
+
     let beschreibung = userstory.beschreibung;
+
     let myId = getId();
     newDiv.id = myId;
     newDiv.classList.add('featureList');
@@ -286,7 +292,7 @@ $(document).ready(function () {
     roomId = parseInt(sessionStorage.getItem("roomId"));
     username = sessionStorage.getItem("username");
     usernames.append(`<div>${username}</div>`);
-
+    console.log(username);
     topic = `/app/room/${roomId}`; // /app
 
     sendUserStoriesButton.click(sendUserStories);
