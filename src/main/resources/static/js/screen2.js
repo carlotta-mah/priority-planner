@@ -15,8 +15,15 @@ let stompClient;
 let admin;
 let send;
 let userStories;
+const userStoryBoardDiv = document.getElementById("userStoryBoard");
+let idGenerator = 0;
 
 let bewertung = [];
+
+function getId(){
+    idGenerator++;
+    return idGenerator;
+}
 
 // connect via websocket with server for bidirectional communication
 function connect() {
@@ -52,7 +59,41 @@ function onError() {
 }
 
 function addToBoard(userstory) {
-    userStoryBoard.append(`<h4>${userstory.name}<\h4>`, `<p>${userstory.beschreibung}<\p>`)
+    const newDiv = document.createElement("div");
+    let name = userstory.name;
+    let beschreibung = userstory.beschreibung;
+    let myId = getId();
+    newDiv.id = myId;
+    newDiv.classList.add('featureList');
+
+    newDiv[0] = name;
+    newDiv[1] = beschreibung;
+
+    newDiv.innerHTML += name;
+    newDiv.innerHTML += beschreibung
+
+    var button = document.createElement("BUTTON");
+    button.title = myId;
+    button.classList.add('button');
+    button.innerHTML = "VOTE";
+    button.addEventListener("click",  function () {
+        let divName = document.getElementById(this.title)[0];
+        let divBeschreibung = document.getElementById(this.title)[1];
+        console.log(divName);
+        console.log("test");
+        console.log(divBeschreibung);
+        document.getElementById("featureBewertung").value = divName;
+        document.getElementById("beschrebungBewertung").value = divBeschreibung;
+
+
+
+        addBewertung();
+    });
+    newDiv.appendChild(button);
+
+
+    userStoryBoardDiv.appendChild(newDiv);
+    //userStoryBoard.append(`<h4>${userstory.name}<\h4>`, `<p>${userstory.beschreibung}<\p>`)
 }
 
 // called when server calls
