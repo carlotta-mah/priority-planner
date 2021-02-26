@@ -277,7 +277,7 @@ function sendBewertung() {
     if (stompClient) {
         let message = {
             username: username,
-            userStory: bewertung,
+            userStories: bewertung,
             roomId: roomId,
             phase: 'VOTE'
         }

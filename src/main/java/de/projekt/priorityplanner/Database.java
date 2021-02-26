@@ -4,6 +4,7 @@ package de.projekt.priorityplanner;
 import de.projekt.priorityplanner.model.Feature;
 import de.projekt.priorityplanner.model.Room;
 import de.projekt.priorityplanner.model.UserStory;
+import de.projekt.priorityplanner.model.Vote;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -15,7 +16,6 @@ import java.util.Map;
 // entity UserStories: id, roomId, String, (maybe username too)
 public class Database {
 
-    static Map<Integer, List> rooms = new HashMap();
     static Map<Integer, Room> rooms1 = new HashMap();
     static Map<Integer, List> userStories = new HashMap();
     static Map<Integer, String> admins = new HashMap();
@@ -35,7 +35,9 @@ public class Database {
         return n;
     }
 
-
+    static public void addVote(Vote vote, int roomId, String featureName, String beschreibung){
+        rooms1.get(roomId).getFeature(featureName,beschreibung).addVote(vote);
+    }
 
     static public void setAdmin(int i, String sessionId) {
         admins.replace(i, sessionId);

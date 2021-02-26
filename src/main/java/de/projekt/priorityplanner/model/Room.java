@@ -22,5 +22,15 @@ public class Room {
     public void removeUser(String username) {
         users.remove(username);
     }
+
+    public Feature getFeature(String name, String beschreibung){
+        for (Feature feature:features) {
+            if(feature.equals(name, beschreibung)){
+                return feature;
+            }
+        }
+        //TODO: Fehlerbehandlung
+        return null;
+    }
 }
 

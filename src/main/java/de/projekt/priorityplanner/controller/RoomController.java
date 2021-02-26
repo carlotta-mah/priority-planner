@@ -146,6 +146,14 @@ public class RoomController {
                 MessageToClient messageD = new MessageToClient(
                         MessagePhase.ADDVOTE,list);
                 messagingTemplate.convertAndSend("/queue/" + room, messageD);
+                break;
+            case VOTE:
+                Vote vote = message.createVote();
+                String userStoryName = message.getUserStoryName();
+                String userStoryBeschreibung = message.getUserStoryBeschreibung();
+                int raumId =message.getRoomId();
+                Database.addVote(vote, raumId,userStoryName, userStoryBeschreibung);
+
             // TODO: other cases
         }
     }
