@@ -1,10 +1,7 @@
 package de.projekt.priorityplanner.controller;
 
 import de.projekt.priorityplanner.Database;
-import de.projekt.priorityplanner.model.MessagePhase;
-import de.projekt.priorityplanner.model.MessageToClient;
-import de.projekt.priorityplanner.model.MessageToServer;
-import de.projekt.priorityplanner.model.UserStory;
+import de.projekt.priorityplanner.model.*;
 import org.jsoup.Jsoup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +49,7 @@ public class RoomController {
                         SimpMessageHeaderAccessor headerAccessor) {
         int room = message.getRoomId();
         boolean admin = false;
-
+        //int id=  roomId;
         // TODO: add username to actual Database
         Database.addUsername(room, message.getUsername());
 
@@ -68,6 +65,23 @@ public class RoomController {
         messagingTemplate.convertAndSend("/queue/" + room, messageC);
     }
 
+    @MessageMapping("/room/{roomId}/addFeature")
+    public void addFeature(@DestinationVariable int roomId, @Payload Feature feature,
+                              SimpMessageHeaderAccessor headerAccessor){
+        int room = roomId;
+        if (Database.adminNull(room)) {
+           // TODO fehlermeldung
+        }
+        Boolean admin = false;
+       //return feature;
+
+        // update all clients in room
+        MessageToClient messageC = new MessageToClient(
+                MessagePhase.ADDED_USER, Database.getUsernames(room), null, admin, Database.getUserStories(room));
+        messagingTemplate.convertAndSend("/queue/" + room, messageC);
+
+
+    }
     @MessageMapping("/room/{roomId}/sendMessage")
     @SendTo("/queue/{roomId}")
     public void sendMessage(@DestinationVariable String roomId, @Payload MessageToServer message,

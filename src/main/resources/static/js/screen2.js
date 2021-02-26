@@ -4,7 +4,7 @@ let userStoryBoard = $('#userStoryBoard');
 let usernames = $('#usernames');
 let sendUserStoriesButton = $('#sendUserStoriesButton');
 let addButton = $('#addToVoteButton');
-let forceSendButton = $('#forceSendButton');
+let addFeatureButton =$('#addFeature');
 
 let zuBewertung;
 let username;
@@ -60,17 +60,17 @@ function onMessageReceived(payload) {
             updateUsernames(message.usernames);
             //admin = message.admin; // TODO: doesn't work? admin still undefined.
             admin = (sessionStorage.getItem("admin"));
-            if(admin == "true") {
-                forceSendButton.css('visibility', 'visible');
-            }
+            // if(admin == "true") {
+            //     forceSendButton.css('visibility', 'visible');
+            // }
             break;
         case 'SEND':
             updateUsernames(message.usernames);
             //admin = message.admin; // TODO: doesn't work? admin still undefined.
             admin = (sessionStorage.getItem("admin"));
-            if(admin == "true") {
+           /* if(admin == "true") {
                 forceSendButton.css('visibility', 'visible');
-            }
+            }*/
 
 
             fillBoard(message.userStories);
@@ -195,6 +195,33 @@ function updateHTML(html) {
     pageContainer.append(html);
 }
 
+function sendFeature() {
+
+
+    let name = document.getElementById("userStoryInput").value;
+    let beschreibung = document.getElementById("beschreibung").value;
+    //allUserStories.push(this.textContent);
+
+    if (stompClient) {
+        let message = {
+            title: name,
+            description: beschreibung
+        }
+
+        stompClient.send(`${topic}/addFeature`, {}, JSON.stringify(message));
+    }
+    send = true;
+}
+
+
+function updateTextInput(val) {
+    document.getElementById('bewertung1').value=val;
+}
+
+function updateTextInput2(val) {
+    document.getElementById('bewertung2').value=val;
+}
+
 $(document).ready(function () {
 
     // get session variables
@@ -206,20 +233,9 @@ $(document).ready(function () {
 
     sendUserStoriesButton.click(sendUserStories);
     addButton.click(addBewertung);
-    forceSendButton.click(forceSend);
-
+    addFeatureButton.click(sendFeature);
     //if user has created the room show force send button
     admin = (sessionStorage.getItem("admin"));
-    if(admin == "true") {
-        forceSendButton.css('visibility', 'visible');
-    }
+
     connect();
 });
-
-function updateTextInput(val) {
-    document.getElementById('bewertung1').value=val;
-}
-
-function updateTextInput2(val) {
-    document.getElementById('bewertung2').value=val;
-}
