@@ -25,6 +25,8 @@ function getId(){
     return idGenerator;
 }
 
+document.body.set
+
 // connect via websocket with server for bidirectional communication
 function connect() {
     let socket = new SockJS('/ws');
