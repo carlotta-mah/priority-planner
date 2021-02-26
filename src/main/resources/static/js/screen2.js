@@ -3,6 +3,7 @@ let userStoryInput = $('#userStoryInput');
 let userStoryBoard = $('#userStoryBoard');
 let usernames = $('#usernames');
 let sendUserStoriesButton = $('#sendUserStoriesButton');
+let voteButton = $('#voteButton');
 let addButton = $('#addToVoteButton');
 let addFeatureButton =$('#addFeature');
 
@@ -258,6 +259,32 @@ function updateHTML(html) {
     pageContainer.append(html);
 }
 
+function sendBewertung() {
+    let bewertung;
+
+    let name = document.getElementById("featureBewertung").value;
+    let beschreibung = document.getElementById("beschrebungBewertung").value;
+    let bewertung1 = document.querySelector("#bewertung1").value;
+    let bewertung2 = document.querySelector("#bewertung2").value;
+    let zeit = document.querySelector("#zeit").value;
+
+    //allUserStories.push(this.textContent);
+    bewertung =  [name, beschreibung, bewertung1, bewertung2, zeit];
+
+    if (stompClient) {
+        let message = {
+            username: username,
+            userStory: bewertung,
+            roomId: roomId,
+            phase: 'VOTE'
+        }
+
+        stompClient.send(`${topic}/sendMessage`, {}, JSON.stringify(message));
+    }
+    send = true;
+
+}
+
 function sendFeature() {
 
 
@@ -296,6 +323,8 @@ $(document).ready(function () {
     topic = `/app/room/${roomId}`; // /app
 
     sendUserStoriesButton.click(sendUserStories);
+
+    voteButton.click(sendBewertung);
     addButton.click(addBewertung);
     addFeatureButton.click(sendFeature);
     //if user has created the room show force send button
