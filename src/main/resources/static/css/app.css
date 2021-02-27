@@ -1,3 +1,6 @@
 .featureList{
     box-shadow:0px 0px 10px var(--clr-gray-med);
 }
+.hasVoted{
+    background-color: red;
+}

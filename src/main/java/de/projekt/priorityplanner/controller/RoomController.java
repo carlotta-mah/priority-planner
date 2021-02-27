@@ -64,10 +64,15 @@ public class RoomController {
         headerAccessor.getSessionAttributes().put("room_id", message.getRoomId());
         log.info("Received greeting message {}", message);
 
+        Room room = Database.getRoom(roomId);
+        room.setEvent(MessagePhase.ADDED_USER);
+        messagingTemplate.convertAndSend("/queue/"+roomId, room);
+
+
         // update all clients in room
-        MessageToClient messageC = new MessageToClient(
-                MessagePhase.ADDED_USER, Database.getUsernames(roomId), null, admin, Database.getUserStories(roomId));
-        messagingTemplate.convertAndSend("/queue/" + roomId, messageC);
+//        MessageToClient messageC = new MessageToClient(
+//                MessagePhase.ADDED_USER, Database.getUsernames(roomId), null, admin, Database.getUserStories(roomId));
+//        messagingTemplate.convertAndSend("/queue/" + roomId, messageC);
 
 //        MessageToClient messageS = new MessageToClient(
 //                MessagePhase.UPDATE, Database.getUsernames(roomId), null, admin, Database.getUserStories(roomId));
@@ -137,15 +142,17 @@ public class RoomController {
                 break;
             case ADDVOTE:
                 UserStory userStory1 = message.createUserStoryHead();
+                Database.selectFeature(room, userStory1.getName(), userStory1.getBeschreibung());
 
-                List<String> list = new ArrayList<>();
+                List<String> feature = new ArrayList<>();
 
-                list.add(userStory1.getName());
-                list.add(userStory1.getBeschreibung());
+                feature.add(userStory1.getName());
+                feature.add(userStory1.getBeschreibung());
+
 
                 MessageToClient messageD = new MessageToClient(
-                        MessagePhase.ADDVOTE,list);
-                messagingTemplate.convertAndSend("/queue/" + room, messageD);
+                        MessagePhase.ADDVOTE, feature);
+                messagingTemplate.convertAndSend("/queue/" + roomId, messageD);
                 break;
             case VOTE:
                 Vote vote = message.createVote();
@@ -153,6 +160,7 @@ public class RoomController {
                 String userStoryBeschreibung = message.getUserStoryBeschreibung();
                 int raumId =message.getRoomId();
                 Database.addVote(vote, raumId,userStoryName, userStoryBeschreibung);
+                messagingTemplate.convertAndSend("/queue/" + room, vote);
 
             // TODO: other cases
         }

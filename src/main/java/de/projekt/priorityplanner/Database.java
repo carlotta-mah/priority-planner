@@ -27,7 +27,7 @@ public class Database {
     static public int addRoom() {
         n++;
         //rooms.put(n, new LinkedList<String>());
-        Room room = new Room(n, new LinkedList<Feature>(), new LinkedList<String>());
+        Room room = new Room(n, new LinkedList<Feature>(), new LinkedList<String>(), null, null);
         rooms1.put(n,room);
         //userStories.put(n, new LinkedList<UserStory>());
         admins.put(n, null);
@@ -112,5 +112,10 @@ public class Database {
         Room room = rooms1.get(roomId);
         room.removeUser(username);
         return room.getUsers();
+    }
+
+    public static void selectFeature(int roomId, String name, String beschreibung) {
+        Room room = rooms1.get(roomId);
+        room.selectFeature(name, beschreibung);
     }
 }

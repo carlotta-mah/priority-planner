@@ -5,7 +5,7 @@ let usernames = $('#usernames');
 let sendUserStoriesButton = $('#sendUserStoriesButton');
 let voteButton = $('#voteButton');
 let addButton = $('#addToVoteButton');
-let addFeatureButton =$('#addFeature');
+let addFeatureButton = $('#addFeature');
 
 let zuBewertung;
 let username;
@@ -78,7 +78,7 @@ function addToBoard(userstory) {
     button.title = myId;
     button.classList.add('button');
     button.innerHTML = "VOTE";
-    button.addEventListener("click",  function () {
+    button.addEventListener("click", function () {
         let divName = document.getElementById(this.title)[0];
         let divBeschreibung = document.getElementById(this.title)[1];
         console.log(divName);
@@ -86,7 +86,6 @@ function addToBoard(userstory) {
         console.log(divBeschreibung);
         document.getElementById("featureBewertung").value = divName;
         document.getElementById("beschrebungBewertung").value = divBeschreibung;
-
 
 
         addBewertung();
@@ -101,10 +100,34 @@ function addToBoard(userstory) {
 function updateFeatures(userStories) {
     userStoryBoard.empty();
     userStories.forEach(
-        story => addToBoard(new UserStory(story.title, story.description, 0,0,0))
+        story => addToBoard(new UserStory(story.title, story.description, 0, 0, 0))
     )
 }
 
+
+function updateUserVote(user, bewertung1, bewertung2, zeit) {
+    document.getElementById(user).classList.add('hasVoted');
+}
+
+function updateVote(vote) {
+    let userdiv = document.getElementById(vote.user);
+    let bewertungsP = userdiv.getElementsByClassName("vote");
+    bewertungsP.innerHtml = vote.user;
+
+ //   userdiv.append(bewertungsP)
+    userdiv.classList.add("hasVoted")
+}
+
+function updateVotes(votes) {
+
+    votes.forEach(
+        vote => {
+            updateVote(vote);
+        }
+    )
+
+
+}
 
 // called when server calls
 function onMessageReceived(payload) {
@@ -112,8 +135,17 @@ function onMessageReceived(payload) {
 
     switch (message.event) {
         case 'ADDED_USER':
-            updateUsernames(message.usernames);
-            updateFeatures(message.userStories);
+            updateUsernames(message.users);
+            updateFeatures(message.features);
+            if (message.activeFeature != null) {
+                document.getElementById('featureBewertung').value = message.activeFeature.title;
+                document.getElementById('beschrebungBewertung').value = message.activeFeature.description;
+                updateVotes(message.activeFeature.votes);
+            }
+
+
+            //updateUsernames(message.usernames);
+            //updateFeatures(message.userStories);
             //admin = message.admin; // TODO: doesn't work? admin still undefined.
             admin = (sessionStorage.getItem("admin"));
             // if(admin == "true") {
@@ -121,7 +153,7 @@ function onMessageReceived(payload) {
             // }
             break;
         case 'FEATURE':
-            let userstory = new UserStory(message.title, message.description, 0,0,0 );
+            let userstory = new UserStory(message.title, message.description, 0, 0, 0);
             addToBoard(userstory);
             break;
         case 'UPDATE':
@@ -131,18 +163,18 @@ function onMessageReceived(payload) {
             updateUsernames(message.usernames);
             //admin = message.admin; // TODO: doesn't work? admin still undefined.
             admin = (sessionStorage.getItem("admin"));
-           /* if(admin == "true") {
-                forceSendButton.css('visibility', 'visible');
-            }*/
+            /* if(admin == "true") {
+                 forceSendButton.css('visibility', 'visible');
+             }*/
 
 
             fillBoard(message.userStories);
             break;
 //        case 'WAIT':
-  //          updateHTML(message.html);
-    //        break;
+        //          updateHTML(message.html);
+        //        break;
         case 'FORCE_SEND':
-            if(!send) {
+            if (!send) {
                 sendUserStories();
             }
             break;
@@ -153,11 +185,18 @@ function onMessageReceived(payload) {
             break;
 
         case 'ADDVOTE':
-            document.getElementById('featureBewertung').value=message.userStories[0];
-            document.getElementById('beschrebungBewertung').value=message.userStories[1];
+            document.getElementById('featureBewertung').value = message.userStories[0];
+            document.getElementById('beschrebungBewertung').value = message.userStories[1];
             break;
+
         case 'LEAVE':
             updateUsernames(message.usernames);
+            break;
+
+        case 'VOTE':
+            //updateUserVote(message.user, message.bewertung1, message.bewertung2, message.zeit);
+            updateVote(message);
+            break;
 
         // TODO: other cases
     }
@@ -179,14 +218,14 @@ function addUserStory() {
 function sendUserStories() {
     let allUserStories
 
-        let name = document.getElementById("userStoryInput").value;
-        let beschreibung = document.getElementById("beschreibung").value;
-        let bewertung1 = document.querySelector("#bewertung1").value;
-        let bewertung2 = document.querySelector("#bewertung2").value;
-        let zeit = document.querySelector("#zeit").value;
+    let name = document.getElementById("userStoryInput").value;
+    let beschreibung = document.getElementById("beschreibung").value;
+    let bewertung1 = document.querySelector("#bewertung1").value;
+    let bewertung2 = document.querySelector("#bewertung2").value;
+    let zeit = document.querySelector("#zeit").value;
 
-        //allUserStories.push(this.textContent);
-        allUserStories =  [name, beschreibung, bewertung1, bewertung2, zeit];
+    //allUserStories.push(this.textContent);
+    allUserStories = [name, beschreibung, bewertung1, bewertung2, zeit];
 
     if (stompClient) {
         let message = {
@@ -208,7 +247,7 @@ function addBewertung() {
     let name = document.getElementById("featureBewertung").value;
     let beschreibung = document.getElementById("beschrebungBewertung").value;
 
-    bewertung =  [name, beschreibung];
+    bewertung = [name, beschreibung];
 
     if (stompClient) {
         let message = {
@@ -237,7 +276,18 @@ function forceSend() {
 function updateUsernames(users) {
     usernames.empty();
     users.forEach(
-        username => usernames.append(`<div>${username}</div>`)
+        username => {
+            let userdiv = document.createElement("div");
+            let uservotep = document.createElement("p");
+            let usernamep = document.createElement("p");
+            usernamep.innerText = username;
+            uservotep.classList.add("vote");
+            userdiv.id = username;
+            //userdiv.innerHTML += username;
+            userdiv.append(usernamep);
+            userdiv.append(uservotep);
+            usernames.append(userdiv)
+        }
     )
 }
 
@@ -249,7 +299,7 @@ function fillBoard(userStories) {
     )
 }
 
-function listToObjList(userStoryList){
+function listToObjList(userStoryList) {
     let list = [];
     userStoryList.forEach(
         userStory => list.push(new UserStory(userStory.name, userStory.beschreibung, userStory.value1, userStory.value2, userStory.zeit))
@@ -272,7 +322,7 @@ function sendBewertung() {
     let zeit = document.querySelector("#zeit").value;
 
     //allUserStories.push(this.textContent);
-    bewertung =  [name, beschreibung, bewertung1, bewertung2, zeit];
+    bewertung = [name, beschreibung, bewertung1, bewertung2, zeit];
 
     if (stompClient) {
         let message = {
@@ -309,11 +359,11 @@ function sendFeature() {
 
 
 function updateTextInput(val) {
-    document.getElementById('bewertung1').value=val;
+    document.getElementById('bewertung1').value = val;
 }
 
 function updateTextInput2(val) {
-    document.getElementById('bewertung2').value=val;
+    document.getElementById('bewertung2').value = val;
 }
 
 $(document).ready(function () {
