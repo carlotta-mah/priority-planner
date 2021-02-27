@@ -3,8 +3,8 @@ p{
 }
 .featureList{
     box-shadow:0px 5px 25px 6px rgba(3,31,51,0.33);
-    margin-bottom: 30px;
-    padding: 20px 10px 10px 10px;
+    margin-bottom: 10px;
+    padding: 10px 10px 10px 10px;
     background-color: #031F33;
     color: azure;
     display: flex;
@@ -21,4 +21,7 @@ p{
 }
 .user p{
     color: azure;
+}
+.selected-feature{
+    background-color: #5e5e5e;
 }

@@ -34,6 +34,9 @@ public class Feature {
         return votes;
     }
 
+    public int getNumberOfVotes(){
+        return votes.size();
+    }
     public boolean equals(String name, String beschreibung){
         if(this.title.equalsIgnoreCase(name) && this.description.equalsIgnoreCase(beschreibung)){
             return true;

@@ -7,7 +7,6 @@ let voteButton = $('#voteButton');
 let addButton = $('#addToVoteButton');
 let addFeatureButton = $('#addFeature');
 
-let zuBewertung;
 let username;
 let roomId;
 let topic;
@@ -19,7 +18,6 @@ let userStories;
 const userStoryBoardDiv = document.getElementById("userStoryBoard");
 let idGenerator = 0;
 
-let bewertung = [];
 
 // connect via websocket with server for bidirectional communication
 function connect() {
@@ -58,6 +56,30 @@ function getId() {
     return idGenerator++;
 }
 
+function hideVotes() {
+    let voteList = document.getElementsByClassName("test");
+    Array.prototype.forEach.call(voteList, function(voteElement) {
+        voteElement.style.display = "none";
+    });
+
+}
+
+function resetVotingPanel() {
+    //TODO:set sliders and Time to default
+    let inputs = $(":input[type=range]");
+    Array.prototype.forEach.call(inputs, function(input) {
+        input.value = "50";
+    });
+    $("#zeit").value = "";
+}
+
+function unselectAllFeatures() {
+    let featureList = document.getElementsByClassName("featureList");
+    Array.prototype.forEach.call(featureList, function(featureElement) {
+        featureElement.classList.remove("selected-feature");
+    });
+}
+
 function addToBoard(userstory) {
     const newDiv = document.createElement("div");
     let name = userstory.name;
@@ -82,17 +104,16 @@ function addToBoard(userstory) {
     var button = document.createElement("BUTTON");
     button.title = myId;
     button.classList.add('button');
-    button.innerHTML = "VOTE";
+    button.innerHTML = "Vote now";
     button.addEventListener("click", function () {
         let divName = document.getElementById(this.title)[0];
         let divBeschreibung = document.getElementById(this.title)[1];
-        console.log(divName);
-        console.log("test");
-        console.log(divBeschreibung);
+        hideVotes();
+        resetVotingPanel();
         document.getElementById("featureBewertung").value = divName;
         document.getElementById("beschrebungBewertung").value = divBeschreibung;
-
-
+        unselectAllFeatures();
+        newDiv.classList.add("selected-feature");
         addBewertung();
     });
     newDiv.appendChild(button);
@@ -132,6 +153,16 @@ function updateVotes(votes) {
             updateVote(vote);
         }
     )
+
+
+}
+
+function showVotes() {
+    let voteList = document.getElementsByClassName("test");
+    Array.prototype.forEach.call(voteList, function(voteElement) {
+        voteElement.style.display = "inline-block";
+    });
+
 
 
 }
@@ -204,6 +235,9 @@ function onMessageReceived(payload) {
             //updateUserVote(message.user, message.bewertung1, message.bewertung2, message.zeit);
             updateVote(message);
             break;
+        case 'ALLVOTED':
+            updateVote(message);
+            showVotes();
 
         // TODO: other cases
     }
@@ -289,6 +323,7 @@ function updateUsernames(users) {
             let usernamep = document.createElement("p");
             usernamep.innerText = username;
             uservotep.classList.add("vote");
+            uservotep.style.display = "none";
             userdiv.id = username;
             userdiv.classList.add("user");
             //userdiv.innerHTML += username;

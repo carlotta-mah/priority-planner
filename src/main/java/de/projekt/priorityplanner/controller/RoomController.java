@@ -160,7 +160,11 @@ public class RoomController {
                 String userStoryBeschreibung = message.getUserStoryBeschreibung();
                 int raumId =message.getRoomId();
                 Database.addVote(vote, raumId,userStoryName, userStoryBeschreibung);
+                if(Database.allVoted(raumId)){
+                    vote.setEvent(MessagePhase.ALLVOTED);
+                }
                 messagingTemplate.convertAndSend("/queue/" + room, vote);
+
 
             // TODO: other cases
         }

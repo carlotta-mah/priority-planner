@@ -1,10 +1,9 @@
 package de.projekt.priorityplanner;
 
 
-import de.projekt.priorityplanner.model.Feature;
-import de.projekt.priorityplanner.model.Room;
-import de.projekt.priorityplanner.model.UserStory;
-import de.projekt.priorityplanner.model.Vote;
+import de.projekt.priorityplanner.model.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -36,7 +35,15 @@ public class Database {
     }
 
     static public void addVote(Vote vote, int roomId, String featureName, String beschreibung){
-        rooms1.get(roomId).getFeature(featureName,beschreibung).addVote(vote);
+        Room room = rooms1.get(roomId);
+        room.getFeature(featureName,beschreibung).addVote(vote);
+    }
+    static public Boolean allVoted(int roomId){
+        Room room = rooms1.get(roomId);
+        if(room.getNumberOfVotes() == counters.get(roomId)) {
+            return true;
+        }else return false;
+
     }
 
     static public void setAdmin(int i, String sessionId) {

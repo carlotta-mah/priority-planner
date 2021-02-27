@@ -36,6 +36,12 @@ public class Room {
         return null;
     }
 
+    public int getNumberOfVotes(){
+        if(activeFeature != null){
+            return activeFeature.getNumberOfVotes();
+        }
+        else return 0;
+    }
     public void selectFeature(String name, String beschreibung) {
         for (Feature feature : features) {
             if (feature.equals(name, beschreibung)) {
