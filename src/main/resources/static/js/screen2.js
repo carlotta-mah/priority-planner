@@ -70,7 +70,9 @@ function resetVotingPanel() {
     Array.prototype.forEach.call(inputs, function(input) {
         input.value = "50";
     });
-    $("#zeit").value = "";
+    document.querySelector("#bewertung1").value = 50;
+    document.querySelector("#bewertung2").value = 50;
+    document.querySelector("#zeit").value = 0;
 }
 
 function unselectAllFeatures() {
