@@ -225,8 +225,11 @@ function onMessageReceived(payload) {
             break;
 
         case 'ADDVOTE':
+            //TODO:maybe check if feature is new
             document.getElementById('featureBewertung').value = message.userStories[0];
             document.getElementById('beschrebungBewertung').value = message.userStories[1];
+            hideVotes();
+            resetVotingPanel();
             break;
 
         case 'LEAVE':
