@@ -116,8 +116,10 @@ function updateUserVote(user, bewertung1, bewertung2, zeit) {
 
 function updateVote(vote) {
     let userdiv = document.getElementById(vote.user);
-    let bewertungsP = userdiv.getElementsByClassName("vote");
-    bewertungsP.innerHtml = vote.user;
+    let votediv =userdiv.childNodes[1];
+    votediv.setAttribute("class", "test");
+    votediv.innerText = "Boost:"+vote.bewertung1 +
+                        " RIP:"+vote.bewertung2 + " Zeit:" + vote.zeit;
 
  //   userdiv.append(bewertungsP)
     userdiv.classList.add("hasVoted")
@@ -288,10 +290,11 @@ function updateUsernames(users) {
             usernamep.innerText = username;
             uservotep.classList.add("vote");
             userdiv.id = username;
+            userdiv.classList.add("user");
             //userdiv.innerHTML += username;
             userdiv.append(usernamep);
             userdiv.append(uservotep);
-            usernames.append(userdiv)
+            usernames.append(userdiv);
         }
     )
 }

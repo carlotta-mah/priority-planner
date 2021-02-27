@@ -1,9 +1,24 @@
-.featureList{
-    border: 1px solid;
-    padding: 10px;
-    box-shadow: 5px 10px 18px #888888;
-    margin: 0 1em 1em 0;
+p{
+    font-family: 'Open Sans', sans-serif;
 }
+.featureList{
+    box-shadow:0px 5px 25px 6px rgba(3,31,51,0.33);
+    margin-bottom: 30px;
+    padding: 20px 10px 10px 10px;
+    background-color: #031F33;
+    color: azure;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid;
+}
+
 .hasVoted{
-    background-color: red;
+    background-color: lightseagreen;
+}
+.user{
+    padding: 20px;
+    background-color: #734B88;
+}
+.user p{
+    color: azure;
 }
