@@ -71,8 +71,13 @@ function addToBoard(userstory) {
     newDiv[0] = name;
     newDiv[1] = beschreibung;
 
-    newDiv.innerHTML += name;
-    newDiv.innerHTML += beschreibung
+    let nameH4 = document.createElement("h4");
+    nameH4.innerHTML = name;
+    let bescheibungP = document.createElement("p");
+    bescheibungP.innerHTML = beschreibung;
+
+    newDiv.appendChild(nameH4);
+    newDiv.appendChild(bescheibungP);
 
     var button = document.createElement("BUTTON");
     button.title = myId;
@@ -378,7 +383,6 @@ $(document).ready(function () {
     sendUserStoriesButton.click(sendUserStories);
 
     voteButton.click(sendBewertung);
-    addButton.click(addBewertung);
     addFeatureButton.click(sendFeature);
     //if user has created the room show force send button
     admin = (sessionStorage.getItem("admin"));
