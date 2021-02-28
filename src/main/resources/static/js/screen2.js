@@ -19,6 +19,16 @@ const userStoryBoardDiv = document.getElementById("userStoryBoard");
 let idGenerator = 0;
 
 
+function setTitle() {
+    let roomTitle = document.getElementById("rommtitle");
+    let title = document.createElement("h1");
+    title.innerHTML += "PriorityPlanner: ROOM "
+    title.innerHTML += roomId + "<br />";
+    title.innerHTML += "Name: ";
+    title.innerHTML += username;
+    roomTitle.appendChild(title);
+}
+
 // connect via websocket with server for bidirectional communication
 function connect() {
     let socket = new SockJS('/ws');
@@ -438,5 +448,6 @@ $(document).ready(function () {
     //if user has created the room show force send button
     admin = (sessionStorage.getItem("admin"));
 
+    setTitle();
     connect();
 });
