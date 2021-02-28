@@ -45,6 +45,18 @@ public class RoomController {
         return roomId;
     }
 
+    public String generateUniqueName(String name, List namensListe) {
+        String s = name;
+        for (int x = 0 ; x <= namensListe.size(); x++){
+            if(namensListe.contains(s)){
+                s = s + "1";
+            }
+        }
+
+        return s;
+
+    }
+
     // adds a username to a room and sends a updateMessage to all users of that room
     @MessageMapping("/room/{roomId}/addUser")
     public void addUser(@DestinationVariable int roomId, Principal user, @Payload MessageToServer message,
@@ -53,21 +65,23 @@ public class RoomController {
         boolean admin = false;
         //int id=  roomId;
         // TODO: add username to actual Database
-        Database.addUsername(roomId, message.getUsername());
+        String s = generateUniqueName(message.getUsername(), Database.getUsernames(roomId));
+        Database.addUsername(roomId,s);
 
         // add Admin
         if (Database.adminNull(roomId)) {
             Database.setAdmin(roomId, headerAccessor.getSessionId());
             admin = true;
         }
-        headerAccessor.getSessionAttributes().put("username", message.getUsername());
+
+
+        headerAccessor.getSessionAttributes().put("username", s);
         headerAccessor.getSessionAttributes().put("room_id", message.getRoomId());
         log.info("Received greeting message {}", message);
 
         Room room = Database.getRoom(roomId);
         room.setEvent(MessagePhase.ADDED_USER);
         messagingTemplate.convertAndSend("/queue/"+roomId, room);
-
 
         // update all clients in room
 //        MessageToClient messageC = new MessageToClient(
