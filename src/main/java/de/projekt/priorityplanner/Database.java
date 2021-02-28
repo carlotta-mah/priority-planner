@@ -130,4 +130,12 @@ public class Database {
         return rooms1.get(roomid).getFeatureId(feature);
 
     }
+
+    public static String generateUniqueName(String name, int roomId) {
+        String s = name;
+        while(getUsernames(roomId).contains(s)){
+            s = s + "1";
+        }
+        return s;
+    }
 }
