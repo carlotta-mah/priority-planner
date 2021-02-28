@@ -117,6 +117,7 @@ public class RoomController {
            // TODO fehlermeldung
         }
         Database.addUserStory(roomId, feature);
+        int i = feature.getId();
         messagingTemplate.convertAndSend("/queue/" + roomId, feature);
     }
 
@@ -156,17 +157,20 @@ public class RoomController {
                 break;
             case ADDVOTE:
                 UserStory userStory1 = message.createUserStoryHead();
-                Database.selectFeature(room, userStory1.getName(), userStory1.getBeschreibung());
-
+                Feature selectedFeature = Database.selectFeature(room, userStory1.getName(),
+                        userStory1.getBeschreibung());
+                selectedFeature.setEvent(MessagePhase.ADDVOTE);
                 List<String> feature = new ArrayList<>();
 
-                feature.add(userStory1.getName());
-                feature.add(userStory1.getBeschreibung());
+                feature.add(selectedFeature.getTitle());
+                feature.add(selectedFeature.getDescription());
+                //feature.add(selectedFeature.getId());
 
 
                 MessageToClient messageD = new MessageToClient(
                         MessagePhase.ADDVOTE, feature);
-                messagingTemplate.convertAndSend("/queue/" + roomId, messageD);
+                //messagingTemplate.convertAndSend("/queue/" + roomId, messageD);
+                messagingTemplate.convertAndSend("/queue/" + roomId, selectedFeature);
                 break;
             case VOTE:
                 Vote vote = message.createVote();

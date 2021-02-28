@@ -12,6 +12,7 @@ public class Feature {
     private String description;
     private de.projekt.priorityplanner.model.MessagePhase event;
     private List<Vote> votes;
+    private int id;
 
     public Feature(String title, String description, MessagePhase phase){
         this.event = phase;

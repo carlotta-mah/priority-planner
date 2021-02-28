@@ -121,8 +121,13 @@ public class Database {
         return room.getUsers();
     }
 
-    public static void selectFeature(int roomId, String name, String beschreibung) {
+    public static Feature selectFeature(int roomId, String name, String beschreibung) {
         Room room = rooms1.get(roomId);
-        room.selectFeature(name, beschreibung);
+        return room.selectFeature(name, beschreibung);
+    }
+
+    public static int getFeatureId(Feature feature, int roomid) {
+        return rooms1.get(roomid).getFeatureId(feature);
+
     }
 }

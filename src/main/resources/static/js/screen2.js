@@ -88,7 +88,7 @@ function addToBoard(userstory) {
 
     let beschreibung = userstory.beschreibung;
 
-    let myId = getId();
+    let myId = userstory.id;
     newDiv.id = myId;
     newDiv.classList.add('featureList');
 
@@ -116,7 +116,7 @@ function addToBoard(userstory) {
         document.getElementById("beschrebungBewertung").value = divBeschreibung;
         unselectAllFeatures();
         newDiv.classList.add("selected-feature");
-        addBewertung();
+        addBewertung(userstory);
     });
     newDiv.appendChild(button);
 
@@ -193,7 +193,7 @@ function onMessageReceived(payload) {
             // }
             break;
         case 'FEATURE':
-            let userstory = new UserStory(message.title, message.description, 0, 0, 0);
+            let userstory = new UserStory(message.title, message.description, message.id);
             addToBoard(userstory);
             break;
         case 'UPDATE':
@@ -226,8 +226,14 @@ function onMessageReceived(payload) {
 
         case 'ADDVOTE':
             //TODO:maybe check if feature is new
-            document.getElementById('featureBewertung').value = message.userStories[0];
-            document.getElementById('beschrebungBewertung').value = message.userStories[1];
+            unselectAllFeatures();
+            // document.getElementById('featureBewertung').value = message.userStories[0];
+            // document.getElementById('beschrebungBewertung').value = message.userStories[1];
+            // document.getElementById(""+message.id).classList.add("selected-feature");
+            //TODO rename elements!
+            document.getElementById('featureBewertung').value = message.title;
+            document.getElementById('beschrebungBewertung').value = message.description;
+            document.getElementById(""+message.id).classList.add("selected-feature");
             hideVotes();
             resetVotingPanel();
             break;
@@ -287,11 +293,12 @@ function sendUserStories() {
 }
 
 
-function addBewertung() {
+function addBewertung(userstory) {
     let bewertung
 
     let name = document.getElementById("featureBewertung").value;
     let beschreibung = document.getElementById("beschrebungBewertung").value;
+    let featureId = userstory.id;
 
     bewertung = [name, beschreibung];
 
@@ -299,6 +306,7 @@ function addBewertung() {
         let message = {
             userStories: bewertung,
             roomId: roomId,
+            featureId: featureId,
             phase: 'ADDVOTE'
         }
 

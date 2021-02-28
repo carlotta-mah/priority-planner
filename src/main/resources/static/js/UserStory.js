@@ -2,16 +2,18 @@
 class UserStory{
 
 
-     constructor(name, beschreibung, value1, value2, zeit) {
+     constructor(name, beschreibung, id) {
          this._name = name;
          this._beschreibung = beschreibung;
-         this._value1 = value1;
-         this._value2 = value2;
-         this._zeit = zeit;
+         this._id = id;
      }
 
-
-
+     get id(){
+         return this._id;
+     }
+     set id(id){
+         this._id = id;
+     }
      get name() {
          return this._name;
      }
