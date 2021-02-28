@@ -60,6 +60,17 @@ function joinExistingRoom2(roomId){
 
 }
 
+//aktiviert die Enter taste zum betreten des Raumes
+function creatRoomByEnter(){
+    if(event.key === 'Enter') {
+        createRoom();
+    }
+}
+function joinRoomByEnter(idInTest){
+    if(event.key === 'Enter') {
+        joinExistingRoom2(idInTest.value);
+    }
+}
 $(document).ready(function () {
     createRoomButton.click(createRoom);
     joinRoomButton.click(() => {

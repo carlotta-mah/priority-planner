@@ -22,7 +22,7 @@
         <div id="create-box" class="large-6 medium-6 cell">
             <div class="primary callout">
                 <h3>Erstelle einen neuen Raum</h3>
-                <input id="creator-name" type="text" placeholder="Username">
+                <input id="creator-name" type="text" placeholder="Username" onkeydown="creatRoomByEnter()">
                 <button class="button" id="createRoomButton">New Room</button>
             </div>
         </div>
@@ -32,7 +32,7 @@
                 <label for="joiner-name">Name</label>
                 <input id="joiner-name" type="text" placeholder="Username">
                 <label for="room-id">Raum-ID</label>
-                <input id="room-id" type="text" placeholder="Room ID">
+                <input id="room-id" type="text" placeholder="Room ID" onkeydown="joinRoomByEnter(this)">
                 <button class="button" id="joinRoomButton">Join Room</button>
             </div>
         </div>
