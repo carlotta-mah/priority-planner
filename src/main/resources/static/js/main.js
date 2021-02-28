@@ -34,12 +34,11 @@ function joinRoom(roomId) {
     }
 }
 
-function joinRoom2(roomId){
+function joinExistingRoom2(roomId){
     username = nameInput.val();
 
     // store variables for next page (there is other ways to store variables, eg cookies)
     sessionStorage.setItem("roomId", roomId);
-    //sessionStorage.setItem("username", username);
     sessionStorage.setItem("admin", admin)
 
     const Http = new XMLHttpRequest();
@@ -64,6 +63,6 @@ function joinRoom2(roomId){
 $(document).ready(function () {
     createRoomButton.click(createRoom);
     joinRoomButton.click(() => {
-        joinRoom2(roomInput.val());
+        joinExistingRoom2(roomInput.val());
     });
 });

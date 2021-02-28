@@ -45,17 +45,6 @@ public class RoomController {
         return roomId;
     }
 
-    public String generateUniqueName(String name, List namensListe) {
-        String s = name;
-        for (int x = 0 ; x <= namensListe.size(); x++){
-            if(namensListe.contains(s)){
-                s = s + "1";
-            }
-        }
-
-        return s;
-
-    }
 
     // adds a username to a room and sends a updateMessage to all users of that room
     @MessageMapping("/room/{roomId}/addUser")
@@ -65,7 +54,8 @@ public class RoomController {
         boolean admin = false;
         //int id=  roomId;
         // TODO: add username to actual Database
-        String s = generateUniqueName(message.getUsername(), Database.getUsernames(roomId));
+       // String s = generateUniqueName(message.getUsername(), Database.getUsernames(roomId));
+        String s = message.getUsername();
         Database.addUsername(roomId,s);
 
         // add Admin

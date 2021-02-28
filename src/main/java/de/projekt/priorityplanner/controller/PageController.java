@@ -34,24 +34,11 @@ public class PageController {
     @ResponseBody
     public String userName( @RequestHeader("username") String username, @RequestHeader("roomId") int roomId){
         //int i = Integer.parseInt(roomId);
-        String s = generateUniqueName(username, Database.getUsernames(roomId));
+        String s = Database.generateUniqueName(username, roomId);
 
 
         return s;//username + roomId;
     }
 
 
-
-
-    public String generateUniqueName(String name, List namensListe) {
-        String s = name;
-        for (int x = 0 ; x <= namensListe.size(); x++){
-            if(namensListe.contains(s)){
-                s = s + "1";
-            }
-        }
-
-        return s;
-
-    }
 }

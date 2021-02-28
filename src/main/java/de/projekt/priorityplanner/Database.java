@@ -125,4 +125,12 @@ public class Database {
         Room room = rooms1.get(roomId);
         room.selectFeature(name, beschreibung);
     }
+
+    public static String generateUniqueName(String name, int roomId) {
+        String s = name;
+        while(getUsernames(roomId).contains(s)){
+            s = s + "1";
+        }
+        return s;
+    }
 }
