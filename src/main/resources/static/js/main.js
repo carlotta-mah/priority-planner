@@ -34,9 +34,36 @@ function joinRoom(roomId) {
     }
 }
 
+function joinRoom2(roomId){
+    username = nameInput.val();
+
+    // store variables for next page (there is other ways to store variables, eg cookies)
+    sessionStorage.setItem("roomId", roomId);
+    //sessionStorage.setItem("username", username);
+    sessionStorage.setItem("admin", admin)
+
+    const Http = new XMLHttpRequest();
+    const url= '/test/room/'+ roomId;
+
+    Http.open("GET", url);
+    Http.setRequestHeader("username", username);
+    Http.setRequestHeader("roomId", roomId);
+    Http.send();
+
+
+    Http.onreadystatechange = (e) => {
+        if (Http.readyState == XMLHttpRequest.DONE) {
+            username = Http.responseText;
+            sessionStorage.setItem("username", username);
+            window.location.href = `/room/${roomId}`;
+        }
+    }
+
+}
+
 $(document).ready(function () {
     createRoomButton.click(createRoom);
     joinRoomButton.click(() => {
-        joinRoom(roomInput.val());
+        joinRoom2(roomInput.val());
     });
 });
