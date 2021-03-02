@@ -14,7 +14,6 @@ import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,7 +22,6 @@ import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 // Controller for creating a room and adding a user to it
@@ -111,6 +109,15 @@ public class RoomController {
         messagingTemplate.convertAndSend("/queue/" + roomId, feature);
     }
 
+    @MessageMapping("room/{roomId}/result")
+    public void getResult(@DestinationVariable int roomId,@Payload int featureId ){
+        Feature feature =  Database.getRoom(roomId).getFeatureById(featureId);
+        feature.calculateResult();
+        feature.setEvent(MessagePhase.RESULT);
+        messagingTemplate.convertAndSend("/queue/" + roomId, feature);
+
+    }
+
     @MessageMapping("/room/{roomId}/sendMessage")
     @SendTo("/queue/{roomId}")
     public void sendMessage(@DestinationVariable String roomId, @Payload MessageToServer message,
@@ -146,36 +153,43 @@ public class RoomController {
              //   allSend(Database.reduceCounter(room), room);
                 break;
             case ADDVOTE:
-                UserStory userStory1 = message.createUserStoryHead();
-                Feature selectedFeature = Database.selectFeature(room, userStory1.getName(),
-                        userStory1.getBeschreibung());
-                selectedFeature.setEvent(MessagePhase.ADDVOTE);
-                List<String> feature = new ArrayList<>();
-
-                feature.add(selectedFeature.getTitle());
-                feature.add(selectedFeature.getDescription());
-                //feature.add(selectedFeature.getId());
-
-
-                MessageToClient messageD = new MessageToClient(
-                        MessagePhase.ADDVOTE, feature);
-                //messagingTemplate.convertAndSend("/queue/" + roomId, messageD);
-                messagingTemplate.convertAndSend("/queue/" + roomId, selectedFeature);
+                selectVotingFeature(message);
                 break;
             case VOTE:
                 Vote vote = message.createVote();
                 String userStoryName = message.getUserStoryName();
                 String userStoryBeschreibung = message.getUserStoryBeschreibung();
                 int raumId =message.getRoomId();
-                Database.addVote(vote, raumId,userStoryName, userStoryBeschreibung);
+                Database.addVote(vote, raumId, message.getFeatureId());
                 if(Database.allVoted(raumId)){
                     vote.setEvent(MessagePhase.ALLVOTED);
                 }
                 messagingTemplate.convertAndSend("/queue/" + room, vote);
-
+                break;
+            case VOTEAGAIN:
+                Database.getRoom(message.getRoomId()).getFeatureById(message.getFeatureId()).resetVote();
+                selectVotingFeature(message);
 
             // TODO: other cases
         }
+    }
+
+    public void selectVotingFeature(MessageToServer message){
+        int roomId = message.getRoomId();
+        Feature selectedFeature = Database.selectFeature(roomId, message.getFeatureId());
+        selectedFeature.setEvent(MessagePhase.ADDVOTE);
+        List<String> feature = new ArrayList<>();
+
+        feature.add(selectedFeature.getTitle());
+        feature.add(selectedFeature.getDescription());
+        //feature.add(selectedFeature.getId());
+
+
+        MessageToClient messageD = new MessageToClient(
+                MessagePhase.ADDVOTE, feature);
+        //messagingTemplate.convertAndSend("/queue/" + roomId, messageD);
+        messagingTemplate.convertAndSend("/queue/" + roomId, selectedFeature);
+
     }
 
     public void allSend(int c, int room){

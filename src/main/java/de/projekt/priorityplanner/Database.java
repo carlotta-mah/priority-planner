@@ -34,9 +34,9 @@ public class Database {
         return n;
     }
 
-    static public void addVote(Vote vote, int roomId, String featureName, String beschreibung){
+    static public void addVote(Vote vote, int roomId, int featureId){
         Room room = rooms1.get(roomId);
-        room.getFeature(featureName,beschreibung).addVote(vote);
+        room.getFeatureById(featureId).addVote(vote);
     }
     static public Boolean allVoted(int roomId){
         Room room = rooms1.get(roomId);
@@ -121,9 +121,9 @@ public class Database {
         return room.getUsers();
     }
 
-    public static Feature selectFeature(int roomId, String name, String beschreibung) {
+    public static Feature selectFeature(int roomId, int featureId) {
         Room room = rooms1.get(roomId);
-        return room.selectFeature(name, beschreibung);
+        return room.selectFeature(featureId);
     }
 
     public static int getFeatureId(Feature feature, int roomid) {

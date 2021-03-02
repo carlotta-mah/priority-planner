@@ -23,7 +23,7 @@ p{
     color: azure;
 }
 .selected-feature{
-    background-color: #5e5e5e;
+    background-color: #734B88;
 }
 
 .addMore{
@@ -37,4 +37,15 @@ p{
 .addMore:hover{
     border: 1px solid #888;
     background-color: #ddd;
+}
+
+.bigDif{
+    background: red;
+}
+.wurdeBewertet{
+    background-color: #5e5e5e;
+}
+
+#result{
+    display: none;
 }

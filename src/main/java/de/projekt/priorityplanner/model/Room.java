@@ -39,15 +39,6 @@ public class Room {
         users.remove(username);
     }
 
-    public Feature getFeature(String name, String beschreibung) {
-        for (Feature feature : features) {
-            if (feature.equals(name, beschreibung)) {
-                return feature;
-            }
-        }
-        //TODO: Fehlerbehandlung
-        return null;
-    }
 
     public int getNumberOfVotes(){
         if(activeFeature != null){
@@ -55,14 +46,24 @@ public class Room {
         }
         else return 0;
     }
-    public Feature selectFeature(String name, String beschreibung) {
+    public Feature selectFeature(int id) {
         for (Feature feature : features) {
-            if (feature.equals(name, beschreibung)) {
+            if (feature.equals(id)) {
                 activeFeature = feature;
                 return activeFeature;
             }
         }
         return null;//TODO Fehlerbehandlung
+    }
+
+    public Feature getFeatureById(int id){
+        for (Feature feature:features) {
+            if (feature.getId() == id){
+                return  feature;
+            }
+        }
+        //TODO: fehlerbehandlung
+        return null;
     }
 
     public int getFeatureId(Feature feature) {
