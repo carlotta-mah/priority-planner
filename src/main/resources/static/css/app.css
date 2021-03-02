@@ -25,3 +25,16 @@ p{
 .selected-feature{
     background-color: #5e5e5e;
 }
+
+.addMore{
+    border: none;
+    width: 64px;
+    height: 32px;
+    background-color: #eee;
+    transition: all ease-in-out 0.2s;
+    cursor: pointer;
+}
+.addMore:hover{
+    border: 1px solid #888;
+    background-color: #ddd;
+}

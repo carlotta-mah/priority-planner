@@ -127,6 +127,8 @@ function addToBoard(userstory) {
         unselectAllFeatures();
         newDiv.classList.add("selected-feature");
         addBewertung(userstory);
+        document.getElementById('voteButton').disabled = false;
+        document.getElementById('voteButton').classList = "button";
     });
     newDiv.appendChild(button);
 
