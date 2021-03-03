@@ -26,11 +26,15 @@ function joinRoom(roomId) {
         username = nameInput.val();
         roll = document.getElementById("create-rollen").value;
 
+        if(username.isEmpty()){
+            username = "User";
+        }
+
         // store variables for next page (there is other ways to store variables, eg cookies)
         sessionStorage.setItem("roomId", roomId);
         sessionStorage.setItem("username", username);
         sessionStorage.setItem("roll", roll);
-        sessionStorage.setItem("admin", admin)
+        sessionStorage.setItem("admin", admin);
 
         // switch page
         window.location.href = `/room/${roomId}`;
@@ -42,10 +46,14 @@ function joinExistingRoom2(roomId){
         username = nameInput.val();
         roll = document.getElementById("joiner-rollen").value;
 
+        if(username.isEmpty()){
+            username = "User";
+        }
+
         // store variables for next page (there is other ways to store variables, eg cookies)
         sessionStorage.setItem("roomId", roomId);
         sessionStorage.setItem("roll", roll);
-        sessionStorage.setItem("admin", admin)
+        sessionStorage.setItem("admin", admin);
 
         const Http = new XMLHttpRequest();
         const url = '/test/room/' + roomId;
@@ -65,6 +73,9 @@ function joinExistingRoom2(roomId){
         }
     }
 }
+String.prototype.isEmpty = function() {
+    return (this.length === 0 || !this.trim());
+};
 
 //aktiviert die Enter taste zum betreten des Raumes
 function creatRoomByEnter(){

@@ -48,7 +48,8 @@
                 </select>
 
                 <label for="room-id">Raum-ID</label>
-                <input id="room-id" type="text" placeholder="Room ID" onkeydown="joinRoomByEnter(this)">
+                <input id="room-id" type="text" placeholder="Room ID" onkeydown="joinRoomByEnter(this)"
+                       onkeypress='validate(event)'>
                 <button class="button" id="joinRoomButton">Join Room</button>
             </div>
         </div>
