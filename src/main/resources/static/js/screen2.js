@@ -10,6 +10,7 @@ let voteAgainButton = $('#voteAgain');
 
 let username;
 let roomId;
+let roll;
 let topic;
 let currentSubscription;
 let stompClient;
@@ -52,7 +53,7 @@ function registerInRoom() {
 
     stompClient.send(`${topic}/addUser`,
         {},
-        JSON.stringify({username: username, roomId: roomId})
+        JSON.stringify({username: username, roomId: roomId, roll: roll})
     );
 
     // TODO: receive everything and show, meanwhile hide everything
@@ -194,7 +195,7 @@ function onMessageReceived(payload) {
 
     switch (message.event) {
         case 'ADDED_USER':
-            updateUsernames(message.users);
+            updateUsernames(message.onlyUserNames);
             updateFeatures(message.features);
             if (message.activeFeature != null) {
                 document.getElementById('featureBewertung').value = message.activeFeature.title;
@@ -509,8 +510,10 @@ $(document).ready(function () {
     // get session variables
     roomId = parseInt(sessionStorage.getItem("roomId"));
     username = sessionStorage.getItem("username");
+    roll = sessionStorage.getItem("roll");
     usernames.append(`<div>${username}</div>`);
     console.log(username);
+    console.log(roll);
     topic = `/app/room/${roomId}`; // /app
 
     sendUserStoriesButton.click(sendUserStories);

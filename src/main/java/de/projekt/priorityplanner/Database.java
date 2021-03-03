@@ -26,7 +26,7 @@ public class Database {
     static public int addRoom() {
         n++;
         //rooms.put(n, new LinkedList<String>());
-        Room room = new Room(n, new LinkedList<Feature>(), new LinkedList<String>(), null, null);
+        Room room = new Room(n, new LinkedList<Feature>(), new LinkedList<User>(), null, null);
         rooms1.put(n,room);
         //userStories.put(n, new LinkedList<UserStory>());
         admins.put(n, null);
@@ -58,9 +58,9 @@ public class Database {
         return admins.get(i).equals(sessionId);
     }
 
-    static public void addUsername(int i, String username) {
+    static public void addUsername(int i, String username, String rolle) {
         //rooms.get(i).add(username);
-        rooms1.get(i).addUser(username);
+        rooms1.get(i).addUser(new User(username, rolle));
         int v = counters.get(i);
         counters.replace(i, ++v);
     }
@@ -74,7 +74,7 @@ public class Database {
     static public List getUsernames(int i) {
         //return rooms.get(i);
         Room room = rooms1.get(i);
-        return room.getUsers();
+        return room.getOnlyUserNames();
     }
 
     static public boolean containsRoom(int i) {
@@ -117,8 +117,11 @@ public class Database {
 
     public static List<String> removeUser(int roomId, String username) {
         Room room = rooms1.get(roomId);
-        room.removeUser(username);
-        return room.getUsers();
+        for (User user:room.getUsers()) {
+            if(user.getName().equalsIgnoreCase(username)){room.removeUser(user);}
+        }
+        reduceCounter(roomId);
+        return room.getOnlyUserNames();
     }
 
     public static Feature selectFeature(int roomId, int featureId) {
