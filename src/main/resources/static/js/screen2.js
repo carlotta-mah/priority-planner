@@ -316,7 +316,7 @@ function  setResult(feature){
 
     document.getElementById("timeAuswertung").innerText = "Mittelwert: " + feature.timeMean + "\r";
     document.getElementById("timeAuswertung").innerText += "Standartabweichung: " + feature.timeStab;
-    if(bigDif(feature.boostStab)){
+    if(bigDif(feature.timeStab)){
         document.getElementById("timeAuswertung").classList.add("bigDif");
     }
 
@@ -505,13 +505,6 @@ function sendFeature() {
 }
 
 
-function updateTextInput(val) {
-    document.getElementById('bewertung1').value = val;
-}
-
-function updateTextInput2(val) {
-    document.getElementById('bewertung2').value = val;
-}
 
 $(document).ready(function () {
 
