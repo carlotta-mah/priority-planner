@@ -8,6 +8,7 @@ let joinRoomButton = $('#joinRoomButton');
 let admin = "false";
 let username;
 let roomId;
+let roll;
 
 // creates a new room and joins it
 async function createRoom() {
@@ -23,10 +24,12 @@ async function createRoom() {
 function joinRoom(roomId) {
     if (roomId) {
         username = nameInput.val();
+        roll = document.getElementById("create-rollen").value;
 
         // store variables for next page (there is other ways to store variables, eg cookies)
         sessionStorage.setItem("roomId", roomId);
         sessionStorage.setItem("username", username);
+        sessionStorage.setItem("roll", roll);
         sessionStorage.setItem("admin", admin)
 
         // switch page
@@ -35,29 +38,32 @@ function joinRoom(roomId) {
 }
 
 function joinExistingRoom2(roomId){
-    username = nameInput.val();
+    if(roomId) {
+        username = nameInput.val();
+        roll = document.getElementById("joiner-rollen").value;
 
-    // store variables for next page (there is other ways to store variables, eg cookies)
-    sessionStorage.setItem("roomId", roomId);
-    sessionStorage.setItem("admin", admin)
+        // store variables for next page (there is other ways to store variables, eg cookies)
+        sessionStorage.setItem("roomId", roomId);
+        sessionStorage.setItem("roll", roll);
+        sessionStorage.setItem("admin", admin)
 
-    const Http = new XMLHttpRequest();
-    const url= '/test/room/'+ roomId;
+        const Http = new XMLHttpRequest();
+        const url = '/test/room/' + roomId;
 
-    Http.open("GET", url);
-    Http.setRequestHeader("username", username);
-    Http.setRequestHeader("roomId", roomId);
-    Http.send();
+        Http.open("GET", url);
+        Http.setRequestHeader("username", username);
+        Http.setRequestHeader("roomId", roomId);
+        Http.send();
 
 
-    Http.onreadystatechange = (e) => {
-        if (Http.readyState == XMLHttpRequest.DONE) {
-            username = Http.responseText;
-            sessionStorage.setItem("username", username);
-            window.location.href = `/room/${roomId}`;
+        Http.onreadystatechange = (e) => {
+            if (Http.readyState == XMLHttpRequest.DONE) {
+                username = Http.responseText;
+                sessionStorage.setItem("username", username);
+                window.location.href = `/room/${roomId}`;
+            }
         }
     }
-
 }
 
 //aktiviert die Enter taste zum betreten des Raumes

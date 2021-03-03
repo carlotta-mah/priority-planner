@@ -23,6 +23,14 @@
             <div class="primary callout">
                 <h3>Erstelle einen neuen Raum</h3>
                 <input id="creator-name" type="text" placeholder="Username" onkeydown="creatRoomByEnter()">
+                <label for="create-rollen">Rolle:</label>
+                <select name="create-rollen" id="create-rollen">
+                    <option value="Verantwortlicher">Verantwortlicher</option>
+                    <option value="Entwickler">Entwickler</option>
+                    <option value="Nutzer">Nutzer</option>
+                    <option value="Marketing">Marketing </option>
+                </select>
+
                 <button class="button" id="createRoomButton">New Room</button>
             </div>
         </div>
@@ -31,6 +39,14 @@
                 <h3>Trete einem exsistierenden Raum bei</h3>
                 <label for="joiner-name">Name</label>
                 <input id="joiner-name" type="text" placeholder="Username">
+                <label for="joiner-rollen">Rolle:</label>
+                <select name="joiner-rollen" id="joiner-rollen">
+                    <option value="Verantwortlicher">Verantwortlicher</option>
+                    <option value="Entwickler">Entwickler</option>
+                    <option value="Nutzer">Nutzer</option>
+                    <option value="Marketing">Marketing </option>
+                </select>
+
                 <label for="room-id">Raum-ID</label>
                 <input id="room-id" type="text" placeholder="Room ID" onkeydown="joinRoomByEnter(this)">
                 <button class="button" id="joinRoomButton">Join Room</button>

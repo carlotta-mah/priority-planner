@@ -12,6 +12,7 @@ public class MessageToServer {
     private String username;
     private int roomId;
     private int featureId;
+    private String roll;
     private LinkedList<String> content;
     private de.projekt.priorityplanner.model.MessagePhase phase;
 

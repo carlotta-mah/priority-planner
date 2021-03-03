@@ -58,7 +58,7 @@ function registerInRoom() {
 
     stompClient.send(`${topic}/addUser`,
         {},
-        JSON.stringify({username: username, roomId: roomId})
+        JSON.stringify({username: username, roomId: roomId, roll: roll})
     );
 
     // TODO: receive everything and show, meanwhile hide everything
@@ -75,7 +75,9 @@ function onError() {
     window.location.href = "";
 }
 
-
+function getId() {
+    return idGenerator++;
+}
 
 function hideVotes() {
     let voteList = document.getElementsByClassName("test");
@@ -145,7 +147,7 @@ function onMessageReceived(payload) {
 
     switch (message.event) {
         case 'ADDED_USER':
-            updateUsernames(message.users);
+            updateUsernames(message.onlyUserNames);
             featureBar.updateFeatures(message.features);
             if (message.activeFeature != null) {
                 document.getElementById('featureBewertung').value = message.activeFeature.title;
@@ -155,8 +157,14 @@ function onMessageReceived(payload) {
                 enableButton();
             }
 
+
+            //updateUsernames(message.usernames);
+            //updateFeatures(message.userStories);
             //admin = message.admin; // TODO: doesn't work? admin still undefined.
             admin = (sessionStorage.getItem("admin"));
+            // if(admin == "true") {
+            //     forceSendButton.css('visibility', 'visible');
+            // }
             break;
         case 'FEATURE':
             let userstory = new UserStory(message.title, message.description, message.id);
@@ -364,9 +372,12 @@ $(document).ready(function () {
 
     // get session variables
     roomId = parseInt(sessionStorage.getItem("roomId"));
-    username = sessionStorage.getItem("username"); //raus, können wir auch vom Server kriegen
+    username = sessionStorage.getItem("username");
+    roll = sessionStorage.getItem("roll");
     usernames.append(`<div>${username}</div>`);
     console.log(username);
+    console.log(roll);
+
     let featureElement = document.getElementById("featurePanel");
     featureBar = new featureSidebar(featureElement);
     topic = `/app/room/${roomId}`; // /app

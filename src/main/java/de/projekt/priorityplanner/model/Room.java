@@ -3,6 +3,7 @@ package de.projekt.priorityplanner.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,12 +12,12 @@ import java.util.Map;
 public class Room {
     private int id;
     private List<Feature> features;
-    private List<String> users;
+    private List<User> users;
     private Feature activeFeature;
     private de.projekt.priorityplanner.model.MessagePhase event;
     static private int idCount;
 
-    public Room(int id, List<Feature> features, List<String> users, Feature activeFeature, MessagePhase event) {
+    public Room(int id, List<Feature> features, List<User> users, Feature activeFeature, MessagePhase event) {
         this.id = id;
         this.features = features;
         this.users = users;
@@ -25,7 +26,15 @@ public class Room {
         idCount = 0;
     }
 
-    public void addUser(String newUser) {
+    public List getOnlyUserNames(){
+        List<String> userNames = new LinkedList<>();
+        for (User user: users) {
+                userNames.add(user.getName());
+        }
+        return userNames;
+    }
+
+    public void addUser(User newUser) {
         users.add(newUser);
     }
 
@@ -35,7 +44,7 @@ public class Room {
         features.add(newFeature);
     }
 
-    public void removeUser(String username) {
+    public void removeUser(User username) {
         users.remove(username);
     }
 

@@ -54,7 +54,7 @@ public class RoomController {
         // TODO: add username to actual Database
        // String s = generateUniqueName(message.getUsername(), Database.getUsernames(roomId));
         String s = message.getUsername();
-        Database.addUsername(roomId,s);
+        Database.addUsername(roomId,s, message.getRoll());
 
         // add Admin
         if (Database.adminNull(roomId)) {
