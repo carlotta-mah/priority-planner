@@ -176,8 +176,6 @@ function updateVotes(votes) {
             updateVote(vote);
         }
     )
-
-
 }
 
 function showVotes() {
