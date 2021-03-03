@@ -37,7 +37,7 @@ public class PageController {
         String s = Database.generateUniqueName(username, roomId);
 
 
-        return s;//username + roomId;
+        return s;
     }
 
 

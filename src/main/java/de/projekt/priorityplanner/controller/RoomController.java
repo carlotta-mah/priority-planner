@@ -93,8 +93,7 @@ public class RoomController {
 //                MessagePhase.UPDATE, Database.getUsernames(roomId), null, false, Database.getUserStories(roomId));
         MessageToClient out = new MessageToClient(
                 MessagePhase.UPDATE, Database.getUsernames(roomId), null, false, Database.getUserStories(roomId));
-        simpMessagingTemplate.convertAndSendToUser(
-                user.getName(), "/user/queue/specific-user", out);
+        simpMessagingTemplate.convertAndSend("/feature/queue/"+roomId, out);
 
     }
 
@@ -105,8 +104,7 @@ public class RoomController {
            // TODO fehlermeldung
         }
         Database.addUserStory(roomId, feature);
-        int i = feature.getId();
-        messagingTemplate.convertAndSend("/queue/" + roomId, feature);
+        messagingTemplate.convertAndSend("/queue/feature/" + roomId, feature);
     }
 
     @MessageMapping("room/{roomId}/result")

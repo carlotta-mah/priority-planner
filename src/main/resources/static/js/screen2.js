@@ -1,12 +1,11 @@
 let pageContainer = $('#pageContainer');
-let userStoryInput = $('#userStoryInput');
-let userStoryBoard = $('#userStoryBoard');
+let selectedFeatureDisplay =$('#selected-feature-display')
 let usernames = $('#usernames');
-let sendUserStoriesButton = $('#sendUserStoriesButton');
 let voteButton = $('#voteButton');
-let addButton = $('#addToVoteButton');
-let addFeatureButton = $('#addFeature');
+//let addButton = $('#addToVoteButton');
+
 let voteAgainButton = $('#voteAgain');
+let featureBar
 
 let username;
 let roomId;
@@ -17,9 +16,8 @@ let admin;
 let send;
 let userStories;
 const userStoryBoardDiv = document.getElementById("userStoryBoard");
-let idGenerator = 0;
 
-let selectetFeature;
+
 
 let boostList = [];
 let ripList = [];
@@ -43,12 +41,20 @@ function connect() {
     stompClient.connect({}, onConnected, onError);
 }
 
+function onFeatureReceived(payload) {
+    let message = JSON.parse(payload.body);
+    let userstory = new UserStory(message.title, message.description, message.id);
+    featureBar.addToBoard(userstory);
+}
+
 // subscribe to websocket channel corresponding to roomId to receive messages from server
 function registerInRoom() {
     // TODO: popup window or something to set a username in case user didn't come from start window
 
     currentSubscription = stompClient.subscribe(`/user/queue/${roomId}`, onMessageReceived);
     currentSubscription = stompClient.subscribe(`/queue/${roomId}`, onMessageReceived);
+    currentSubscription = stompClient.subscribe(`/queue/feature/${roomId}`, onFeatureReceived);
+
 
     stompClient.send(`${topic}/addUser`,
         {},
@@ -69,9 +75,7 @@ function onError() {
     window.location.href = "";
 }
 
-function getId() {
-    return idGenerator++;
-}
+
 
 function hideVotes() {
     let voteList = document.getElementsByClassName("test");
@@ -91,68 +95,6 @@ function resetVotingPanel() {
     document.querySelector("#bewertung2").value = 50;
     document.querySelector("#zeit").value = 0;
 }
-
-function unselectAllFeatures() {
-    let featureList = document.getElementsByClassName("featureList");
-    Array.prototype.forEach.call(featureList, function(featureElement) {
-        featureElement.classList.remove("selected-feature");
-    });
-}
-
-function addToBoard(userstory) {
-    const newDiv = document.createElement("div");
-    let name = userstory.name;
-
-    let beschreibung = userstory.beschreibung;
-
-    let myId = userstory.id;
-    newDiv.id = myId;
-    newDiv.classList.add('featureList');
-
-    newDiv[0] = name;
-    newDiv[1] = beschreibung;
-
-    let nameH4 = document.createElement("h4");
-    nameH4.innerHTML = name;
-    let bescheibungP = document.createElement("p");
-    bescheibungP.innerHTML = beschreibung;
-
-    newDiv.appendChild(nameH4);
-    newDiv.appendChild(bescheibungP);
-
-    let bewertung = document.createElement("div");
-    bewertung.id = "bewertung-" + myId;
-    newDiv.appendChild(bewertung);
-
-    var button = document.createElement("BUTTON");
-    button.title = myId;
-    button.classList.add('button');
-    button.innerHTML = "Vote now";
-    button.addEventListener("click", function () {
-        let divName = document.getElementById(this.title)[0];
-        let divBeschreibung = document.getElementById(this.title)[1];
-        hideVotes();
-        resetVotingPanel();
-        document.getElementById("featureBewertung").value = divName;
-        document.getElementById("beschrebungBewertung").value = divBeschreibung;
-        unselectAllFeatures();
-        newDiv.classList.add("selected-feature");
-        addBewertung(userstory);
-    });
-    newDiv.appendChild(button);
-
-
-    userStoryBoardDiv.appendChild(newDiv);
-    //userStoryBoard.append(`<h4>${userstory.name}<\h4>`, `<p>${userstory.beschreibung}<\p>`)
-}
-
-function updateFeatures(userStories) {
-    userStoryBoard.empty();
-    userStories.forEach(
-        story => addToBoard(new UserStory(story.title, story.description, 0, 0, 0))
-    )
-}
-
 
 function updateUserVote(user, bewertung1, bewertung2, zeit) {
     document.getElementById(user).classList.add('hasVoted');
@@ -188,6 +130,15 @@ function showVotes() {
 
 }
 
+function setSelectedFeature(title, description) {
+    let featureNameElement = document.createElement("h3").innerText = title;
+    let featureDescElement = document.createElement("p").innerText = description;
+    // selectedFeatureDisplay.empty();
+    // selectedFeatureDisplay.appendChild(featureNameElement);
+    // selectedFeatureDisplay.appendChild(featureDescElement);
+    selectedFeatureDisplay.innerHTML = featureNameElement + featureDescElement;
+}
+
 // called when server calls
 function onMessageReceived(payload) {
     let message = JSON.parse(payload.body);
@@ -195,49 +146,34 @@ function onMessageReceived(payload) {
     switch (message.event) {
         case 'ADDED_USER':
             updateUsernames(message.users);
-            updateFeatures(message.features);
+            featureBar.updateFeatures(message.features);
             if (message.activeFeature != null) {
                 document.getElementById('featureBewertung').value = message.activeFeature.title;
                 document.getElementById('beschrebungBewertung').value = message.activeFeature.description;
+                setSelectedFeature(message.activeFeature.title, message.activeFeature.description);
                 updateVotes(message.activeFeature.votes);
                 enableButton();
             }
 
-
-            //updateUsernames(message.usernames);
-            //updateFeatures(message.userStories);
             //admin = message.admin; // TODO: doesn't work? admin still undefined.
             admin = (sessionStorage.getItem("admin"));
-            // if(admin == "true") {
-            //     forceSendButton.css('visibility', 'visible');
-            // }
             break;
         case 'FEATURE':
             let userstory = new UserStory(message.title, message.description, message.id);
-            addToBoard(userstory);
+            featureBar.addToBoard(userstory);
             break;
         case 'UPDATE':
-            updateFeatures(message.userStories);
+            featureBar.updateFeatures(message.userStories);
             break;
         case 'SEND':
             updateUsernames(message.usernames);
             //admin = message.admin; // TODO: doesn't work? admin still undefined.
             admin = (sessionStorage.getItem("admin"));
-            /* if(admin == "true") {
-                 forceSendButton.css('visibility', 'visible');
-             }*/
 
 
             fillBoard(message.userStories);
             break;
-//        case 'WAIT':
-        //          updateHTML(message.html);
-        //        break;
-        case 'FORCE_SEND':
-            if (!send) {
-                sendUserStories();
-            }
-            break;
+
         case 'MERGE':
             userStories = message.usernames;
             updateHTML(null);
@@ -246,15 +182,14 @@ function onMessageReceived(payload) {
 
         case 'ADDVOTE':
             //TODO:maybe check if feature is new
-            unselectAllFeatures();
-            // document.getElementById('featureBewertung').value = message.userStories[0];
-            // document.getElementById('beschrebungBewertung').value = message.userStories[1];
-            // document.getElementById(""+message.id).classList.add("selected-feature");
+            featureBar.unselectAllFeatures();
+
             //TODO rename elements!
             document.getElementById('featureBewertung').value = message.title;
             document.getElementById('beschrebungBewertung').value = message.description;
             document.getElementById(""+message.id).classList.add("selected-feature");
-            selectetFeature = message.id;
+            setSelectedFeature(message.title, message.description);
+            featureBar.select(message.id);
             hideVotes();
             resetVotingPanel();
             enableButton();
@@ -282,7 +217,7 @@ function onMessageReceived(payload) {
     }
 }
 
-function enableButton(){
+function enableButton(){//welcher button???
     document.getElementById('voteButton').disabled = false;
     document.getElementById('voteButton').classList = "button";
 }
@@ -328,66 +263,6 @@ function bigDif(messeage){
 }
 
 
-/*
-function addUserStory() {
-    let userStory = userStoryInput.val().trim();
-
-    if (userStory) {
-        userStoryBoard.append(`<p>${userStory}</p>`);
-        userStoryInput.value = '';
-        userStoryInput.text = '';
-    }
-
-
-}
-*/
-function sendUserStories() {
-    let allUserStories
-
-    let name = document.getElementById("userStoryInput").value;
-    let beschreibung = document.getElementById("beschreibung").value;
-    let bewertung1 = document.querySelector("#bewertung1").value;
-    let bewertung2 = document.querySelector("#bewertung2").value;
-    let zeit = document.querySelector("#zeit").value;
-
-    //allUserStories.push(this.textContent);
-    allUserStories = [name, beschreibung, bewertung1, bewertung2, zeit];
-
-    if (stompClient) {
-        let message = {
-            username: username,
-            userStories: allUserStories,
-            roomId: roomId,
-            phase: 'SEND'
-        }
-
-        stompClient.send(`${topic}/sendMessage`, {}, JSON.stringify(message));
-    }
-    send = true;
-}
-
-
-function addBewertung(userstory) {
-    let bewertung
-
-    let name = document.getElementById("featureBewertung").value;
-    let beschreibung = document.getElementById("beschrebungBewertung").value;
-    let featureId = userstory.id;
-
-    bewertung = [name, beschreibung, featureId];
-
-    if (stompClient) {
-        let message = {
-            userStories: bewertung,
-            roomId: roomId,
-            featureId: featureId,
-            phase: 'ADDVOTE'
-        }
-
-        stompClient.send(`${topic}/sendMessage`, {}, JSON.stringify(message));
-    }
-    send = true;
-}
 
 function forceSend() {
     let message = {
@@ -429,13 +304,13 @@ function fillBoard(userStories) {
     )
 }
 
-function listToObjList(userStoryList) {
-    let list = [];
-    userStoryList.forEach(
-        userStory => list.push(new UserStory(userStory.name, userStory.beschreibung, userStory.value1, userStory.value2, userStory.zeit))
-    )
-    return list;
-}
+// function listToObjList(userStoryList) {
+//     let list = [];
+//     userStoryList.forEach(
+//         userStory => list.push(new UserStory(userStory.name, userStory.beschreibung, userStory.value1, userStory.value2, userStory.zeit))
+//     )
+//     return list;
+// }
 
 function updateHTML(html) {
     pageContainer.empty();
@@ -483,41 +358,22 @@ function sendBewertungAgain(){
 
 }
 
-function sendFeature() {
-
-
-    let name = document.getElementById("userStoryInput").value;
-    let beschreibung = document.getElementById("beschreibung").value;
-    //allUserStories.push(this.textContent);
-
-    if (stompClient) {
-        let message = {
-            title: name,
-            description: beschreibung,
-            event: 'FEATURE'
-        }
-
-        stompClient.send(`${topic}/addFeature`, {}, JSON.stringify(message));
-    }
-    send = true;
-}
-
 
 
 $(document).ready(function () {
 
     // get session variables
     roomId = parseInt(sessionStorage.getItem("roomId"));
-    username = sessionStorage.getItem("username");
+    username = sessionStorage.getItem("username"); //raus, können wir auch vom Server kriegen
     usernames.append(`<div>${username}</div>`);
     console.log(username);
+    let featureElement = document.getElementById("featurePanel");
+    featureBar = new featureSidebar(featureElement);
     topic = `/app/room/${roomId}`; // /app
-
-    sendUserStoriesButton.click(sendUserStories);
 
     voteAgainButton.click(sendBewertungAgain);
     voteButton.click(sendBewertung);
-    addFeatureButton.click(sendFeature);
+
     //if user has created the room show force send button
     admin = (sessionStorage.getItem("admin"));
 
