@@ -17,3 +17,11 @@ function validate(evt) {
         if(theEvent.preventDefault) theEvent.preventDefault();
     }
 }
+function toggleElement(open) {
+
+    if (open.style.display === "none") {
+        open.style.display = "block";
+    } else {
+        open.style.display = "none";
+    }
+}

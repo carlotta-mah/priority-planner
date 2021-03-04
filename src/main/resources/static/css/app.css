@@ -46,6 +46,9 @@ p{
     background-color: #5e5e5e;
 }
 
-#result{
+#feature-input-row, #result{
     display: none;
+}
+#open-feature-input{
+
 }

@@ -45,6 +45,7 @@ function onFeatureReceived(payload) {
     let message = JSON.parse(payload.body);
     let userstory = new UserStory(message.title, message.description, message.id);
     featureBar.addToBoard(userstory);
+    featureBar.toggleFeatureInput();
 }
 
 // subscribe to websocket channel corresponding to roomId to receive messages from server
@@ -132,13 +133,18 @@ function showVotes() {
 
 }
 
-function setSelectedFeature(title, description) {
-    let featureNameElement = document.createElement("h3").innerText = title;
-    let featureDescElement = document.createElement("p").innerText = description;
-    // selectedFeatureDisplay.empty();
-    // selectedFeatureDisplay.appendChild(featureNameElement);
-    // selectedFeatureDisplay.appendChild(featureDescElement);
-    selectedFeatureDisplay.innerHTML = featureNameElement + featureDescElement;
+function setSelectedFeature(title, description, id) {
+    document.getElementById("selected-feature-name").innerText = title;
+    document.getElementById("selected-feature-descr").innerText = description;
+    //document.getElementById(""+message.id).classList.add("selected-feature");
+    featureBar.select(id);
+}
+
+function resetResult() {
+    document.getElementById("result").style.display = "none";
+    document.getElementById("voting").style.display = "block";
+    document.getElementById("ripAuswertung").classList.remove("bigDif");
+    document.getElementById("boostAuswertung").classList.remove("bigDif");
 }
 
 // called when server calls
@@ -150,9 +156,9 @@ function onMessageReceived(payload) {
             updateUsernames(message.onlyUserNames);
             featureBar.updateFeatures(message.features);
             if (message.activeFeature != null) {
-                document.getElementById('featureBewertung').value = message.activeFeature.title;
-                document.getElementById('beschrebungBewertung').value = message.activeFeature.description;
-                setSelectedFeature(message.activeFeature.title, message.activeFeature.description);
+                document.getElementById('selected-feature-name').value = message.activeFeature.title;
+                document.getElementById('selected-feature-descr').value = message.activeFeature.description;
+                setSelectedFeature(message.activeFeature.title, message.activeFeature.description, message.activeFeature.id);
                 updateVotes(message.activeFeature.votes);
                 enableButton();
             }
@@ -162,47 +168,30 @@ function onMessageReceived(payload) {
             //updateFeatures(message.userStories);
             //admin = message.admin; // TODO: doesn't work? admin still undefined.
             admin = (sessionStorage.getItem("admin"));
-            // if(admin == "true") {
-            //     forceSendButton.css('visibility', 'visible');
-            // }
+
             break;
-        case 'FEATURE':
-            let userstory = new UserStory(message.title, message.description, message.id);
-            featureBar.addToBoard(userstory);
-            break;
+        // case 'FEATURE':
+        //     let userstory = new UserStory(message.title, message.description, message.id);
+        //     featureBar.toggleFeatureInput();
+        //     featureBar.addToBoard(userstory);
+        //     break;
         case 'UPDATE':
             featureBar.updateFeatures(message.userStories);
             break;
-        case 'SEND':
-            updateUsernames(message.usernames);
-            //admin = message.admin; // TODO: doesn't work? admin still undefined.
-            admin = (sessionStorage.getItem("admin"));
-
-
-            fillBoard(message.userStories);
-            break;
-
-        case 'MERGE':
-            userStories = message.usernames;
-            updateHTML(null);
-            fillBoard(userStories);
-            break;
-
         case 'ADDVOTE':
             //TODO:maybe check if feature is new
             featureBar.unselectAllFeatures();
 
             //TODO rename elements!
-            document.getElementById('featureBewertung').value = message.title;
-            document.getElementById('beschrebungBewertung').value = message.description;
+            document.getElementById('selected-feature-name').value = message.title;
+            document.getElementById('selected-feature-descr').value = message.description;
             document.getElementById(""+message.id).classList.add("selected-feature");
-            setSelectedFeature(message.title, message.description);
+            setSelectedFeature(message.title, message.description, message.id);
             featureBar.select(message.id);
             hideVotes();
             resetVotingPanel();
             enableButton();
-            document.getElementById("result").style.display = "none";
-            document.getElementById("voting").style.display = "block";
+            resetResult();
             break;
 
         case 'LEAVE':
@@ -216,6 +205,8 @@ function onMessageReceived(payload) {
         case 'ALLVOTED':
             updateVote(message);
             showVotes();
+            //Todo: change votebutton of selected feature
+            featureBar.setButtonToRevote();
             requestResult();
             break;
         case 'RESULT':
@@ -328,8 +319,8 @@ function updateHTML(html) {
 function sendBewertung() {
     let bewertung;
 
-    let name = document.getElementById("featureBewertung").value;
-    let beschreibung = document.getElementById("beschrebungBewertung").value;
+    let name = document.getElementById("selected-feature-name").value;
+    let beschreibung = document.getElementById("selected-feature-descr").value;
     let bewertung1 = document.querySelector("#bewertung1").value;
     let bewertung2 = document.querySelector("#bewertung2").value;
     let zeit = document.querySelector("#zeit").value;

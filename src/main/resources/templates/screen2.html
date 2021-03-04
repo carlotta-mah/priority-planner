@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../css/foundation.css">
     <link rel="stylesheet" href="../css/app.css">
     <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="https://unpkg.com/knopf.css/knopf.min.css">
 </head>
 
 <div id="pageContainer" class="grid-container">
@@ -25,17 +26,15 @@
                 </div>
 
                 <div class="cell auto">
+                    <button type="button" class="button" data-toggle="offCanvasRight">Open Right</button>
                     <div id="voting">
-                        <h3>FeatureName</h3>
                         <div id="selected-feature-display">
-                            <h3 id="selected-feature-name"></h3>
+
+                            <h5 id="selected-feature-name">create and select a feature</h5>
                             <p id="selected-feature-descr"></p>
                         </div>
-                        <button type="button" class="button" data-toggle="offCanvasRight">Open Right</button>
-                        <input type="text" id="featureBewertung" value="UserStory1" disabled>
-                        <input type="text" id="beschrebungBewertung" value="eine tolle beschreibung" disabled>
 
-                        <label for="bewertung1">Ist dieses Feature ein Booser?</label>
+                        <label for="bewertung1">Ist dieses Feature ein Booster?</label>
                         <input type="range" id="bewertung1" name="bewertung1" min="0" max="100">
 
                         <label for="bewertung2">Können wir ohne dieses Feature überleben?</label>
@@ -62,24 +61,29 @@
             </div>
         </div>
 
-
+        <!--Versteckte Feature-Liste-->
         <div class="off-canvas position-right" id="offCanvasRight" data-transition="overlap" data-off-canvas>
-            <div class="cell large-3" id="featurePanel">
-                <h3>Features</h3>
-                <div>
-                    <div id="userStoryBoard"></div>
+            <div class="grid-x grid-padding-x align-center">
+                <div class="cell auto" id="featurePanel">
+                    <h5>Features</h5>
+                    <div>
+                        <div id="userStoryBoard"></div>
+                    </div>
+                    <div id="feature-input-row">
+                        <input type="text" value="" id="userStoryInput" placeholder="Feature">
+                        <input type="text" id="beschreibungInput" name="beschreibung" placeholder="Beschreibung"
+                               value="">
+                        <button class="button" id="addFeature">Save</button>
+                    </div>
+                    <div id="open-feature-input-row" >
+                        <button class="button secondary" id="open-feature-input">add another feature</button>
+                    </div>
                 </div>
-                <div>
-                    <input type="text" value="" id="userStoryInput" placeholder="Feature">
-                    <input type="text" id="beschreibungInput" name="beschreibung" placeholder="Beschreibung"
-                           value="">
-                    <button class="button" id="addFeature">Save</button>
-                </div>
+                <!-- Close button -->
+                <button class="close-button" aria-label="Close menu" type="button" data-close>
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <!-- Close button -->
-            <button class="close-button" aria-label="Close menu" type="button" data-close>
-                <span aria-hidden="true">&times;</span>
-            </button>
         </div>
     </div>
 </div>
@@ -94,6 +98,7 @@
 <script src="/js/screen2.js"></script>
 <script src="/js/UserStory.js"></script>
 <script src="/js/featureSidebar.js"></script>
+<script src="/js/app.js"></script>
 <script>
     $(document).foundation();
 </script>

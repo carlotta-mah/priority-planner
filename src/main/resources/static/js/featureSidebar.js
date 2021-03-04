@@ -1,31 +1,42 @@
 let addFeatureButton = $('#addFeature');
 let userStoryBoard = $('#userStoryBoard');
 let addButton = $('#addToVoteButton');
-let userStoryInput =$('#userStoryInput');
-let beschreibungInput =$('#beschreibungInput')
+let userStoryInput = $('#userStoryInput');
+let beschreibungInput = $('#beschreibungInput')
+let openInputButton = $("#open-feature-input")
 let selectetFeature;
 
 class featureSidebar {
 
     constructor(sidebar) {
-        sidebar.style.backgroundColor = "red";
         addFeatureButton.click(this.sendFeature);
-        //let test = document.createElement("p");
-        //test.innerText = "TEST";
-        //sidebar.appendChild(test);
+        openInputButton.click(this.toggleFeatureInput);
+        document.getElementById("feature-input-row").style.display = "none"
 
     }
+
+    toggleFeatureInput() {
+        let open = document.getElementById("open-feature-input-row");
+        let input = document.getElementById("feature-input-row");
+        toggleElement(open);
+        toggleElement(input);
+    }
+
+
 
     unselectAllFeatures() {
         let featureList = document.getElementsByClassName("featureList");
-        Array.prototype.forEach.call(featureList, function(featureElement) {
+        Array.prototype.forEach.call(featureList, function (featureElement) {
             featureElement.classList.remove("selected-feature");
         });
+
     }
 
-    select(featureId){
+    select(featureId) {
         selectetFeature = featureId;
+        document.getElementById("" + featureId).classList.add("selected-feature");
     }
+
     addToBoard(userstory) {
         const newDiv = document.createElement("div");
         let name = userstory.name;
@@ -63,8 +74,8 @@ class featureSidebar {
             resetVotingPanel();
             that.addBewertung(userstory);
             that.unselectAllFeatures();
-            document.getElementById("featureBewertung").value = divName;
-            document.getElementById("beschrebungBewertung").value = divBeschreibung;
+            document.getElementById("selected-feature-name").value = divName;
+            document.getElementById("selected-feature-descr").value = divBeschreibung;
             //unselectAllFeatures();
             newDiv.classList.add("selected-feature");
         });
@@ -75,13 +86,18 @@ class featureSidebar {
         beschreibungInput.val("");
     }
 
+    setButtonToRevote() {
+        let featureButton = $("#" + selectetFeature + " button");
+        featureButton.html("Vote again")
+        featureButton.click(sendBewertungAgain);
+    }
 
 
     addBewertung(userstory) {
         let bewertung
 
-        let name = document.getElementById("featureBewertung").value;
-        let beschreibung = document.getElementById("beschrebungBewertung").value;
+        let name = document.getElementById("selected-feature-name").value;
+        let beschreibung = document.getElementById("selected-feature-descr").value;
         let featureId = userstory.id;
 
         bewertung = [name, beschreibung, featureId];
@@ -107,7 +123,6 @@ class featureSidebar {
     }
 
     sendFeature() {
-
         let name = document.getElementById("userStoryInput").value;
         let beschreibung = document.getElementById("beschreibungInput").value;
         //allUserStories.push(this.textContent);
@@ -122,12 +137,11 @@ class featureSidebar {
             stompClient.send(`${topic}/addFeature`, {}, JSON.stringify(message));
         }
         send = true;
+
     }
 
 
-
 }
-
 
 
 // let addFeatureButton = $('#addFeature');
