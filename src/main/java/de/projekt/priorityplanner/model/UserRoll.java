@@ -1,5 +1,5 @@
 package de.projekt.priorityplanner.model;
 
 public enum UserRoll {
-    Verantwortlicher, Entwickler, Nutzer, Marketing, KeineRolle
+    Gründer,ProductOwner, Entwickler, UserExperience, Marketing, KeineRolle
 }

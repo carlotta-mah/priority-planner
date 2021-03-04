@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import de.projekt.priorityplanner.Database;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.LinkedList;
+import java.util.List;
+
 // Controller for switching HTML Pages
 @Controller
 public class PageController {
@@ -28,14 +31,18 @@ public class PageController {
 
     @RequestMapping("/test/room/{roomId}" )
     @ResponseBody
-    public String userName( @RequestHeader("username") String username, @RequestHeader("roomId") int roomId){
+    public List userName(@RequestHeader("username") String username, @RequestHeader("roomId") int roomId){
         //int i = Integer.parseInt(roomId);
+        List<String> list = new LinkedList<>();
         String s = "";
         if(Database.containsRoom(roomId)) {
             s = Database.generateUniqueName(username, roomId);
         }
+        list.add(s);
+        String raumName = Database.getRoom(roomId).getRoomName();
+        list.add(raumName);
 
-        return s;
+        return list;
     }
 
 

@@ -1,29 +1,50 @@
 'use strict';
 
+let produktInput = $('#produkt-name');
 let nameInput = $('#joiner-name');
 let roomInput = $('#room-id');
 let createRoomButton = $('#createRoomButton');
 let joinRoomButton = $('#joinRoomButton');
 
+
 let admin = "false";
+let roomName
 let username;
 let roomId;
 let roll;
 
 // creates a new room and joins it
 async function createRoom() {
+    /*
     roomId = await fetch('/create-room')
         .then(r => r.json())
         .catch()
-    admin = true;
-    nameInput = $('#creator-name');
-    joinRoom(roomId);
+    */
+    roomName = produktInput.val();
+    const Http = new XMLHttpRequest();
+    const url = '/create-room/';
+
+    Http.open("GET", url);
+    Http.setRequestHeader("produktName", roomName);
+    Http.send();
+
+    Http.onreadystatechange = (e) => {
+        if (Http.readyState == XMLHttpRequest.DONE) {
+            roomId = Http.responseText;
+            admin = true;
+            nameInput = $('#creator-name');
+            joinRoom(roomId);
+        }
+    }
+
+
 }
 
 // joins a room (switches page with new url)
 function joinRoom(roomId) {
     if (roomId) {
         username = nameInput.val();
+        roomName = produktInput.val();
         roll = document.getElementById("create-rollen").value;
 
         if(username.isEmpty()){
@@ -31,6 +52,7 @@ function joinRoom(roomId) {
         }
 
         // store variables for next page (there is other ways to store variables, eg cookies)
+        sessionStorage.setItem("roomName", roomName);
         sessionStorage.setItem("roomId", roomId);
         sessionStorage.setItem("username", username);
         sessionStorage.setItem("roll", roll);
@@ -66,8 +88,12 @@ function joinExistingRoom2(roomId){
 
         Http.onreadystatechange = (e) => {
             if (Http.readyState == XMLHttpRequest.DONE) {
-                username = Http.responseText;
+                console.log(Http.responseText)
+                let request =JSON.parse( Http.responseText);
+                username = request[0];
                 sessionStorage.setItem("username", username);
+                roomName = request[1];
+                sessionStorage.setItem("roomName",roomName);
                 window.location.href = `/room/${roomId}`;
             }
         }

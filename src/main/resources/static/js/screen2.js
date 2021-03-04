@@ -7,6 +7,7 @@ let voteButton = $('#voteButton');
 let voteAgainButton = $('#voteAgain');
 let featureBar
 
+let projektName;
 let username;
 let roomId;
 let topic;
@@ -27,10 +28,11 @@ let timeList = [];
 function setTitle() {
     let roomTitle = document.getElementById("rommtitle");
     let title = document.createElement("h1");
-    title.innerHTML += "PriorityPlanner: ROOM "
-    title.innerHTML += roomId + "<br />";
+    title.innerHTML += "PriorityPlanner: "
+    title.innerHTML += roomName + "<br />";
     title.innerHTML += "Name: ";
-    title.innerHTML += username;
+    title.innerHTML += username+ "<br />";
+    title.innerHTML +="Invite ID: " + roomId;
     roomTitle.appendChild(title);
 }
 
@@ -364,10 +366,12 @@ $(document).ready(function () {
     // get session variables
     roomId = parseInt(sessionStorage.getItem("roomId"));
     username = sessionStorage.getItem("username");
+    roomName = sessionStorage.getItem("roomName");
     roll = sessionStorage.getItem("roll");
     usernames.append(`<div>${username}</div>`);
     console.log(username);
     console.log(roll);
+    console.log(roomName);
 
     let featureElement = document.getElementById("featurePanel");
     featureBar = new featureSidebar(featureElement);
