@@ -33,6 +33,10 @@ class featureSidebar {
     }
 
     select(featureId) {
+        if(selectetFeature==null){
+            toggleElement(document.getElementById("greeting"))
+            toggleElement(document.getElementById("voting-panel"))
+        }
         selectetFeature = featureId;
         document.getElementById("" + featureId).classList.add("selected-feature");
     }

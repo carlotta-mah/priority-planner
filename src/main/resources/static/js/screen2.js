@@ -2,6 +2,7 @@ let pageContainer = $('#pageContainer');
 let selectedFeatureDisplay =$('#selected-feature-display')
 let usernames = $('#usernames');
 let voteButton = $('#voteButton');
+let votingpanel =$('#voting-panel')
 //let addButton = $('#addToVoteButton');
 
 let voteAgainButton = $('#voteAgain');
@@ -49,7 +50,6 @@ function onFeatureReceived(payload) {
     featureBar.addToBoard(userstory);
     featureBar.toggleFeatureInput();
 }
-
 // subscribe to websocket channel corresponding to roomId to receive messages from server
 function registerInRoom() {
     // TODO: popup window or something to set a username in case user didn't come from start window
@@ -372,6 +372,7 @@ $(document).ready(function () {
     console.log(username);
     console.log(roll);
     console.log(roomName);
+    votingpanel.hide();
 
     let featureElement = document.getElementById("featurePanel");
     featureBar = new featureSidebar(featureElement);

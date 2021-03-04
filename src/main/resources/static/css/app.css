@@ -6,6 +6,7 @@
     --color-green: #17D4CD;
     --dark-grey: #010101;
     --unselect-grey: #cacaca;
+    --bg-grey: #e6e6e6;
 }
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
     font-family: "Roboto", sans-serif;
@@ -22,7 +23,7 @@ input, textarea, select{
 }
 
 .featureList{
-    box-shadow:0px 5px 25px 6px rgba(3,31,51,0.33);
+    box-shadow:0px 5px 20px 2px rgba(3,31,51,0.23);
     margin-bottom: 10px;
     padding: 10px 10px 10px 10px;
     background-color: #031F33;
@@ -30,6 +31,13 @@ input, textarea, select{
     display: flex;
     flex-direction: column;
     border: 1px solid;
+    border-color: #031F33;
+    border-radius: 1em;
+}
+.featureList h4, .featureList p{
+    line-height: 1;
+    font-size: 1rem;
+    margin-bottom: 10px;
 }
 
 .hasVoted{
@@ -145,4 +153,30 @@ input, textarea, select{
 }
 [hidden] {
     display: none;
+}
+#voting-panel{
+    display: none;
+}
+#inviteModal{
+    padding-right: 4rem;
+}
+.top-bar i{
+    font-size: 2em;
+    color: var(--button-color-purple);
+}
+.top-bar, .top-bar-left, .top-bar-right, .menu{
+    color: var(--button-color-purple);
+    background-color: transparent!important;
+}
+.menu{
+    align-items: center;
+}
+#open-feature-input{
+    box-shadow: none;
+    border: 0px;
+    border-radius: 1em;
+    background-color: var(--font-color-light);
+    color: var(--bg-grey);
+    width: 100%;
+
 }
