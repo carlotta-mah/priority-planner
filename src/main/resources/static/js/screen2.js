@@ -4,7 +4,7 @@ let usernames = $('#usernames');
 let voteButton = $('#voteButton');
 let votingpanel =$('#voting-panel')
 //let addButton = $('#addToVoteButton');
-
+let ergebnisButton = $('#ergebnis');
 let voteAgainButton = $('#voteAgain');
 let featureBar
 
@@ -359,6 +359,22 @@ function sendBewertungAgain(){
 
 }
 
+function zeigErgebnis(){
+    $('#ergebnisDiv').toggle();
+    $('#pageContainer').toggle();
+
+    //stompClient.disconnect();
+    //window.location.href = `/ergebnis/${roomId}`;
+    //openInNewTab(`/ergebnis/${roomId}`);
+
+
+}
+
+function openInNewTab(url) {
+    var win = window.open(url, '_blank');
+    win.focus();
+}
+
 
 
 $(document).ready(function () {
@@ -380,6 +396,7 @@ $(document).ready(function () {
 
     voteAgainButton.click(sendBewertungAgain);
     voteButton.click(sendBewertung);
+    ergebnisButton.click(zeigErgebnis)
 
     //if user has created the room show force send button
     admin = (sessionStorage.getItem("admin"));
