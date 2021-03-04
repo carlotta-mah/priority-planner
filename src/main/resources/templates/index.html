@@ -12,52 +12,60 @@
 </head>
 
 <body>
-<div class="grid-container">
-    <div class="grid-x grid-padding-x">
-        <div class="large-12 cell">
-            <h1>The One and Only Priority Planner</h1>
-        </div>
-    </div>
-    <div class="grid-x grid-padding-x">
-        <div id="create-box" class="large-6 medium-6 cell">
-            <div class="primary callout">
-                <h3>Erstelle einen neuen Raum</h3>
-                <input id="creator-name" type="text" placeholder="Username" onkeydown="creatRoomByEnter()">
-                <label for="create-rollen">Rolle:</label>
-                <select name="create-rollen" id="create-rollen">
-                    <option value="Verantwortlicher">Verantwortlicher</option>
-                    <option value="Entwickler">Entwickler</option>
-                    <option value="Nutzer">Nutzer</option>
-                    <option value="Marketing">Marketing </option>
-                </select>
+<div id="index-pagecontainer">
+    <div class="grid-container">
+        <div id="content">
+            <div class="grid-x grid-padding-x">
+                <div class="large-12 cell">
+                    <h1>The MVP Finder</h1>
+                </div>
+            </div>
+            <div class="grid-x grid-padding-x">
+                <div id="create-box" class="large-6 medium-6 cell">
+                    <div class="primary callout">
+                        <h3>Erstelle einen neuen Raum</h3>
+                        <input id="creator-name" type="text" placeholder="Username" onkeydown="creatRoomByEnter()">
+                        <label for="create-rollen">Rolle:</label>
+                        <select name="create-rollen" id="create-rollen">
+                            <option value="Verantwortlicher">Verantwortlicher</option>
+                            <option value="Entwickler">Entwickler</option>
+                            <option value="Nutzer">Nutzer</option>
+                            <option value="Marketing">Marketing</option>
+                        </select>
 
-                <button class="button" id="createRoomButton">New Room</button>
+                        <button class="button" id="createRoomButton">New Room</button>
+                    </div>
+                </div>
+                <div id="join-box" class="large-6 medium-6 cell">
+                    <div class="callout">
+                        <h3>Trete einem exsistierenden Raum bei</h3>
+                        <label for="joiner-name">Name</label>
+                        <input id="joiner-name" type="text" placeholder="Username">
+                        <label for="joiner-rollen">Rolle:</label>
+                        <select name="joiner-rollen" id="joiner-rollen">
+                            <option value="Verantwortlicher">Verantwortlicher</option>
+                            <option value="Entwickler">Entwickler</option>
+                            <option value="Nutzer">Nutzer</option>
+                            <option value="Marketing">Marketing</option>
+                        </select>
+
+                        <label for="room-id">Raum-ID</label>
+                        <input id="room-id" type="text" placeholder="Room ID" onkeydown="joinRoomByEnter(this)"
+                               onkeypress='validate(event)'>
+                        <button class="button" id="joinRoomButton">Join Room</button>
+                    </div>
+                </div>
             </div>
         </div>
-        <div id="join-box" class="large-6 medium-6 cell">
-            <div class="callout">
-                <h3>Trete einem exsistierenden Raum bei</h3>
-                <label for="joiner-name">Name</label>
-                <input id="joiner-name" type="text" placeholder="Username">
-                <label for="joiner-rollen">Rolle:</label>
-                <select name="joiner-rollen" id="joiner-rollen">
-                    <option value="Verantwortlicher">Verantwortlicher</option>
-                    <option value="Entwickler">Entwickler</option>
-                    <option value="Nutzer">Nutzer</option>
-                    <option value="Marketing">Marketing </option>
-                </select>
-
-                <label for="room-id">Raum-ID</label>
-                <input id="room-id" type="text" placeholder="Room ID" onkeydown="joinRoomByEnter(this)"
-                       onkeypress='validate(event)'>
-                <button class="button" id="joinRoomButton">Join Room</button>
-            </div>
+        <div id="footer" class="grid-x grid-padding-x align-center">
+            <div class="cell">Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a
+                    href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
         </div>
     </div>
 </div>
-<script src="./js/vendor/jquery.js"></script>
-<script src="./js/vendor/what-input.js"></script>
-<script src="./js/vendor/foundation.js"></script>
+<script src="/js/vendor/jquery.js"></script>
+<script src="/js/vendor/what-input.js"></script>
+<script src="/js/vendor/foundation.js"></script>
 <script src="./js/app.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="/js/main.js"></script>

@@ -1,11 +1,8 @@
 package de.projekt.priorityplanner.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import de.projekt.priorityplanner.Database;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 // Controller for switching HTML Pages
 @Controller
