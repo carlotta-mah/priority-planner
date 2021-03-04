@@ -34,8 +34,8 @@ public class WebSocketEventListener {
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
 
         String username = (String) headerAccessor.getSessionAttributes().get("username");
-        int roomId = (int) headerAccessor.getSessionAttributes().get("room_id");
-        if (username != null) {
+        Integer roomId = (Integer) headerAccessor.getSessionAttributes().get("room_id");
+        if ((username != null) && (roomId != null)) {
             logger.info("User Disconnected: " + username);
 
             List<String> users= Database.removeUser(roomId, username);
