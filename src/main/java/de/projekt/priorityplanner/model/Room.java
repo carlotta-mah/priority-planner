@@ -11,14 +11,16 @@ import java.util.Map;
 
 public class Room {
     private int id;
+    private String roomName;
     private List<Feature> features;
     private List<User> users;
     private Feature activeFeature;
     private de.projekt.priorityplanner.model.MessagePhase event;
     static private int idCount;
 
-    public Room(int id, List<Feature> features, List<User> users, Feature activeFeature, MessagePhase event) {
+    public Room(int id, String roomName,List<Feature> features, List<User> users, Feature activeFeature, MessagePhase event) {
         this.id = id;
+        this.roomName = roomName;
         this.features = features;
         this.users = users;
         this.activeFeature = activeFeature;

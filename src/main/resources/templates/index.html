@@ -24,13 +24,18 @@
                 <div id="create-box" class="large-6 medium-6 cell">
                     <div class="primary callout">
                         <h3>Erstelle einen neuen Raum</h3>
+                        <h3>Erstelle einen neuen Raum</h3>
+                        <label for="produkt-name">Produktname:</label>
+                        <input id="produkt-name" type="text" placeholder="Produktname">
+                        <label for="creator-name">Username:</label>
                         <input id="creator-name" type="text" placeholder="Username" onkeydown="creatRoomByEnter()">
                         <label for="create-rollen">Rolle:</label>
                         <select name="create-rollen" id="create-rollen">
-                            <option value="Verantwortlicher">Verantwortlicher</option>
+                            option value="Gründer">Gründer</option>
+                            <option value="Product Owner">Product Owner</option>
                             <option value="Entwickler">Entwickler</option>
-                            <option value="Nutzer">Nutzer</option>
-                            <option value="Marketing">Marketing</option>
+                            <option value="User Experience">User Experience</option>
+                            <option value="Marketing">Marketing </option>
                         </select>
 
                         <button class="button" id="createRoomButton">New Room</button>
@@ -43,10 +48,11 @@
                         <input id="joiner-name" type="text" placeholder="Username">
                         <label for="joiner-rollen">Rolle:</label>
                         <select name="joiner-rollen" id="joiner-rollen">
-                            <option value="Verantwortlicher">Verantwortlicher</option>
+                            <option value="Gründer">Gründer</option>
+                            <option value="Product Owner">Product Owner</option>
                             <option value="Entwickler">Entwickler</option>
-                            <option value="Nutzer">Nutzer</option>
-                            <option value="Marketing">Marketing</option>
+                            <option value="User Experience">User Experience</option>
+                            <option value="Marketing">Marketing </option>
                         </select>
 
                         <label for="room-id">Raum-ID</label>
@@ -67,7 +73,6 @@
 <script src="/js/vendor/what-input.js"></script>
 <script src="/js/vendor/foundation.js"></script>
 <script src="./js/app.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="/js/main.js"></script>
 </body>
 

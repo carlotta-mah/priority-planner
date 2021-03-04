@@ -15,6 +15,7 @@ import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -37,9 +38,9 @@ public class RoomController {
     // creates a new room and returns roomId
     @ResponseBody
     @RequestMapping("/create-room")
-    public int createRoom() {
+    public int createRoom(@RequestHeader("produktName") String produktName) {
         // TODO: create new room in Database and return newly created ID
-        int roomId = Database.addRoom();
+        int roomId = Database.addRoom(produktName);
         return roomId;
     }
 

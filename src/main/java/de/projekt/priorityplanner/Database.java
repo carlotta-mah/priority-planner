@@ -23,10 +23,10 @@ public class Database {
 
     static int n = 0;
 
-    static public int addRoom() {
+    static public int addRoom(String roomName) {
         n++;
         //rooms.put(n, new LinkedList<String>());
-        Room room = new Room(n, new LinkedList<Feature>(), new LinkedList<User>(), null, null);
+        Room room = new Room(n,roomName, new LinkedList<Feature>(), new LinkedList<User>(), null, null);
         rooms1.put(n,room);
         //userStories.put(n, new LinkedList<UserStory>());
         admins.put(n, null);
