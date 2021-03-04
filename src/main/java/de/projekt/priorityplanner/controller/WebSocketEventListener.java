@@ -15,7 +15,9 @@ import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 import java.util.List;
-
+/**
+ * This Event Listener registers when a user leaves the room
+*/
 @Component
 public class WebSocketEventListener {
 
@@ -40,8 +42,6 @@ public class WebSocketEventListener {
 
             List<String> users= Database.removeUser(roomId, username);
             MessageToClient message = new MessageToClient(MessagePhase.LEAVE, users, null, false, null);
-//            message.setPhase(ADD);
-//            message.setSender(username);
             messagingTemplate.convertAndSend("/queue/" + roomId, message);
 
         }

@@ -29,12 +29,14 @@
                         <label for="creator-name">Username:</label>
                         <input id="creator-name" type="text" placeholder="Username" onkeydown="creatRoomByEnter()">
                         <label for="create-rollen">Rolle:</label>
-                        <select name="create-rollen" id="create-rollen">
-                            option value="Gründer">Gründer</option>
+                        <select name="create-rollen" id="create-rollen"  onchange="let selectedOption='selected-option';
+                        this.className = selectedOption">
+                            <option style="color:gray" class="default-option" disabled value="" selected>Choose a Role</option>
+                            <option value="Gründer">Gründer</option>
                             <option value="Product Owner">Product Owner</option>
                             <option value="Entwickler">Entwickler</option>
                             <option value="User Experience">User Experience</option>
-                            <option value="Marketing">Marketing </option>
+                            <option value="Marketing">Marketing</option>
                         </select>
 
                         <button class="button" id="createRoomButton">New Room</button>
@@ -45,15 +47,16 @@
                         <h3>Trete einem exsistierenden Raum bei</h3>
                         <label for="joiner-name">Name</label>
                         <input id="joiner-name" type="text" placeholder="Username">
-                        <label for="joiner-rollen">Rolle:</label>
+                        <label for="joiner-rollen">Rolle:
                         <select name="joiner-rollen" id="joiner-rollen">
+                            <option class="default-option" value="" disabled selected="selected">Choose a Role</option>
                             <option value="Gründer">Gründer</option>
                             <option value="Product Owner">Product Owner</option>
                             <option value="Entwickler">Entwickler</option>
                             <option value="User Experience">User Experience</option>
-                            <option value="Marketing">Marketing </option>
+                            <option value="Marketing">Marketing</option>
                         </select>
-
+                        </label>
                         <label for="room-id">Raum-ID</label>
                         <input id="room-id" type="text" placeholder="Room ID" onkeydown="joinRoomByEnter(this)"
                                onkeypress='validate(event)'>

@@ -4,6 +4,8 @@
     --color-dark-blue: #031F33;
     --button-color-purple: #734B88;
     --color-green: #17D4CD;
+    --dark-grey: #010101;
+    --unselect-grey: #cacaca;
 }
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
     font-family: "Roboto", sans-serif;
@@ -65,12 +67,16 @@ p{
 #open-feature-input{
 
 }
-#index-pagecontainer, #content{
+#index-pagecontainer, #content {
     background-color: var(--bg-med-blue);
     height: 100%;
     min-height: 100vh;
-    overflow:auto ;
+    overflow: auto;
 }
+#content{
+    overflow: visible;
+}
+
 #index-pagecontainer .grid-container, #content{
     background-color: var(--bg-med-blue);
     min-height: 100vh;
@@ -84,19 +90,44 @@ p{
     font-weight: bold;
     letter-spacing: 1px;
     font-size: 48px;
+    -webkit-text-shadow: 0px 12px 36px 8px rgba(1,1,1,0.63);
+    text-shadow: 0px 12px 36px 8px rgba(1,1,1,0.63);
 
 }
 
 #index-pagecontainer #create-box .callout , #index-pagecontainer #join-box .callout {
     background-color: var(--color-dark-blue);
-    -webkit-box-shadow: 0px 5px 34px 7px rgba(3,31,51,0.80);
-    box-shadow: 0px 7px 34px 7px rgba(3,31,51,0.80);
+    -webkit-box-shadow: 0px 12px 36px 8px rgba(1,1,1,0.63);
+    box-shadow: 0px 12px 36px 8px rgba(1,1,1,0.63);
+    color: var(--font-color-light);
+}
+#index-pagecontainer .callout select option{
+    padding: 17px 20px;
+}
+#index-pagecontainer .callout select{
+    color: var(--unselect-grey);
+}
+#index-pagecontainer .callout select.selected-option{
+    color: var(--dark-grey);
+}
+#index-pagecontainer .callout select option{
+    color: var(--dark-grey);
+}
+#index-pagecontainer .callout select .default-option, #index-pagecontainer .callout select:invalid{
     color: var(--font-color-light);
 }
 
 #index-pagecontainer #join-box button, #index-pagecontainer #create-box button{
     background-color: var(--button-color-purple);
 }
-#footer{
+#footer, #footer a{
     text-align: center;
+    color: var(--font-color-light);
+}
+::-moz-selection { background: var(--color-green); }
+::selection {
+    background: var(--color-green);
+}
+[hidden] {
+    display: none;
 }
