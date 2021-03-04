@@ -38,6 +38,7 @@ input, textarea, select{
     line-height: 1;
     font-size: 1rem;
     margin-bottom: 10px;
+    margin-top: 5px;
 }
 
 .hasVoted{
@@ -77,9 +78,7 @@ input, textarea, select{
 #feature-input-row, #result{
     display: none;
 }
-#open-feature-input{
 
-}
 #index-pagecontainer, #content {
     background-color: var(--bg-med-blue);
     height: 100%;
@@ -175,8 +174,19 @@ input, textarea, select{
     box-shadow: none;
     border: 0px;
     border-radius: 1em;
-    background-color: var(--font-color-light);
-    color: var(--bg-grey);
     width: 100%;
+    background-color: transparent;
+    color: var(--color-dark-blue);
+    font-weight: bold;
+}
 
+#featurePanel input, #featurePanel textarea{
+    border-radius: 1em;
+    border: 0px solid;
+    background-color: var(--unselect-grey);
+}
+#open-feature-input-row{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
 }

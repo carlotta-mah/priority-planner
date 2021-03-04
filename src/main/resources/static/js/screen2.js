@@ -6,7 +6,10 @@ let votingpanel =$('#voting-panel')
 //let addButton = $('#addToVoteButton');
 let ergebnisButton = $('#ergebnis');
 let voteAgainButton = $('#voteAgain');
-let featureBar
+let myname = $('#my-name');
+let projectname = $('#project-name');
+let invitehinttext = $('#invite-hint-text')
+let featureBar;
 
 let projektName;
 let username;
@@ -15,8 +18,8 @@ let topic;
 let currentSubscription;
 let stompClient;
 let admin;
-let send;
 let userStories;
+let send;
 const userStoryBoardDiv = document.getElementById("userStoryBoard");
 
 
@@ -26,16 +29,6 @@ let ripList = [];
 let timeList = [];
 
 
-function setTitle() {
-    let roomTitle = document.getElementById("rommtitle");
-    let title = document.createElement("h1");
-    title.innerHTML += "PriorityPlanner: "
-    title.innerHTML += roomName + "<br />";
-    title.innerHTML += "Name: ";
-    title.innerHTML += username+ "<br />";
-    title.innerHTML +="Invite ID: " + roomId;
-    roomTitle.appendChild(title);
-}
 
 // connect via websocket with server for bidirectional communication
 function connect() {
@@ -389,6 +382,9 @@ $(document).ready(function () {
     console.log(roll);
     console.log(roomName);
     votingpanel.hide();
+    myname.text(username);
+    projectname.text(roomName);
+    invitehinttext.text("Your Room ID is" + roomId);
 
     let featureElement = document.getElementById("featurePanel");
     featureBar = new featureSidebar(featureElement);
@@ -401,6 +397,5 @@ $(document).ready(function () {
     //if user has created the room show force send button
     admin = (sessionStorage.getItem("admin"));
 
-    setTitle();
     connect();
 });

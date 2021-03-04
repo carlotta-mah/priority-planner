@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="../css/app.css">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="https://unpkg.com/knopf.css/knopf.min.css">
-<!--maybe replace by downloaded font-->
+    <!--maybe replace by downloaded font-->
     <script src="https://kit.fontawesome.com/ecacb70225.js" crossorigin="anonymous"></script>
 </head>
 
@@ -20,35 +20,35 @@
             <div class="top-bar">
                 <div class="top-bar-left">
                     <ul class="menu icons icon-right vertical medium-horizontal">
-                        <li class="menu-text">MVP Finder</li>
+                        <li class="menu-text" id="project-name">MVP Finder</li>
                     </ul>
                 </div>
                 <div class="top-bar-right">
                     <ul class="menu icons icon-right vertical medium-horizontal">
-                        <li class="menu-text">MyName</li>
+                        <li class="menu-text" id="my-name">MyName</li>
                         <li>
 
-                                <button class="button" data-open="inviteModal">invite</button>
+                            <button class="button" data-open="inviteModal">invite</button>
 
                         </li>
-                        <li><a href="#" data-toggle="offCanvasRight"><i class="fas fa-list-alt"></i> <span></span></a></li>
+                        <li><a href="#" data-toggle="offCanvasRight"><i class="fas fa-list-alt"></i> <span></span></a>
+                        </li>
                         <!--                    <li><button type="button" class="button" data-toggle="offCanvasRight">Open Right</button></li>-->
                     </ul>
                 </div>
             </div>
 
             <div class="grid-x grid-padding-x">
-                <div id="rommtitle" class="large-10 cell"></div>
-            </div>
-            <div class="grid-x grid-padding-x">
                 <div class="cell large-3">
-                    <h3>Users in the Room</h3>
+                    <h3>Team</h3>
                     <div id="usernames"></div>
                 </div>
                 <div class="cell auto">
-                    <div id="greeting"><p>Hi, you have no feature selected yet. Create and vote features by opening the
-                        feature board on the top right</p></div>
-                    <button type="button" class="button" data-toggle="offCanvasRight">add Features</button>
+                    <div id="greeting">
+                        <p>Hi, you have no feature selected yet. Create and vote features by opening the
+                            feature board on the top right</p>
+                        <button type="button" class="button" data-toggle="offCanvasRight">add Features</button>
+                    </div>
                     <div id="voting-panel">
                         <div id="voting">
                             <div id="selected-feature-display">
@@ -96,12 +96,15 @@
                     </div>
                     <div id="feature-input-row">
                         <input type="text" value="" id="userStoryInput" placeholder="Feature">
-                        <input type="text" id="beschreibungInput" name="beschreibung" placeholder="Beschreibung"
-                               value="">
+<!--                        <input type="text" id="beschreibungInput" name="beschreibung" placeholder="Beschreibung"-->
+<!--                               value="">-->
+                        <textarea type="text" id="beschreibungInput" name="beschreibung" placeholder="Beschreibung"
+                                  value=""></textarea>
                         <button class="button" id="addFeature">Save</button>
                     </div>
                     <div id="open-feature-input-row">
-                        <button class="button hollow primary" id="open-feature-input">add another feature</button>
+                        <button class="button hollow primary" id="open-feature-input"><i class="fas fa-plus"></i> add another feature</button>
+
                     </div>
                 </div>
                 <!-- Close button -->
@@ -113,12 +116,13 @@
     </div>
 </div>
 <div id="ergebnisDiv" style="display:none">
-    <h1 >TEST</h1>
+    <h1>TEST</h1>
 </div>
 
 <div class="reveal" id="inviteModal" data-reveal>
     <h3>Invite more members</h3>
-    <p>To join the Room, your team members must open <a href="#">www.app.de</a> and enter the Room ID in the joining section.</p>
+    <p>To join the Room, your team members must open <a href="#">www.app.de</a> and enter the Room ID in the joining
+        section.</p>
     <p id="invite-hint-text">The Room-ID is: </p>
     <button class="close-button" data-close aria-label="Close modal" type="button">
         <span aria-hidden="true">&times;</span>
