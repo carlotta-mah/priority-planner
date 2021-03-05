@@ -118,12 +118,22 @@
 </div>
 
 
+<!-- Ergebnistabellen-->
 <div id="ergebnisDiv" style="display:none">
-    <h1 >TEST</h1>
+    <h1 >Ergebnisse</h1>
     <button class="button" id="back">back</button>
 
-    <div id="tableDiv">
-        <table id="table">
+    <!-- Tab überschriften-->
+    <div class="tab">
+        <button id="firstTab" class="tablinks" onclick="openTable(event, 'mustHave')">Must have</button>
+        <button class="tablinks" onclick="openTable(event, 'shouldHave')">Should have</button>
+        <button class="tablinks" onclick="openTable(event, 'couldHave')">Could have</button>
+        <button class="tablinks" onclick="openTable(event, 'wontHave')">Won't have</button>
+    </div>
+
+
+    <div id="mustHave" class="tabcontent">
+        <table id="mustHaveTable">
             <tr>
                 <th>Feature Name</th>
                 <th>Beschreibung</th>
@@ -133,6 +143,40 @@
             </tr>
         </table>
     </div>
+    <div id="shouldHave" class="tabcontent">
+        <table id="shouldHaveTable">
+            <tr>
+                <th>Feature Name</th>
+                <th>Beschreibung</th>
+                <th>Boost Faktor</th>
+                <th>Rip Faktor</th>
+                <th>Zeit in Tagen</th>
+            </tr>
+        </table>
+    </div>
+    <div id="couldHave" class="tabcontent">
+        <table id="couldHaveTable">
+            <tr>
+                <th>Feature Name</th>
+                <th>Beschreibung</th>
+                <th>Boost Faktor</th>
+                <th>Rip Faktor</th>
+                <th>Zeit in Tagen</th>
+            </tr>
+        </table>
+    </div>
+    <div id="wontHave" class="tabcontent">
+        <table id="wontHaveTable">
+            <tr>
+                <th>Feature Name</th>
+                <th>Beschreibung</th>
+                <th>Boost Faktor</th>
+                <th>Rip Faktor</th>
+                <th>Zeit in Tagen</th>
+            </tr>
+        </table>
+    </div>
+
 </div>
 
 <div class="reveal" id="inviteModal" data-reveal>
