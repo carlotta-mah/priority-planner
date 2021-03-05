@@ -143,6 +143,8 @@ class featureSidebar {
             toggleElement(document.getElementById("greeting"));
             toggleElement(document.getElementById("voting-panel"));
             resetResult();
+            resetVotingPanel();
+            hideVotes();
             selectetFeature = null;
         }
         document.getElementById(id).remove();

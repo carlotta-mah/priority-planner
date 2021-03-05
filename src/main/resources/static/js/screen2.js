@@ -131,6 +131,7 @@ function hideVotes() {
 
 }
 
+
 function resetVotingPanel() {
     //TODO:set sliders and Time to default
     let inputs = $(":input[type=range]");
