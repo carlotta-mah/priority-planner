@@ -68,7 +68,33 @@ function onErgebnisReceived(payload) {
     let message = JSON.parse(payload.body);
     console.log("-------------------------------------------------------")
     console.log(message.mustHave[0]);
-    console.log(message.mustHave[1]);
+
+    $("#mustHaveTable tr:not(:first)").remove();
+    message.mustHave.forEach(feature => {
+        addToTable("mustHaveTable",feature.title, feature.description,
+            feature.boostMean,feature.ripMean,feature.timeMean);
+    });
+    $("#shouldHaveTable tr:not(:first)").remove();
+    message.shouldHave.forEach(feature => {
+        addToTable("shouldHaveTable",feature.title, feature.description,
+            feature.boostMean,feature.ripMean,feature.timeMean);
+    });
+    $("#couldHaveTable tr:not(:first)").remove();
+    message.couldHave.forEach(feature => {
+        addToTable("couldHaveTable",feature.title, feature.description,
+            feature.boostMean,feature.ripMean,feature.timeMean);
+    });
+    $("#wontHaveTable tr:not(:first)").remove();
+    message.wontHave.forEach(feature => {
+        addToTable("wontHaveTable",feature.title, feature.description,
+            feature.boostMean,feature.ripMean,feature.timeMean);
+    });
+
+    /*
+    $("#mustHaveTable tr:not(:first)").remove();
+    addToTable("mustHaveTable",message.mustHave[0].title, message.mustHave[0].description,
+        message.mustHave[0].boostMean,message.mustHave[0].ripMean,message.mustHave[0].timeMean);
+    */
 }
 
 // called when websocket connection is set up
@@ -363,6 +389,22 @@ function sendBewertungAgain(){
 
 }
 
+function addToTable(tableId,name, beschreibung, boost, rip, time) {
+    var rowLength = document.getElementById(tableId).rows.length;
+    var table = document.getElementById(tableId);
+    var row = table.insertRow(rowLength);
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+    var cell3 = row.insertCell(2);
+    var cell4 = row.insertCell(3);
+    var cell5 = row.insertCell(4);
+    cell1.innerHTML = name;
+    cell2.innerHTML = beschreibung;
+    cell3.innerHTML = boost;
+    cell4.innerHTML = rip;
+    cell5.innerHTML = time;
+}
+
 function setErgebnis(){
     if(stompClient){
         stompClient.send(`${topic}/ergebnis`, {}, JSON.stringify(message));
@@ -371,10 +413,23 @@ function setErgebnis(){
 }
 
 function zeigErgebnis(){
+    setErgebnis();
     $('#ergebnisDiv').toggle();
     $('#pageContainer').toggle();
-    setErgebnis();
+}
 
+function openTable(evt, tableName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tableName).style.display = "block";
+    evt.currentTarget.className += " active";
 }
 
 $(document).ready(function () {
@@ -400,7 +455,7 @@ $(document).ready(function () {
     voteAgainButton.click(sendBewertungAgain);
     voteButton.click(sendBewertung);
     ergebnisButton.click(zeigErgebnis);
-    //backButton.click(addToTable(1,1,1,1,1));
+    backButton.click(zeigErgebnis);
 
     //if user has created the room show force send button
     admin = (sessionStorage.getItem("admin"));
