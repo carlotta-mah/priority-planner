@@ -30,11 +30,7 @@
                 <div class="top-bar-right">
                     <ul class="menu icons icon-right vertical medium-horizontal">
                         <li class="menu-text" id="my-name">MyName</li>
-                        <li>
-
-                            <button class="button" data-open="inviteModal">invite</button>
-
-                        </li>
+                        <li><a data-open="inviteModal"><i class="fas fa-user-plus"></i><span></span></a></li>
                         <li><a href="#" data-toggle="offCanvasRight"><i class="fas fa-list-alt"></i> <span></span></a>
                         </li>
                         <!--                    <li><button type="button" class="button" data-toggle="offCanvasRight">Open Right</button></li>-->
@@ -47,10 +43,10 @@
             </div>
             <div class="grid-x grid-padding-x">
                 <div class="cell large-3">
-                    <h3>Users in the Room</h3>
+                    <h3>Team</h3>
                     <div id="usernames"></div>
                 </div>
-                <div class="cell auto">
+                <div class="cell large-6">
                     <div id="greeting"><p>Hi, you have no feature selected yet. Create and vote features by opening the
                         feature board on the top right</p></div>
                     <button type="button" class="button" data-toggle="offCanvasRight">add Features</button>
@@ -62,10 +58,44 @@
                             </div>
 
                             <label for="bewertung1">Ist dieses Feature ein Booster?</label>
-                            <input type="range" id="bewertung1" name="bewertung1" min="0" max="100">
+                            <div class="slider-row align-middle grid-x grid-margin-x">
+                                <div class="cell large-2 medium-2">
+                                    <img src="../img/snail.svg">
+                                </div>
+                                <div class="cell auto">
+                                    <div class="slider" data-slider data-initial-start="50">
+                                    <span id="bewertung1" class="slider-handle" data-slider-handle role="slider"
+                                          tabindex="1"
+                                          aria-controls="bewertung1"></span>
+                                        <span class="slider-fill" data-slider-fill></span>
+                                    </div>
+                                </div>
+                                <!--                                <input type="range" id="bewertung1" name="bewertung1" min="0" max="100">-->
+                                <div class="cell large-2 medium-2">
+                                    <img src="../img/rocket.svg">
+                                </div>
+                            </div>
 
                             <label for="bewertung2">Können wir ohne dieses Feature überleben?</label>
-                            <input type="range" id="bewertung2" name="bewertung2" min="0" max="100">
+                            <div class="slider-row align-middle grid-x grid-margin-x">
+                                <div class="cell large-2 medium-2">
+                                    <img src="../img/astronaut.svg">
+                                </div>
+                                <!--                                <input class="slider" type="range" id="bewertung2" name="bewertung2" min="0" max="100">-->
+                                <div class="cell auto">
+                                    <div class="slider" data-slider data-initial-start="50">
+                                <span id="bewertung2" class="slider-handle" data-slider-handle role="slider"
+                                      tabindex="1"
+                                      aria-controls="bewertung2"></span>
+                                        <span class="slider-fill" data-slider-fill></span>
+                                    </div>
+                                </div>
+                                <div class="cell large-2 medium-2">
+                                    <img src="../img/tombstone.svg">
+
+                                </div>
+
+                            </div>
 
                             <label for="zeit">wie viel Aufwand bedeutet dieses Feature</label>
                             <input type="text" id="zeit" name="zeit" value="0">
@@ -89,10 +119,15 @@
                     <button class="button" title="ergebnis" id="ergebnis">Zeige Ergebnisse</button>
                 </div>
             </div>
+            <div id="footer" class="grid-x grid-padding-x align-center">
+                <div class="cell">Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a
+                        href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+            </div>
         </div>
 
         <!--Versteckte Feature-Liste-->
-        <div class="off-canvas position-right" id="offCanvasRight" data-transition="overlap" data-off-canvas>
+        <div class="off-canvas position-right" id="offCanvasRight" data-transition="overlap"
+             data-off-canvas>
             <div class="grid-x grid-padding-x align-center">
                 <div class="cell auto" id="featurePanel">
                     <h5>Features</h5>
@@ -103,12 +138,14 @@
                         <input type="text" value="" id="userStoryInput" placeholder="Feature">
                         <!--                        <input type="text" id="beschreibungInput" name="beschreibung" placeholder="Beschreibung"-->
                         <!--                               value="">-->
-                        <textarea type="text" id="beschreibungInput" name="beschreibung" placeholder="Beschreibung"
+                        <textarea type="text" id="beschreibungInput" name="beschreibung"
+                                  placeholder="Beschreibung"
                                   value=""></textarea>
                         <button class="button" id="addFeature">Save</button>
                     </div>
                     <div id="open-feature-input-row">
-                        <button class="button hollow primary" id="open-feature-input"><i class="fas fa-plus"></i> add
+                        <button class="button hollow primary" id="open-feature-input"><i
+                                class="fas fa-plus"></i> add
                             another feature
                         </button>
 
@@ -129,7 +166,7 @@
     <div class="grid-container">
         <h1>Ergebnisse</h1>
         <div class="grid-x grid-padding-x">
-            <div  class="large-4">
+            <div class="large-4">
                 <h3>Beispiel</h3>
 
             </div>
@@ -142,7 +179,8 @@
     </div>
     <!-- Tab überschriften-->
     <div class="tab">
-        <button id="defaultOpen" class="tablinks" onclick="openTable(event, 'mustHave')">Must have</button>
+        <button id="defaultOpen" class="tablinks" onclick="openTable(event, 'mustHave')">Must have
+        </button>
         <button class="tablinks" onclick="openTable(event, 'shouldHave')">Should have</button>
         <button class="tablinks" onclick="openTable(event, 'couldHave')">Could have</button>
         <button class="tablinks" onclick="openTable(event, 'wontHave')">Won't have</button>
@@ -194,11 +232,13 @@
         </table>
     </div>
 
+
 </div>
 
 <div class="reveal" id="inviteModal" data-reveal>
     <h3>Invite more members</h3>
-    <p>To join the Room, your team members must open <a href="#">www.app.de</a> and enter the Room ID in the joining
+    <p>To join the Room, your team members must open <a href="#">www.app.de</a> and enter the Room
+        ID in the joining
         section.</p>
     <p id="invite-hint-text">The Room-ID is: </p>
     <button class="close-button" data-close aria-label="Close modal" type="button">
@@ -207,7 +247,8 @@
 </div>
 
 
-<script src="/js/vendor/jquery.js"></script> <!--TODO: .. ersetzen durch annotation (auch in index.html)-->
+<script src="/js/vendor/jquery.js"></script>
+<!--TODO: .. ersetzen durch annotation (auch in index.html)-->
 <script src="/js/vendor/what-input.js"></script>
 <script src="/js/vendor/foundation.js"></script>
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->

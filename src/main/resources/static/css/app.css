@@ -1,4 +1,4 @@
-:root{
+:root {
     --bg-med-blue: #03156b;
     --font-color-light: #C6C9DB;
     --color-dark-blue: #031f33;
@@ -7,23 +7,27 @@
     --dark-grey: #010101;
     --unselect-grey: #cacaca;
     --bg-grey: #e6e6e6;
+    --light-purple: #B084C4;
 }
+
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
     font-family: "Roboto", sans-serif;
 }
-h3{
+
+h3 {
     font-size: 20px;
 }
-p{
+
+p {
     font-family: 'Open Sans', sans-serif;
 }
 
-input, textarea, select{
+input, textarea, select {
     border-radius: 0.2em;
 }
 
-.featureList{
-    box-shadow:0px 5px 20px 2px rgba(3,31,51,0.23);
+.featureList {
+    box-shadow: 0px 5px 20px 2px rgba(3, 31, 51, 0.23);
     margin-bottom: 10px;
     padding: 10px 10px 10px 10px;
     background-color: #031F33;
@@ -34,30 +38,34 @@ input, textarea, select{
     border-color: #031F33;
     border-radius: 1em;
 }
-.featureList h4, .featureList p{
+
+.featureList h4, .featureList p {
     line-height: 1;
     font-size: 1rem;
     margin-bottom: 10px;
     margin-top: 5px;
 }
 
-.user{
+.user {
     padding: 15px;
     margin: 10px 0;
     border-radius: 1em;
     background-color: var(--unselect-grey);
 }
-.hasVoted{
+
+.hasVoted {
     background-color: lightseagreen;
 }
-.user p{
+
+.user p {
     color: azure;
 }
-.selected-feature{
+
+.selected-feature {
     background-color: #734B88;
 }
 
-.addMore{
+.addMore {
     border: none;
     width: 64px;
     height: 32px;
@@ -65,19 +73,21 @@ input, textarea, select{
     transition: all ease-in-out 0.2s;
     cursor: pointer;
 }
-.addMore:hover{
+
+.addMore:hover {
     border: 1px solid #888;
     background-color: #ddd;
 }
 
-.bigDif{
+.bigDif {
     background: red;
 }
-.wurdeBewertet{
+
+.wurdeBewertet {
     background-color: #5e5e5e;
 }
 
-#feature-input-row, #result{
+#feature-input-row, #result {
     display: none;
 }
 
@@ -87,38 +97,43 @@ input, textarea, select{
     min-height: 100vh;
     overflow: auto;
 }
-#content{
+
+#content {
     overflow: visible;
 }
 
-#index-pagecontainer .grid-container, #content{
+#index-pagecontainer .grid-container, #content {
     background-color: var(--bg-med-blue);
     min-height: 100vh;
 }
-#index-pagecontainer , #index-pagecontainer label, #index-pagecontainer p{
+
+#index-pagecontainer, #index-pagecontainer label, #index-pagecontainer p {
     color: var(--font-color-light);
 }
-#index-pagecontainer h1{
+
+#index-pagecontainer h1 {
     color: var(--color-green);
     text-transform: uppercase;
     font-weight: bold;
     letter-spacing: 1px;
     font-size: 48px;
-    -webkit-text-shadow: 0px 12px 36px 8px rgba(1,1,1,0.63);
-    text-shadow: 0px 12px 36px 8px rgba(1,1,1,0.63);
+    -webkit-text-shadow: 0px 12px 36px 8px rgba(1, 1, 1, 0.63);
+    text-shadow: 0px 12px 36px 8px rgba(1, 1, 1, 0.63);
 
 }
 
-#index-pagecontainer #create-box .callout , #index-pagecontainer #join-box .callout {
+#index-pagecontainer #create-box .callout, #index-pagecontainer #join-box .callout {
     background-color: var(--color-dark-blue);
-    -webkit-box-shadow: 0px 12px 36px 8px rgba(1,1,1,0.63);
-    box-shadow: 0px 12px 36px 8px rgba(1,1,1,0.63);
+    -webkit-box-shadow: 0px 12px 36px 8px rgba(1, 1, 1, 0.63);
+    box-shadow: 0px 12px 36px 8px rgba(1, 1, 1, 0.63);
     color: var(--font-color-light);
 }
-#index-pagecontainer .callout select option{
+
+#index-pagecontainer .callout select option {
     padding: 17px 20px;
 }
-#index-pagecontainer .callout select{
+
+#index-pagecontainer .callout select {
     color: var(--unselect-grey);
     /*appearance: none;*/
 
@@ -131,48 +146,97 @@ input, textarea, select{
     /*background-image: linear-gradient(to top, #f9f9f9, #fff 33%);*/
     position: relative;
 }
-#index-pagecontainer .callout select.selected-option{
+
+#index-pagecontainer .callout select.selected-option {
     color: var(--dark-grey);
 }
-#index-pagecontainer .callout select option{
+
+#index-pagecontainer .callout select option {
     color: var(--dark-grey);
 }
-#index-pagecontainer .callout select .default-option, #index-pagecontainer .callout select:invalid{
+
+#index-pagecontainer .callout select .default-option, #index-pagecontainer .callout select:invalid {
     color: var(--font-color-light);
 }
 
-#index-pagecontainer #join-box button, #index-pagecontainer #create-box button{
+#index-pagecontainer #join-box button, #index-pagecontainer #create-box button {
     background-color: var(--button-color-purple);
 }
-#footer, #footer a{
+
+#footer, #footer a {
     text-align: center;
     color: var(--font-color-light);
 }
-::-moz-selection { background: var(--color-green); }
+
+::-moz-selection {
+    background: var(--color-green);
+}
+
 ::selection {
     background: var(--color-green);
 }
+
 [hidden] {
     display: none;
 }
-#voting-panel{
+
+#voting-panel {
     display: none;
 }
-#inviteModal{
+
+#inviteModal {
     padding-right: 4rem;
 }
-.top-bar i{
-    font-size: 2em;
-    color: var(--button-color-purple);
+
+.top-bar-right i {
+    margin-left: 0 !important;
+    height: max-content;
+    color: var(--light-purple);
 }
-.top-bar, .top-bar-left, .top-bar-right, .menu{
-    color: var(--button-color-purple);
-    background-color: transparent!important;
+
+.top-bar-right a {
+    height: min-content;
+    width: min-content;
 }
-.menu{
+
+.top-bar-right li {
+    border: 2px solid;
+    border-color: var(--light-purple);
+    border-radius: 7px;
+    padding: 2px;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+    vertical-align: middle;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin-left: 18px;
+}
+
+.top-bar, .top-bar-left, .top-bar-right, .menu {
+    color: var(--color-green);
+    background-color: transparent !important;
+}
+
+.menu {
     align-items: center;
 }
-#open-feature-input{
+
+#project-name {
+}
+
+.slider-row img {
+
+}
+.slider-row{
+
+}
+.slider-row .slider{
+}
+#open-feature-input {
     box-shadow: none;
     border: 0px;
     border-radius: 1em;
@@ -182,12 +246,13 @@ input, textarea, select{
     font-weight: bold;
 }
 
-#featurePanel input, #featurePanel textarea{
+#featurePanel input, #featurePanel textarea {
     border-radius: 1em;
     border: 0px solid;
     background-color: var(--unselect-grey);
 }
-#open-feature-input-row{
+
+#open-feature-input-row {
     margin-top: 20px;
     display: flex;
     flex-direction: row;
@@ -228,4 +293,13 @@ input, textarea, select{
     padding: 6px 12px;
     border: 1px solid #ccc;
     border-top: none;
+}
+
+.top-bar .fa-user-plus {
+    font-size: 1.4em;
+}
+
+.top-bar #my-name {
+    color: var(--color-green);
+    border: 0px solid;
 }
