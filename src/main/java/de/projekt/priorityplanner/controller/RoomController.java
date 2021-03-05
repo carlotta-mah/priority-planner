@@ -102,8 +102,11 @@ public class RoomController {
     public void sendEgebnis(@DestinationVariable int roomId,
                            SimpMessageHeaderAccessor headerAccessor){
        Room room = Database.getRoom(roomId);
-       Ergebnis ergebnis = new Ergebnis(room);
 
+       Ergebnis ergebnis = null;
+       if(Database.containsRoom(roomId)) {
+           ergebnis = new Ergebnis(room);
+       }
         messagingTemplate.convertAndSend("/queue/ergebnis/" + roomId, ergebnis);
     }
 

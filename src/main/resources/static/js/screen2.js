@@ -24,6 +24,8 @@ let userStories;
 let send;
 const userStoryBoardDiv = document.getElementById("userStoryBoard");
 
+let ctxDognut;
+let myDognutChart
 
 let boostList = [];
 let ripList = [];
@@ -95,6 +97,27 @@ function onErgebnisReceived(payload) {
         addToTable("wontHaveTable",feature.title, feature.description,
             feature.boostMean,feature.ripMean,feature.timeMean);
     });
+
+
+     myDognutChart.data = {
+        datasets: [{
+            data: [document.getElementById("mustHaveTable").rows.length-1,
+                document.getElementById("shouldHaveTable").rows.length-1,
+                document.getElementById("couldHaveTable").rows.length-1,
+                document.getElementById("wontHaveTable").rows.length -1],
+            backgroundColor: [
+                'rgb(23,212,205)',
+                'rgba(3, 31, 51, 1.0)',
+                'rgba(3, 31, 51, 0.85)',
+                'rgba(3, 31, 51, 0.7)',
+            ],
+        }],
+
+        labels: ['Must have', 'Should have', 'Could have', 'wontHave'],
+    };
+
+    myDognutChart.update( );
+
 
     /*
     $("#mustHaveTable tr:not(:first)").remove();
@@ -417,6 +440,9 @@ function addToTable(tableId,name, beschreibung, boost, rip, time) {
 }
 function setErgebnis() {
     if (stompClient) {
+        let message = {
+            roomId: roomId,
+        }
         stompClient.send(`${topic}/ergebnis`, {}, JSON.stringify(message));
     }
     send = true;
@@ -424,6 +450,8 @@ function setErgebnis() {
 
 function zeigErgebnis() {
     setErgebnis();
+
+    document.getElementById("defaultOpen").click();
     $('#ergebnisDiv').toggle();
     $('#pageContainer').toggle();
 }
@@ -469,6 +497,34 @@ $(document).ready(function () {
 
     //if user has created the room show force send button
     admin = (sessionStorage.getItem("admin"));
+
+    //diagramm
+    let data = {
+        datasets: [{
+            data: [document.getElementById("mustHaveTable").rows.length-1,
+                document.getElementById("shouldHaveTable").rows.length-1,
+                document.getElementById("couldHaveTable").rows.length-1,
+                document.getElementById("wontHaveTable").rows.length -1],
+            backgroundColor: [
+                'rgb(23,212,205)',
+                'rgba(3, 31, 51, 1.0)',
+                'rgba(3, 31, 51, 0.85)',
+                'rgba(3, 31, 51, 0.7)',
+            ],
+        }],
+
+        labels: ['Must have', 'Should have', 'Could have', 'wontHave'],
+    };
+    ctxDognut = document.getElementById('myDognutChart').getContext('2d')
+    let configDognut = {
+        type: 'doughnut',
+        data: data,
+        options: {
+            responsive: true // resizes chart when ist container does
+        }
+    }
+
+    myDognutChart = new Chart(ctxDognut, configDognut);
 
     connect();
 });

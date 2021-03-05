@@ -10,8 +10,12 @@
     <link rel="stylesheet" href="../css/app.css">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="https://unpkg.com/knopf.css/knopf.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
     <!--maybe replace by downloaded font-->
     <script src="https://kit.fontawesome.com/ecacb70225.js" crossorigin="anonymous"></script>
+
 </head>
 
 <div id="pageContainer" class="grid-container">
@@ -97,14 +101,16 @@
                     </div>
                     <div id="feature-input-row">
                         <input type="text" value="" id="userStoryInput" placeholder="Feature">
-<!--                        <input type="text" id="beschreibungInput" name="beschreibung" placeholder="Beschreibung"-->
-<!--                               value="">-->
+                        <!--                        <input type="text" id="beschreibungInput" name="beschreibung" placeholder="Beschreibung"-->
+                        <!--                               value="">-->
                         <textarea type="text" id="beschreibungInput" name="beschreibung" placeholder="Beschreibung"
                                   value=""></textarea>
                         <button class="button" id="addFeature">Save</button>
                     </div>
                     <div id="open-feature-input-row">
-                        <button class="button hollow primary" id="open-feature-input"><i class="fas fa-plus"></i> add another feature</button>
+                        <button class="button hollow primary" id="open-feature-input"><i class="fas fa-plus"></i> add
+                            another feature
+                        </button>
 
                     </div>
                 </div>
@@ -120,12 +126,23 @@
 
 <!-- Ergebnistabellen-->
 <div id="ergebnisDiv" style="display:none">
-    <h1 >Ergebnisse</h1>
-    <button class="button" id="back">back</button>
+    <div class="grid-container">
+        <h1>Ergebnisse</h1>
+        <div class="grid-x grid-padding-x">
+            <div  class="large-4">
+                <h3>Beispiel</h3>
 
+            </div>
+            <div class="large-8">
+                <canvas id="myDognutChart" style="width: 500px; height: 100px;"></canvas>
+            </div>
+        </div>
+
+        <button class="button" id="back">back</button>
+    </div>
     <!-- Tab überschriften-->
     <div class="tab">
-        <button id="firstTab" class="tablinks" onclick="openTable(event, 'mustHave')">Must have</button>
+        <button id="defaultOpen" class="tablinks" onclick="openTable(event, 'mustHave')">Must have</button>
         <button class="tablinks" onclick="openTable(event, 'shouldHave')">Should have</button>
         <button class="tablinks" onclick="openTable(event, 'couldHave')">Could have</button>
         <button class="tablinks" onclick="openTable(event, 'wontHave')">Won't have</button>
@@ -200,9 +217,7 @@
 <script src="/js/UserStory.js"></script>
 <script src="/js/featureSidebar.js"></script>
 <script src="/js/app.js"></script>
-<script>
-    $(document).foundation();
-</script>
+
 </body>
 
 </html>
