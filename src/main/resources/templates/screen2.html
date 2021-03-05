@@ -39,16 +39,17 @@
             </div>
 
             <div class="grid-x grid-padding-x">
+                <div id="rommtitle" class="large-10 cell"></div>
+            </div>
+            <div class="grid-x grid-padding-x">
                 <div class="cell large-3">
-                    <h3>Team</h3>
+                    <h3>Users in the Room</h3>
                     <div id="usernames"></div>
                 </div>
                 <div class="cell auto">
-                    <div id="greeting">
-                        <p>Hi, you have no feature selected yet. Create and vote features by opening the
-                            feature board on the top right</p>
-                        <button type="button" class="button" data-toggle="offCanvasRight">add Features</button>
-                    </div>
+                    <div id="greeting"><p>Hi, you have no feature selected yet. Create and vote features by opening the
+                        feature board on the top right</p></div>
+                    <button type="button" class="button" data-toggle="offCanvasRight">add Features</button>
                     <div id="voting-panel">
                         <div id="voting">
                             <div id="selected-feature-display">
@@ -115,8 +116,23 @@
         </div>
     </div>
 </div>
+
+
 <div id="ergebnisDiv" style="display:none">
-    <h1>TEST</h1>
+    <h1 >TEST</h1>
+    <button class="button" id="back">back</button>
+
+    <div id="tableDiv">
+        <table id="table">
+            <tr>
+                <th>Feature Name</th>
+                <th>Beschreibung</th>
+                <th>Boost Faktor</th>
+                <th>Rip Faktor</th>
+                <th>Zeit in Tagen</th>
+            </tr>
+        </table>
+    </div>
 </div>
 
 <div class="reveal" id="inviteModal" data-reveal>

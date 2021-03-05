@@ -98,6 +98,16 @@ public class RoomController {
 
     }
 
+    @MessageMapping("/room/{roomId}/ergebnis")
+    public void sendEgebnis(@DestinationVariable int roomId,
+                           SimpMessageHeaderAccessor headerAccessor){
+       Room room = Database.getRoom(roomId);
+       Ergebnis ergebnis = new Ergebnis(room);
+
+        messagingTemplate.convertAndSend("/queue/ergebnis/" + roomId, ergebnis);
+    }
+
+
     @MessageMapping("/room/{roomId}/addFeature")
     public void addFeature(@DestinationVariable int roomId, @Payload Feature feature,
                               SimpMessageHeaderAccessor headerAccessor){

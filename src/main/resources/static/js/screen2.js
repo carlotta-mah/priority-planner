@@ -5,6 +5,8 @@ let voteButton = $('#voteButton');
 let votingpanel =$('#voting-panel')
 //let addButton = $('#addToVoteButton');
 let ergebnisButton = $('#ergebnis');
+let backButton = $('#back');
+
 let voteAgainButton = $('#voteAgain');
 let myname = $('#my-name');
 let projectname = $('#project-name');
@@ -43,6 +45,7 @@ function onFeatureReceived(payload) {
     featureBar.addToBoard(userstory);
     featureBar.toggleFeatureInput();
 }
+
 // subscribe to websocket channel corresponding to roomId to receive messages from server
 function registerInRoom() {
     // TODO: popup window or something to set a username in case user didn't come from start window
@@ -50,6 +53,7 @@ function registerInRoom() {
     currentSubscription = stompClient.subscribe(`/user/queue/${roomId}`, onMessageReceived);
     currentSubscription = stompClient.subscribe(`/queue/${roomId}`, onMessageReceived);
     currentSubscription = stompClient.subscribe(`/queue/feature/${roomId}`, onFeatureReceived);
+    currentSubscription = stompClient.subscribe(`/queue/ergebnis/${roomId}`, onErgebnisReceived);
 
 
     stompClient.send(`${topic}/addUser`,
@@ -58,6 +62,13 @@ function registerInRoom() {
     );
 
     // TODO: receive everything and show, meanwhile hide everything
+}
+
+function onErgebnisReceived(payload) {
+    let message = JSON.parse(payload.body);
+    console.log("-------------------------------------------------------")
+    console.log(message.mustHave[0]);
+    console.log(message.mustHave[1]);
 }
 
 // called when websocket connection is set up
@@ -352,23 +363,19 @@ function sendBewertungAgain(){
 
 }
 
+function setErgebnis(){
+    if(stompClient){
+        stompClient.send(`${topic}/ergebnis`, {}, JSON.stringify(message));
+    }
+    send = true;
+}
+
 function zeigErgebnis(){
     $('#ergebnisDiv').toggle();
     $('#pageContainer').toggle();
-
-    //stompClient.disconnect();
-    //window.location.href = `/ergebnis/${roomId}`;
-    //openInNewTab(`/ergebnis/${roomId}`);
-
+    setErgebnis();
 
 }
-
-function openInNewTab(url) {
-    var win = window.open(url, '_blank');
-    win.focus();
-}
-
-
 
 $(document).ready(function () {
 
@@ -392,7 +399,8 @@ $(document).ready(function () {
 
     voteAgainButton.click(sendBewertungAgain);
     voteButton.click(sendBewertung);
-    ergebnisButton.click(zeigErgebnis)
+    ergebnisButton.click(zeigErgebnis);
+    //backButton.click(addToTable(1,1,1,1,1));
 
     //if user has created the room show force send button
     admin = (sessionStorage.getItem("admin"));
