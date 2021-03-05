@@ -39,6 +39,7 @@ class featureSidebar {
         }
         selectetFeature = featureId;
         document.getElementById("" + featureId).classList.add("selected-feature");
+        document.getElementById("" + featureId).classList.remove("wurdeBewertet");
     }
 
     addToBoard(userstory) {
@@ -100,7 +101,8 @@ class featureSidebar {
     }
 
     setButtonToRevote() {
-        let featureButton = $("#" + selectetFeature + " button");
+        let identifier = "#"+selectetFeature;
+        let featureButton = $("#select-" + selectetFeature );
         featureButton.html("Vote again")
         featureButton.click(sendBewertungAgain);
     }
@@ -137,6 +139,12 @@ class featureSidebar {
         )
     }
     deleteFeature(id){
+        if(selectetFeature === id){
+            toggleElement(document.getElementById("greeting"));
+            toggleElement(document.getElementById("voting-panel"));
+            resetResult();
+            selectetFeature = null;
+        }
         document.getElementById(id).remove();
     }
 
