@@ -114,8 +114,19 @@ public class RoomController {
         if (Database.adminNull(roomId)) {
            // TODO fehlermeldung
         }
-        Database.addUserStory(roomId, feature);
-        messagingTemplate.convertAndSend("/queue/feature/" + roomId, feature);
+        switch (feature.getEvent()) {
+            // SEND Phase: add user stories to Database
+            case FEATURE:
+                Database.addUserStory(roomId, feature);
+                feature.setEvent(MessagePhase.FEATURE);
+                messagingTemplate.convertAndSend("/queue/feature/" + roomId, feature);
+                break;
+            case DELETE:
+                Feature deletefeature = Database.getFeature(roomId, feature.getId());
+                Database.deleteFeature(roomId, feature.getId());
+                deletefeature.setEvent(MessagePhase.DELETE);
+                messagingTemplate.convertAndSend("/queue/feature/" + roomId, deletefeature);
+        }
     }
 
     @MessageMapping("room/{roomId}/result")

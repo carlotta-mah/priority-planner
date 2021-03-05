@@ -81,8 +81,8 @@ public class Database {
         //return rooms.get(i) != null;
         return rooms1.get(i) != null;
     }
-    static public List<Feature> getFeatures(int i){
-        Room room =  rooms1.get(i);
+    static public List<Feature> getFeatures(int roomId){
+        Room room =  rooms1.get(roomId);
         if (room != null) {
             return room.getFeatures();
         }
@@ -140,5 +140,14 @@ public class Database {
             s = s + "1";
         }
         return s;
+    }
+
+    public static void deleteFeature(int roomId, int id) {
+        Room room = rooms1.get(roomId);
+        room.deleteFeature(id);
+    }
+    public static Feature getFeature(int roomId, int featureId) {
+        Room room = rooms1.get(roomId);
+        return room.getFeatureById(featureId);
     }
 }

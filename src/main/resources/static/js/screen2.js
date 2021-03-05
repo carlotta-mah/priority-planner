@@ -1,8 +1,8 @@
 let pageContainer = $('#pageContainer');
-let selectedFeatureDisplay =$('#selected-feature-display')
+let selectedFeatureDisplay = $('#selected-feature-display')
 let usernames = $('#usernames');
 let voteButton = $('#voteButton');
-let votingpanel =$('#voting-panel')
+let votingpanel = $('#voting-panel')
 //let addButton = $('#addToVoteButton');
 let ergebnisButton = $('#ergebnis');
 let backButton = $('#back');
@@ -25,11 +25,9 @@ let send;
 const userStoryBoardDiv = document.getElementById("userStoryBoard");
 
 
-
 let boostList = [];
 let ripList = [];
 let timeList = [];
-
 
 
 // connect via websocket with server for bidirectional communication
@@ -41,9 +39,17 @@ function connect() {
 
 function onFeatureReceived(payload) {
     let message = JSON.parse(payload.body);
-    let userstory = new UserStory(message.title, message.description, message.id);
-    featureBar.addToBoard(userstory);
-    featureBar.toggleFeatureInput();
+    switch (message.event) {
+        case 'FEATURE':
+            let userstory = new UserStory(message.title, message.description, message.id);
+            featureBar.addToBoard(userstory);
+            featureBar.toggleFeatureInput();
+            break;
+        case 'DELETE':
+            featureBar.deleteFeature(message.id);
+            break;
+
+    }
 }
 
 // subscribe to websocket channel corresponding to roomId to receive messages from server
@@ -88,16 +94,21 @@ function getId() {
 
 function hideVotes() {
     let voteList = document.getElementsByClassName("test");
-    Array.prototype.forEach.call(voteList, function(voteElement) {
+    Array.prototype.forEach.call(voteList, function (voteElement) {
         voteElement.style.display = "none";
     });
+    let userList = document.getElementsByClassName("user");
+    Array.prototype.forEach.call(userList, function (user) {
+        user.classList.remove("hasVoted");
+    });
+
 
 }
 
 function resetVotingPanel() {
     //TODO:set sliders and Time to default
     let inputs = $(":input[type=range]");
-    Array.prototype.forEach.call(inputs, function(input) {
+    Array.prototype.forEach.call(inputs, function (input) {
         input.value = "50";
     });
     document.querySelector("#bewertung1").value = 50;
@@ -105,19 +116,20 @@ function resetVotingPanel() {
     document.querySelector("#zeit").value = 0;
 }
 
-function updateUserVote(user, bewertung1, bewertung2, zeit) {
+function updateUserVote(user) {
     document.getElementById(user).classList.add('hasVoted');
 }
 
 function updateVote(vote) {
     let userdiv = document.getElementById(vote.user);
-    let votediv =userdiv.childNodes[1];
+    let votediv = userdiv.childNodes[1];
     votediv.setAttribute("class", "test");
-    votediv.innerText = "Boost:"+vote.bewertung1 +
-                        " RIP:"+vote.bewertung2 + " Zeit:" + vote.zeit;
+    votediv.innerText = "Boost:" + vote.bewertung1 +
+        " RIP:" + vote.bewertung2 + " Zeit:" + vote.zeit;
 
- //   userdiv.append(bewertungsP)
-    userdiv.classList.add("hasVoted")
+    updateUserVote(vote.user);
+    //   userdiv.append(bewertungsP)
+    userdiv.classList.add("hasVoted");
 }
 
 function updateVotes(votes) {
@@ -131,10 +143,9 @@ function updateVotes(votes) {
 
 function showVotes() {
     let voteList = document.getElementsByClassName("test");
-    Array.prototype.forEach.call(voteList, function(voteElement) {
+    Array.prototype.forEach.call(voteList, function (voteElement) {
         voteElement.style.display = "inline-block";
     });
-
 
 
 }
@@ -187,17 +198,17 @@ function onMessageReceived(payload) {
         case 'ADDVOTE':
             //TODO:maybe check if feature is new
             featureBar.unselectAllFeatures();
-
+            $('.user')
             //TODO rename elements!
             document.getElementById('selected-feature-name').value = message.title;
             document.getElementById('selected-feature-descr').value = message.description;
-            document.getElementById(""+message.id).classList.add("selected-feature");
+            document.getElementById("" + message.id).classList.add("selected-feature");
             setSelectedFeature(message.title, message.description, message.id);
             featureBar.select(message.id);
-            hideVotes();
             resetVotingPanel();
             enableButton();
             resetResult();
+            hideVotes();
             break;
 
         case 'LEAVE':
@@ -207,6 +218,7 @@ function onMessageReceived(payload) {
         case 'VOTE':
             //updateUserVote(message.user, message.bewertung1, message.bewertung2, message.zeit);
             updateVote(message);
+            //$('#'+username).addClass("hasVoted")
             break;
         case 'ALLVOTED':
             updateVote(message);
@@ -222,39 +234,39 @@ function onMessageReceived(payload) {
     }
 }
 
-function enableButton(){//welcher button???
+function enableButton() {//welcher button???
     document.getElementById('voteButton').disabled = false;
     document.getElementById('voteButton').classList = "button";
 }
 
-function requestResult(){
+function requestResult() {
     if (stompClient) {
-            message = selectetFeature;
+        message = selectetFeature;
 
         stompClient.send(`${topic}/result`, {}, JSON.stringify(message));
     }
     send = true;
 }
 
-function  setResult(feature){
+function setResult(feature) {
     document.getElementById("result").style.display = "block";
     document.getElementById("voting").style.display = "none";
 
     document.getElementById("boostAuswertung").innerText = "Mittelwert: " + feature.boostMean + "\r";
     document.getElementById("boostAuswertung").innerText += "Standartabweichung: " + feature.boostStab;
-    if(bigDif(feature.boostStab)){
+    if (bigDif(feature.boostStab)) {
         document.getElementById("boostAuswertung").classList.add("bigDif");
     }
 
     document.getElementById("ripAuswertung").innerText = "Mittelwert: " + feature.ripMean + "\r";
-    document.getElementById("ripAuswertung").innerText += "Standartabweichung: " + feature.ripStab ;
-    if(bigDif(feature.ripStab)){
+    document.getElementById("ripAuswertung").innerText += "Standartabweichung: " + feature.ripStab;
+    if (bigDif(feature.ripStab)) {
         document.getElementById("ripAuswertung").classList.add("bigDif");
     }
 
     document.getElementById("timeAuswertung").innerText = "Mittelwert: " + feature.timeMean + "\r";
     document.getElementById("timeAuswertung").innerText += "Standartabweichung: " + feature.timeStab;
-    if(bigDif(feature.timeStab)){
+    if (bigDif(feature.timeStab)) {
         document.getElementById("timeAuswertung").classList.add("bigDif");
     }
 
@@ -263,11 +275,9 @@ function  setResult(feature){
     document.getElementById(feature.id).classList.add("wurdeBewertet");
 }
 
-function bigDif(messeage){
+function bigDif(messeage) {
     return 10 < messeage;
 }
-
-
 
 function forceSend() {
     let message = {
@@ -278,6 +288,15 @@ function forceSend() {
     }
 
     stompClient.send(`${topic}/forceSend`, {}, JSON.stringify(message));
+}
+
+
+function deleteFeature(featureId) {
+    let message = {
+        featureId: featureId,
+        phase: DELETE
+    }
+    stompClient.send(`${topic}/feature`, {}, JSON.stringify(message));
 }
 
 // update usernames when new user has been added
@@ -309,18 +328,11 @@ function fillBoard(userStories) {
     )
 }
 
-// function listToObjList(userStoryList) {
-//     let list = [];
-//     userStoryList.forEach(
-//         userStory => list.push(new UserStory(userStory.name, userStory.beschreibung, userStory.value1, userStory.value2, userStory.zeit))
-//     )
-//     return list;
-// }
 
-function updateHTML(html) {
-    pageContainer.empty();
-    pageContainer.append(html);
-}
+// function updateHTML(html) {
+//     pageContainer.empty();
+//     pageContainer.append(html);
+// }
 
 function sendBewertung() {
     let bewertung;
@@ -349,9 +361,9 @@ function sendBewertung() {
 
 }
 
-function sendBewertungAgain(){
+function sendBewertungAgain() {
     console.log("test")
-    if(stompClient){
+    if (stompClient) {
         let message = {
             featureId: selectetFeature,
             roomId: roomId,
@@ -363,14 +375,14 @@ function sendBewertungAgain(){
 
 }
 
-function setErgebnis(){
-    if(stompClient){
+function setErgebnis() {
+    if (stompClient) {
         stompClient.send(`${topic}/ergebnis`, {}, JSON.stringify(message));
     }
     send = true;
 }
 
-function zeigErgebnis(){
+function zeigErgebnis() {
     $('#ergebnisDiv').toggle();
     $('#pageContainer').toggle();
     setErgebnis();

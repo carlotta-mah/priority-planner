@@ -84,10 +84,19 @@ class featureSidebar {
             newDiv.classList.add("selected-feature");
         });
         newDiv.appendChild(button);
-
+        var deleteButton = document.createElement("button");
+        deleteButton.innerText ="delete";
+        deleteButton.setAttribute("aria-labelledby", myId);
+        deleteButton.addEventListener("click", function (){
+            that.sendDeleteFeature(this.getAttribute("aria-labelledby"));
+        })
+        newDiv.appendChild(deleteButton);
         userStoryBoardDiv.appendChild(newDiv);
         userStoryInput.val("");
         beschreibungInput.val("");
+    }
+    clearBoard() {
+        userStoryBoardDiv.empty();
     }
 
     setButtonToRevote() {
@@ -122,8 +131,13 @@ class featureSidebar {
     updateFeatures(userStories) {
         userStoryBoard.empty();
         userStories.forEach(
-            story => this.addToBoard(new UserStory(story.title, story.description, story.id, 0, 0))
+            story => {
+                this.addToBoard(new UserStory(story.title, story.description, story.id))
+            }
         )
+    }
+    deleteFeature(id){
+        document.getElementById(id).remove();
     }
 
     sendFeature() {
@@ -142,6 +156,13 @@ class featureSidebar {
         }
         send = true;
 
+    }
+    sendDeleteFeature(featureId){
+        let message = {
+            id : featureId,
+            phase: 'DELETE'
+        }
+        stompClient.send(`${topic}/addFeature`, {}, JSON.stringify(message));
     }
 
 

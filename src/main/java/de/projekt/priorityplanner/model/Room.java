@@ -80,5 +80,9 @@ public class Room {
     public int getFeatureId(Feature feature) {
         return idCount;
     }
+
+    public void deleteFeature(int id) {
+        features.remove(getFeatureById(id));
+    }
 }
 

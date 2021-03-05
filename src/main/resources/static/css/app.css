@@ -41,12 +41,14 @@ input, textarea, select{
     margin-top: 5px;
 }
 
+.user{
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 1em;
+    background-color: var(--unselect-grey);
+}
 .hasVoted{
     background-color: lightseagreen;
-}
-.user{
-    padding: 20px;
-    background-color: #734B88;
 }
 .user p{
     color: azure;
