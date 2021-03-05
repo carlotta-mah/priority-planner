@@ -439,6 +439,7 @@ function openTable(evt, tableName) {
     }
     document.getElementById(tableName).style.display = "block";
     evt.currentTarget.className += " active";
+}
 
 $(document).ready(function () {
 
