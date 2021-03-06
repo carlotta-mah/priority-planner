@@ -13,6 +13,10 @@ let projectname = $('#project-name');
 let invitehinttext = $('#invite-hint-text')
 let featureBar;
 
+let mustHaveTime;
+let mustHaveAnzahl;
+let featureAnzahl;
+
 let projektName;
 let username;
 let roomId;
@@ -74,13 +78,16 @@ function registerInRoom() {
 
 function onErgebnisReceived(payload) {
     let message = JSON.parse(payload.body);
-    console.log("-------------------------------------------------------")
-    console.log(message.mustHave[0]);
+    mustHaveAnzahl = 0;
+    mustHaveTime = 0;
+    featureAnzahl = 0;
 
     $("#mustHaveTable tr:not(:first)").remove();
     message.mustHave.forEach(feature => {
         addToTable("mustHaveTable",feature.title, feature.description,
             feature.boostMean,feature.ripMean,feature.timeMean);
+        mustHaveAnzahl++;
+        mustHaveTime = mustHaveTime + feature.timeMean;
     });
     $("#shouldHaveTable tr:not(:first)").remove();
     message.shouldHave.forEach(feature => {
@@ -97,6 +104,16 @@ function onErgebnisReceived(payload) {
         addToTable("wontHaveTable",feature.title, feature.description,
             feature.boostMean,feature.ripMean,feature.timeMean);
     });
+    message.allFeature.forEach(feature => {featureAnzahl++;});
+
+    //Ausgaben beschreibung
+    document.getElementById("diagramBeschreibung").innerHTML = "";
+    let timeMustHave = document.createElement("h3");
+    timeMustHave.innerHTML += "Anzahl Features: " + featureAnzahl+ "<br />";
+    timeMustHave.innerHTML += "Anzahl Must haves: " + mustHaveAnzahl+ "<br />";
+    timeMustHave.innerHTML +="Benötigte Zeit für Must haves: " + mustHaveTime;
+
+    document.getElementById("diagramBeschreibung").appendChild(timeMustHave);
 
 
      myDognutChart.data = {
@@ -107,9 +124,9 @@ function onErgebnisReceived(payload) {
                 document.getElementById("wontHaveTable").rows.length -1],
             backgroundColor: [
                 'rgb(23,212,205)',
-                'rgba(3, 31, 51, 1.0)',
-                'rgba(3, 31, 51, 0.85)',
-                'rgba(3, 31, 51, 0.7)',
+                'rgb(3,31,51)',
+                'rgb(170,170,170)',
+                'rgb(127,127,127)',
             ],
         }],
 
@@ -117,13 +134,6 @@ function onErgebnisReceived(payload) {
     };
 
     myDognutChart.update( );
-
-
-    /*
-    $("#mustHaveTable tr:not(:first)").remove();
-    addToTable("mustHaveTable",message.mustHave[0].title, message.mustHave[0].description,
-        message.mustHave[0].boostMean,message.mustHave[0].ripMean,message.mustHave[0].timeMean);
-    */
 }
 
 // called when websocket connection is set up
@@ -507,9 +517,9 @@ $(document).ready(function () {
                 document.getElementById("wontHaveTable").rows.length -1],
             backgroundColor: [
                 'rgb(23,212,205)',
-                'rgba(3, 31, 51, 1.0)',
-                'rgba(3, 31, 51, 0.85)',
-                'rgba(3, 31, 51, 0.7)',
+                'rgb(1,54,105)',
+                'rgb(170,170,170)',
+                'rgb(127,127,127)',
             ],
         }],
 
