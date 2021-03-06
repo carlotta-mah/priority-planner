@@ -30,7 +30,7 @@ public class Ergebnis {
 
     private void createMustHaves() {
         for (Feature feature : allFeature) {
-            if (feature.getRipMean() <= 20) {
+            if (feature.getRipMean() <= 20 && feature.getRipMean() >= 0) {
                 mustHave.add(feature);
             }
         }

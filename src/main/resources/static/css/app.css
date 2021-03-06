@@ -268,7 +268,7 @@ input, textarea, select {
 
 /* Style the buttons inside the tab */
 .tab button {
-    background-color: inherit;
+    //background-color: inherit;
     float: left;
     border: none;
     outline: none;
@@ -285,7 +285,10 @@ input, textarea, select {
 
 /* Create an active/current tablink class */
 .tab button.active {
-    background-color: #ccc;
+    //background-color: #ccc;
+    border-color: black;
+    border-width: 1px;
+    border-style: solid;
 }
 
 /* Style the tab content */
@@ -307,4 +310,39 @@ input, textarea, select {
 
 .diagram {
     background-color: #015478;
+}
+
+.diagramUeberschrift {
+    color: #ececec;
+    font-size: 50px;
+    padding-top: 40px;
+    padding-left: 15px;
+    font-weight: bold;
+}
+
+.diagramSchrift{
+    color: #ececec;
+    line-height: 2.0;
+    padding-left: 30px;
+}
+
+.seite1 {
+    color: #ececec;
+    background-color: rgb(23, 212, 205);
+}
+.seite2 {
+    color: #ececec;
+    background-color: rgb(1, 54, 105);
+}
+.seite3 {
+    color: #ececec;
+    background-color: rgb(170, 170, 170);
+}
+.seite4 {
+    color: #ececec;
+    background-color: rgb(127, 127, 127);
+}
+
+.ergebnisBody{
+    background-color: #003568;
 }

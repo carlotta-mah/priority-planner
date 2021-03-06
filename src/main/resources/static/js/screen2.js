@@ -109,6 +109,7 @@ function onErgebnisReceived(payload) {
     //Ausgaben beschreibung
     document.getElementById("diagramBeschreibung").innerHTML = "";
     let timeMustHave = document.createElement("h3");
+    timeMustHave.classList.add("diagramSchrift");
     timeMustHave.innerHTML += "Anzahl Features: " + featureAnzahl+ "<br />";
     timeMustHave.innerHTML += "Anzahl Must haves: " + mustHaveAnzahl+ "<br />";
     timeMustHave.innerHTML +="Benötigte Zeit für Must haves: " + mustHaveTime;
@@ -130,10 +131,10 @@ function onErgebnisReceived(payload) {
             ],
         }],
 
-        labels: ['Must have', 'Should have', 'Could have', 'wontHave'],
+        labels: ['Must have', 'Should have', 'Could have', 'wont Have'],
     };
 
-    myDognutChart.update( );
+    myDognutChart.update();
 }
 
 // called when websocket connection is set up
@@ -222,6 +223,7 @@ function resetResult() {
     document.getElementById("voting").style.display = "block";
     document.getElementById("ripAuswertung").classList.remove("bigDif");
     document.getElementById("boostAuswertung").classList.remove("bigDif");
+    document.getElementById("timeAuswertung").classList.remove("bigDif");
 }
 
 // called when server calls
@@ -464,6 +466,13 @@ function zeigErgebnis() {
     document.getElementById("defaultOpen").click();
     $('#ergebnisDiv').toggle();
     $('#pageContainer').toggle();
+
+    if(document.body.classList.contains("ergebnisBody")){
+        document.body.classList.remove("ergebnisBody")
+
+    }else{
+        document.body.classList.add("ergebnisBody");
+    }
 }
 
 function openTable(evt, tableName) {
@@ -508,6 +517,13 @@ $(document).ready(function () {
     //if user has created the room show force send button
     admin = (sessionStorage.getItem("admin"));
 
+    if(roll == "Entwickler"){
+        $('#zeitLabel').toggle();
+        $('#zeit').toggle();
+    }else{
+        document.getElementById("zeit").value = 0;
+    }
+
     //diagramm
     let data = {
         datasets: [{
@@ -523,13 +539,22 @@ $(document).ready(function () {
             ],
         }],
 
-        labels: ['Must have', 'Should have', 'Could have', 'wontHave'],
+        labels: ['Must have', 'Should have', 'Could have', 'wont Have'],
     };
     ctxDognut = document.getElementById('myDognutChart').getContext('2d')
     let configDognut = {
         type: 'doughnut',
         data: data,
+
         options: {
+
+            legend: {
+                position: 'right',
+                display: true,
+                labels: {
+                    fontColor: 'rgb(255, 255, 255)'
+                }
+            },
             responsive: true // resizes chart when ist container does
         }
     }

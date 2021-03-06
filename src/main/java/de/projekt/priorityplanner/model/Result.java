@@ -1,6 +1,7 @@
 package de.projekt.priorityplanner.model;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Result {
@@ -40,11 +41,19 @@ public class Result {
     }
 
     public void setTimeMittel() {
-        int[] timeList = new int[votes.size()];
+        int gesamt = 0;
+        int z = 0;
         for (int i = 0; i < votes.size(); i++) {
-            timeList[i] = votes.get(i).getZeit();
+            if(votes.get(i).getZeit() != 0) {
+                gesamt = gesamt + votes.get(i).getZeit();
+                z++;
+            }
         }
-        timeMean =  Arrays.stream(timeList).sum()/timeList.length;
+        if(z==0){
+            timeMean = gesamt;
+        }else {
+            timeMean = gesamt / z;
+        }
     }
 
     public void setBoostStabb() {
@@ -74,16 +83,33 @@ public class Result {
     }
 
     public void setTimeStabb() {
-        int[] timeList = new int[votes.size()];
+        List<Integer> timeList = new LinkedList<Integer>();
+        int gesamt = 0;
+        int z = 0;
         for (int i = 0; i < votes.size(); i++) {
-            timeList[i] = votes.get(i).getZeit();
+            if(votes.get(i).getZeit() != 0) {
+                gesamt = gesamt + votes.get(i).getZeit();
+                timeList.add(votes.get(i).getZeit());
+                z++;
+            }
         }
-        float mittelwert = Arrays.stream(timeList).sum() / timeList.length;
+        float mittelwert;
+        if(z == 0) {
+             mittelwert = gesamt;
+        }else {
+             mittelwert = gesamt / z;
+        }
         float devSum= 0;
-        for(int i= 0; i< timeList.length; i++) {
-            devSum+= Math.pow(timeList[i] -mittelwert, 2);
+        for(int i= 0; i< z; i++) {
+            devSum+= Math.pow(timeList.get(i) -mittelwert, 2);
         }
-        timeStab =  (float) Math.sqrt(devSum/ (timeList.length ));
+
+        if(z == 0){
+           timeStab = (float) Math.sqrt(devSum);
+        }else {
+            timeStab =  (float) Math.sqrt(devSum/ (z ));
+        }
+
     }
 
 }

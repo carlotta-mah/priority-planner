@@ -120,6 +120,8 @@ public class RoomController {
         switch (feature.getEvent()) {
             // SEND Phase: add user stories to Database
             case FEATURE:
+                feature.setBoostMean(-1);
+                feature.setRipMean(-1);
                 Database.addUserStory(roomId, feature);
                 feature.setEvent(MessagePhase.FEATURE);
                 messagingTemplate.convertAndSend("/queue/feature/" + roomId, feature);
