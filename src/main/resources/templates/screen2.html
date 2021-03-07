@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Priority Planning - add Features</title>
+    <title>MVP-Finder App</title>
     <link rel="stylesheet" href="../css/foundation.css">
     <link rel="stylesheet" href="../css/app.css">
     <link rel="stylesheet" href="../css/main.css">
@@ -21,8 +21,8 @@
 <body>
 <div id="pageContainer" class="grid-container">
     <div class="off-canvas-wrapper">
-        <div class="off-canvas-content" id="offCanvas" data-off-canvas-content>
-            <div class="top-bar">
+        <div class="off-canvas-content" data-off-canvas-content>
+            <div class="top-bar" id="main-page-top-bar">
                 <div class="top-bar-left">
                     <ul class="menu icons icon-right vertical medium-horizontal">
                         <li class="menu-text" id="project-name">MVP Finder</li>
@@ -32,7 +32,7 @@
                     <ul class="menu icons icon-right vertical medium-horizontal">
                         <li class="menu-text" id="my-name">MyName</li>
                         <li><a data-open="inviteModal"><i class="fas fa-user-plus"></i><span></span></a></li>
-                        <li><a href="#" data-toggle="offCanvasRight"><i class="fas fa-list-alt"></i> <span></span></a>
+                        <li><a href="#" data-toggle="offCanvas"><i class="fas fa-list-alt"></i> <span></span></a>
                         </li>
                         <!--                    <li><button type="button" class="button" data-toggle="offCanvasRight">Open Right</button></li>-->
                     </ul>
@@ -44,19 +44,21 @@
             </div>
             <div class="grid-x grid-padding-x">
                 <div class="cell large-3">
-                    <h3>Team</h3>
+                    <h3 class="team-h">Team</h3>
                     <div id="usernames"></div>
                 </div>
                 <div class="cell large-6">
                     <div id="greeting"><p>Hi, you have no feature selected yet. Create and vote features by opening the
-                        feature board on the top right</p></div>
-                    <button type="button" class="button" data-toggle="offCanvasRight">add Features</button>
+                        feature board on the top right</p>
+                        <button type="button" class="button primary" data-toggle="offCanvas">add Features</button>
+                    </div>
+
                     <div id="voting-panel">
+                        <div id="selected-feature-display">
+                            <h5 id="selected-feature-name">create and select a feature</h5>
+                            <p id="selected-feature-descr"></p>
+                        </div>
                         <div id="voting">
-                            <div id="selected-feature-display">
-                                <h5 id="selected-feature-name">create and select a feature</h5>
-                                <p id="selected-feature-descr"></p>
-                            </div>
 
                             <label for="bewertung1">Ist dieses Feature ein Booster?</label>
                             <div class="slider-row align-middle grid-x grid-margin-x">
@@ -102,7 +104,8 @@
                                 wie viel Aufwand bedeutet dieses Feature</label>
                             <input type="text" id="zeit" name="zeit" value="0" style="display:none">
 
-                            <button class="addMore" title="erst Feature zum Voten hinzufügen" id="voteButton" disabled>
+                            <button class="addMore button" title="erst Feature zum Voten hinzufügen" id="voteButton"
+                                    disabled>
                                 Vote
                             </button>
                         </div>
@@ -115,20 +118,23 @@
                         <div id="ripAuswertung"></div>
                         <h5>Zeit Faktor:</h5>
                         <div id="timeAuswertung"></div>
-                        <button class="button" id="voteAgain">Vote Again</button>
-
+                        <div class="button-group align-justify">
+                            <button class="button primary" id="voteAgain">Vote Again</button>
+                            <button class="button primary" title="next" id="next">vote next feature</button>
+                        </div>
                     </div>
-                    <button class="button" title="ergebnis" id="ergebnis">Zeige Ergebnisse</button>
+
+
+                    <button class="button primary" title="ergebnis" id="ergebnis">Zeige Ergebnisse</button>
+
+
                 </div>
             </div>
-            <div id="footer" class="grid-x grid-padding-x align-center">
-                <div class="cell">Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a
-                        href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
-            </div>
+
         </div>
 
         <!--Versteckte Feature-Liste-->
-        <div class="off-canvas position-right" id="offCanvasRight" data-transition="overlap"
+        <div class="off-canvas position-right" id="offCanvas" data-transition="overlap"
              data-off-canvas>
             <div class="grid-x grid-padding-x align-center">
                 <div class="cell auto" id="featurePanel">
@@ -143,10 +149,13 @@
                         <textarea type="text" id="beschreibungInput" name="beschreibung"
                                   placeholder="Beschreibung"
                                   value=""></textarea>
-                        <button class="button" id="addFeature">Save</button>
+                        <div class="button-group align-justify">
+                            <button class="button primary" id="addFeature">Save</button>
+                            <button class="button primary hollow" id="cancelFeature">Cancel</button>
+                        </div>
                     </div>
                     <div id="open-feature-input-row">
-                        <button class="button hollow primary" id="open-feature-input"><i
+                        <button class="button hollow" id="open-feature-input"><i
                                 class="fas fa-plus"></i> add
                             another feature
                         </button>
@@ -176,7 +185,7 @@
             </div>
         </div>
 
-        <button class="button" id="back">back</button>
+        <button class="button primary" id="back">back</button>
     </div>
     <!-- Tab überschriften-->
     <div class="tab ergebnisBody">
@@ -246,7 +255,10 @@
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
-
+<div id="footer" class="grid-x grid-padding-x align-center">
+    <div class="cell">Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a
+            href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+</div>
 
 <script src="/js/vendor/jquery.js"></script>
 <!--TODO: .. ersetzen durch annotation (auch in index.html)-->

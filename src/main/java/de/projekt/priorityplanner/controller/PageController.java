@@ -16,6 +16,11 @@ public class PageController {
         return "index";
     }
 
+    @RequestMapping("/docs")
+    public String docs() {
+        return "doc";
+    }
+
     @RequestMapping("/room/{roomId}")
     public String roomPage(@PathVariable("roomId") int roomId) {
         // TODO: check in actual Database if roomId exists

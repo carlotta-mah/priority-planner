@@ -2,6 +2,7 @@ let pageContainer = $('#pageContainer');
 let selectedFeatureDisplay = $('#selected-feature-display')
 let usernames = $('#usernames');
 let voteButton = $('#voteButton');
+let nextButton = $('#next');
 let votingpanel = $('#voting-panel')
 //let addButton = $('#addToVoteButton');
 let ergebnisButton = $('#ergebnis');
@@ -490,7 +491,6 @@ function openTable(evt, tableName) {
 }
 
 $(document).ready(function () {
-
     // get session variables
     roomId = parseInt(sessionStorage.getItem("roomId"));
     username = sessionStorage.getItem("username");
@@ -509,6 +509,7 @@ $(document).ready(function () {
     featureBar = new featureSidebar(featureElement);
     topic = `/app/room/${roomId}`; // /app
 
+    nextButton.click(featureBar.addNextVote);
     voteAgainButton.click(sendBewertungAgain);
     voteButton.click(sendBewertung);
     ergebnisButton.click(zeigErgebnis);
@@ -560,6 +561,9 @@ $(document).ready(function () {
     }
 
     myDognutChart = new Chart(ctxDognut, configDognut);
+    $('#offCanvas').on('closed.zf.offCanvas', function(event) {
+        featureBar.showOpenInputButton();
+    });
 
     connect();
 });

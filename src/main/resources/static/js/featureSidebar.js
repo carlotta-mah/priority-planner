@@ -1,4 +1,5 @@
 let addFeatureButton = $('#addFeature');
+let cancelFeature = $('#cancelFeature');
 let userStoryBoard = $('#userStoryBoard');
 let addButton = $('#addToVoteButton');
 let userStoryInput = $('#userStoryInput');
@@ -11,6 +12,7 @@ class featureSidebar {
     constructor(sidebar) {
         addFeatureButton.click(this.sendFeature);
         openInputButton.click(this.toggleFeatureInput);
+        cancelFeature.click(this.cancelInput);
         document.getElementById("feature-input-row").style.display = "none"
 
     }
@@ -44,6 +46,8 @@ class featureSidebar {
 
     addToBoard(userstory) {
         const newDiv = document.createElement("div");
+        // const buttonGroup = document.createElement("div")
+        // buttonGroup.classList.add("button-group");
         let name = userstory.name;
         let beschreibung = userstory.beschreibung;
         let myId = userstory.id;
@@ -107,7 +111,9 @@ class featureSidebar {
         featureButton.click(sendBewertungAgain);
     }
 
-
+    addNextVote(){
+        console.log("ich muss den Server fragen!")
+    }
     addBewertung(userstory) {
         let bewertung
 
@@ -174,8 +180,22 @@ class featureSidebar {
         }
         stompClient.send(`${topic}/addFeature`, {}, JSON.stringify(message));
     }
+    showOpenInputButton(){
+        let open = document.getElementById("open-feature-input-row");
+        let close = document.getElementById("feature-input-row");
+        open.style.display = "block";
+        close.style.display = "none";
 
+    }
 
+    cancelInput() {
+        document.getElementById("userStoryInput").value ="";
+        document.getElementById("beschreibungInput").value="";
+        let open = document.getElementById("open-feature-input-row");
+        let input = document.getElementById("feature-input-row");
+        toggleElement(open);
+        toggleElement(input);
+    }
 }
 
 

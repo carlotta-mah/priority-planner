@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Priority Planning</title>
+    <title>MVP-Finder: Welcome</title>
     <link rel="stylesheet" href="./css/foundation.css">
     <link rel="stylesheet" href="./css/app.css">
     <link rel="stylesheet" href="./css/main.css">
@@ -20,55 +20,67 @@
                     <h1>The MVP Finder</h1>
                 </div>
             </div>
-            <div class="grid-x grid-padding-x">
-                <div id="create-box" class="large-6 medium-6 cell">
+            <div id="login-box-container" class="grid-x grid-padding-x" data-equalizer data-equalize-on="large">
+                <div id="create-box" class="large-6 medium-6 cell login-box">
                     <div class="primary callout">
                         <h3>Erstelle einen neuen Raum</h3>
-                        <label for="produkt-name">Produktname:</label>
-                        <input id="produkt-name" type="text" placeholder="Produktname">
-                        <label for="creator-name">Username:</label>
-                        <input id="creator-name" type="text" placeholder="Username" onkeydown="creatRoomByEnter()">
-                        <label for="create-rollen">Rolle:</label>
-                        <select name="create-rollen" id="create-rollen"  onchange="let selectedOption='selected-option';
+                        <div class="login-box-inner">
+                            <label for="produkt-name">Produktname:</label>
+                            <input id="produkt-name" type="text" placeholder="Produktname">
+                            <label for="creator-name">Username:</label>
+                            <input id="creator-name" type="text" placeholder="Username" onkeydown="creatRoomByEnter()">
+                            <label for="create-rollen">Rolle:</label>
+                            <select name="create-rollen" id="create-rollen" onchange="let selectedOption='selected-option';
                         this.className = selectedOption">
-                            <option style="color:gray" class="default-option" disabled value="" selected>Choose a Role</option>
-                            <option value="Gründer">Gründer:in</option>
-                            <option value="Product Owner">Product Owner</option>
-                            <option value="Entwickler">Entwickler:in</option>
-                            <option value="User Experience">User Experience</option>
-                            <option value="Marketing">Marketing</option>
-                        </select>
+                                <option style="color:gray" class="default-option" disabled value="" selected>Choose a
+                                    Role
+                                </option>
+                                <option value="Gründer">Gründer:in</option>
+                                <option value="Product Owner">Product Owner</option>
+                                <option value="Entwickler">Entwickler:in</option>
+                                <option value="User Experience">User Experience</option>
+                                <option value="Marketing">Marketing</option>
+                            </select>
 
-                        <button class="button" id="createRoomButton">New Room</button>
+                            <button class="button primary" id="createRoomButton">New Room</button>
+                        </div>
                     </div>
                 </div>
-                <div id="join-box" class="large-6 medium-6 cell">
+                <div id="join-box" class="large-6 medium-6 cell login-box">
                     <div class="callout">
                         <h3>Trete einem exsistierenden Raum bei</h3>
-                        <label for="joiner-name">Name</label>
-                        <input id="joiner-name" type="text" placeholder="Username">
-                        <label for="joiner-rollen">Rolle:
-                        <select name="joiner-rollen" id="joiner-rollen">
-                            <option class="default-option" value="" disabled selected="selected">Choose a Role</option>
-                            <option value="Gründer">Gründer:in</option>
-                            <option value="Product Owner">Product Owner</option>
-                            <option value="Entwickler">Entwickler:in</option>
-                            <option value="User Experience">User Experience</option>
-                            <option value="Marketing">Marketing</option>
-                        </select>
-                        </label>
-                        <label for="room-id">Raum-ID</label>
-                        <input id="room-id" type="text" placeholder="Room ID" onkeydown="joinRoomByEnter(this)"
-                               onkeypress='validate(event)'>
-                        <button class="button" id="joinRoomButton">Join Room</button>
+                        <div class="login-box-inner">
+                            <label for="joiner-name">Name</label>
+                            <input id="joiner-name" type="text" placeholder="Username">
+                            <label for="joiner-rollen">Rolle:
+                                <select name="joiner-rollen" id="joiner-rollen" onchange=" let selectedOption='selected-option';
+                                        this.className = selectedOption">
+                                    <option class="default-option" value="" disabled selected="selected">Choose a Role
+                                    </option>
+                                    <option value="Gründer">Gründer:in</option>
+                                    <option value="Product Owner">Product Owner</option>
+                                    <option value="Entwickler">Entwickler:in</option>
+                                    <option value="User Experience">User Experience</option>
+                                    <option value="Marketing">Marketing</option>
+                                </select>
+                            </label>
+                            <label for="room-id">Raum-ID</label>
+                            <input id="room-id" type="text" placeholder="Room ID" onkeydown="joinRoomByEnter(this)"
+                                   onkeypress='validate(event)'>
+                            <button class="button primary" id="joinRoomButton">Join Room</button>
+
+
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div id="footer" class="grid-x grid-padding-x align-center">
-            <div class="cell">Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a
-                    href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
-        </div>
+    </div>
+    <div id="footer" class="grid-x grid-padding-x align-center">
+        <div class="cell">Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a
+                href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+        <div><p>In unserer <a href="/docs" target="_blank">Dokumentation</a> findet sich eine Anleitung zum Tool und ein
+            wenig Hintergrundwissen</p></div>
     </div>
 </div>
 <script src="/js/vendor/jquery.js"></script>
