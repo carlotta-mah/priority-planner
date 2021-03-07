@@ -98,13 +98,13 @@ public class Result {
             if(vote.getRoll().equalsIgnoreCase("Gründer")
                     ||vote.getRoll().equalsIgnoreCase("Product Owner")
                     ||vote.getRoll().equalsIgnoreCase("User Experience")){
-                ripUx.add(vote.getBewertung1());
+                ripUx.add(vote.getBewertung2());
                 zaelerUx++;
             }else if(vote.getRoll().equalsIgnoreCase("Entwickler")) {
-                ripEntwickler.add(vote.getBewertung1());
+                ripEntwickler.add(vote.getBewertung2());
                 zaelerEntwickler++;
             }else if(vote.getRoll().equalsIgnoreCase("Manager")) {
-                ripManager.add(vote.getBewertung1());
+                ripManager.add(vote.getBewertung2());
                 zaelerManager++;
             }
         }

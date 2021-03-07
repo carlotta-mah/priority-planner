@@ -6,11 +6,14 @@ let nextButton = $('#next');
 let votingpanel = $('#voting-panel')
 //let addButton = $('#addToVoteButton');
 let ergebnisButton = $('#ergebnis');
+let bewertungButton = $('#ergebnis2');
 let backButton = $('#back');
 let votingShown;
 let voteAgainButton = $('#voteAgain');
 let myname = $('#my-name');
+let myname2 = $('#my-name2');
 let projectname = $('#project-name');
+let projectname2 = $('#project-name2');
 let invitehinttext = $('#invite-hint-text')
 
 
@@ -113,13 +116,28 @@ function onErgebnisReceived(payload) {
 
     //Ausgaben beschreibung
     document.getElementById("diagramBeschreibung").innerHTML = "";
-    let timeMustHave = document.createElement("h3");
-    timeMustHave.classList.add("diagramSchrift");
-    timeMustHave.innerHTML += "Anzahl Features: " + featureAnzahl + "<br />";
-    timeMustHave.innerHTML += "Anzahl Must haves: " + mustHaveAnzahl + "<br />";
-    timeMustHave.innerHTML += "Benötigte Zeit für Must haves: " + mustHaveTime;
+    let diagramBeschreibung = document.createElement("h3");
+    let anzahlMustHave = document.createElement("h1");
+    anzahlMustHave.classList.add("zahl1");
+    anzahlMustHave.innerHTML = mustHaveAnzahl;
+    let anzahlFeatures = document.createElement("h3");
+    anzahlFeatures.classList.add("zahl2");
+    anzahlFeatures.innerHTML = featureAnzahl;
+    let timeFuerMustHave = document.createElement("h3");
+    timeFuerMustHave.classList.add("zahl2");
+    timeFuerMustHave.innerHTML = mustHaveTime;
 
-    document.getElementById("diagramBeschreibung").appendChild(timeMustHave);
+
+    diagramBeschreibung.classList.add("diagramSchrift");
+    diagramBeschreibung.appendChild(anzahlFeatures);
+    diagramBeschreibung.innerHTML += " Features in total" +  "<br />";
+    diagramBeschreibung.appendChild(anzahlMustHave);
+    diagramBeschreibung.innerHTML += " of them are must haves" + "<br />";
+    diagramBeschreibung.appendChild(timeFuerMustHave);
+    diagramBeschreibung.innerHTML += " days are needed for the must haves" + "<br />";
+
+
+    document.getElementById("diagramBeschreibung").appendChild(diagramBeschreibung);
 
 
     myDognutChart.data = {
@@ -527,7 +545,9 @@ $(document).ready(function () {
     console.log(roomName);
     votingpanel.hide();
     myname.text(username);
+    myname2.text(username);
     projectname.text(roomName);
+    projectname2.text(roomName);
     invitehinttext.html("<b> &nbsp; Your Room ID is" + roomId + "."+"</b>");
     votingShown = true;
 
@@ -539,6 +559,7 @@ $(document).ready(function () {
     voteAgainButton.click(sendBewertungAgain);
     voteButton.click(sendBewertung);
     ergebnisButton.click(zeigErgebnis);
+    bewertungButton.click(zeigErgebnis)
     backButton.click(zeigErgebnis);
 
     //if user has created the room show force send button
@@ -565,7 +586,7 @@ $(document).ready(function () {
                 document.getElementById("wontHaveTable").rows.length - 1],
             backgroundColor: [
                 'rgb(23,212,205)',
-                'rgb(1,54,105)',
+                'rgb(3,31,51)',
                 'rgb(170,170,170)',
                 'rgb(127,127,127)',
             ],
@@ -579,6 +600,12 @@ $(document).ready(function () {
         data: data,
 
         options: {
+
+            elements: {
+                arc: {
+                    borderWidth: 0
+                }
+            },
 
             legend: {
                 position: 'right',
