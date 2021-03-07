@@ -4,10 +4,12 @@
     --color-dark-blue: #031f33;
     --button-color-purple: #734B88;
     --color-green: #17d4cd;
-    --dark-grey: #010101;
+    --dark-grey: #484747;
     --unselect-grey: #d9d9d9;
     --bg-grey: #e6e6e6;
     --light-purple: #B084C4;
+    --card-grey: #e8e8e8;
+    --mid-grey: #b9b9b9;
 }
 
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
@@ -37,15 +39,15 @@ input, textarea, select {
 }
 
 .featureList {
-    box-shadow: 0px 5px 20px 2px rgba(3, 31, 51, 0.23);
+    /*box-shadow: 0px 5px 2px 2px rgba(3, 31, 51, 0.23);*/
     margin-bottom: 10px;
     padding: 10px 10px 10px 10px;
-    background-color: var(--light-purple);
-    color: azure;
+    background-color: var(--unselect-grey);
+    color: var(--dark-grey);
     display: flex;
     flex-direction: column;
     border-color: #031F33;
-    border-radius: 1em;
+    border-radius: 0.6em;
 }
 
 .featureList h4, .featureList p {
@@ -61,10 +63,11 @@ input, textarea, select {
 
 .featureList .button {
     margin-bottom: 1px;
-    background-color: var(--color-green);
+    background-color: var(--mid-grey);
+    width: 50%;
 }
 .featureList .button:focus {
-    background-color: var(--color-green);
+    background-color: var(--mid-grey);
 }
 
 .user {
@@ -154,7 +157,7 @@ input, textarea, select {
 }
 
 .selected-feature {
-    background-color: #734B88;
+    background-color: #AF9CB9;
 }
 
 .addMore {
@@ -172,9 +175,9 @@ input, textarea, select {
 }
 
 
-.wurdeBewertet {
-    background-color: #5e5e5e;
-}
+/*.wurdeBewertet {*/
+/*    background-color: #5e5e5e;*/
+/*}*/
 
 #footer a {
     color: var(--color-green);
@@ -432,6 +435,10 @@ input, textarea, select {
     border: 0px solid;
     background-color: var(--unselect-grey);
 }
+#featurePanel, #offCanvas{
+
+    background-color: var(--card-grey);
+}
 
 #open-feature-input-row {
     margin-top: 20px;
@@ -644,7 +651,7 @@ th{
 .delete-button {
     height: 19px;
     padding: 0;
-    color: #ffffffc4;
+    color: var(--dark-grey);
     position: absolute;
     right: 9%;
     min-height: 1px;
@@ -655,11 +662,15 @@ th{
 }
 
 #userStoryInput input, #userStoryInput textarea {
-    border-radius: 15px;
+    border-radius:0.5em;
 }
 
 #userStoryInput input::placeholder, #userStoryInput textarea::placeholder {
     color: #6c6565;
+}
+#userStoryInput{
+    margin-bottom: 7px;
+    margin-top: 22px;
 }
 #ripAuswertung, #boostAuswertung, #timeAuswertung{
     text-align: right;
