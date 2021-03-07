@@ -414,6 +414,7 @@ function sendBewertung() {
             content: bewertung,
             featureId: selectetFeature,
             roomId: roomId,
+            roll: roll,
             phase: 'VOTE'
         }
 

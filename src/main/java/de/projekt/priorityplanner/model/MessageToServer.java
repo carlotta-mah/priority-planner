@@ -47,7 +47,7 @@ public class MessageToServer {
         String z = content.get(4);
         zeit = Integer.parseInt(z);
 
-        return new Vote(username,bewertung1,bewertung2,zeit, MessagePhase.VOTE);
+        return new Vote(username,bewertung1,bewertung2,zeit, MessagePhase.VOTE, roll);
     }
 
     public String getUserStoryName(){

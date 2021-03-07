@@ -25,19 +25,127 @@ public class Result {
     }
 
     public void setBoostMittel() {
-        int[] boostList = new int[votes.size()];
-        for (int i = 0; i < votes.size(); i++) {
-            boostList[i] = votes.get(i).getBewertung1();
+        List<Integer> boostUX = new LinkedList<Integer>();
+        List<Integer> boostEntwickler = new LinkedList<Integer>();
+        List<Integer> boostManager = new LinkedList<Integer>();
+        int zaelerUx = 0;
+        int zaelerEntwickler = 0;
+        int zaelerManager = 0;
+
+        for (Vote vote : votes) {
+            if(vote.getRoll().equalsIgnoreCase("Gründer")
+                    ||vote.getRoll().equalsIgnoreCase("Product Owner")
+                    ||vote.getRoll().equalsIgnoreCase("Manager")){
+                boostManager.add(vote.getBewertung1());
+                zaelerManager++;
+            }else if(vote.getRoll().equalsIgnoreCase("Entwickler")) {
+                boostEntwickler.add(vote.getBewertung1());
+                zaelerEntwickler++;
+            }else if(vote.getRoll().equalsIgnoreCase("User Experience")) {
+                boostUX.add(vote.getBewertung1());
+                zaelerUx++;
+            }
         }
-        boostMean = Arrays.stream(boostList).sum() / boostList.length;
+
+        int mittelUx = -1;
+        if(zaelerUx != 0){
+            mittelUx = sum(boostUX)/zaelerUx;
+        }
+        int mittelEntw = -1;
+        if(zaelerEntwickler != 0){
+            mittelEntw = sum(boostEntwickler)/zaelerEntwickler;
+        }
+        int mittelManager = -1;
+        if(zaelerManager != 0){
+            mittelManager = sum(boostManager)/zaelerManager;
+        }
+
+
+
+
+        if(mittelUx == -1 ){
+            boostMean = 0.33F * mittelEntw + 0.67F * mittelManager;
+            if(mittelEntw == -1){
+                boostMean = mittelManager;
+            }
+            if (mittelManager == -1 ){
+                boostMean = mittelEntw;
+            }
+
+        } else if (mittelEntw == -1 ){
+            boostMean = 0.33F * mittelUx + 0.67F * mittelManager;
+
+            if (mittelManager == -1 ){
+                boostMean = mittelUx;
+            }
+
+        }else if (mittelManager == -1 ){
+            boostMean = 0.5F * mittelUx + 0.5F * mittelEntw;
+        }else {
+            boostMean = 0.25F * mittelUx + 0.25F * mittelEntw + 0.5F * mittelManager;
+        }
     }
 
     public void setRipMittel() {
-        int[] ripList = new int[votes.size()];
-        for (int i = 0; i < votes.size(); i++) {
-            ripList[i] = votes.get(i).getBewertung2();
+        List<Integer> ripUx = new LinkedList<Integer>();
+        List<Integer> ripEntwickler = new LinkedList<Integer>();
+        List<Integer> ripManager = new LinkedList<Integer>();
+        int zaelerUx = 0;
+        int zaelerEntwickler = 0;
+        int zaelerManager = 0;
+
+        for (Vote vote : votes) {
+            if(vote.getRoll().equalsIgnoreCase("Gründer")
+                    ||vote.getRoll().equalsIgnoreCase("Product Owner")
+                    ||vote.getRoll().equalsIgnoreCase("User Experience")){
+                ripUx.add(vote.getBewertung1());
+                zaelerUx++;
+            }else if(vote.getRoll().equalsIgnoreCase("Entwickler")) {
+                ripEntwickler.add(vote.getBewertung1());
+                zaelerEntwickler++;
+            }else if(vote.getRoll().equalsIgnoreCase("Manager")) {
+                ripManager.add(vote.getBewertung1());
+                zaelerManager++;
+            }
         }
-        ripMean = Arrays.stream(ripList).sum() /ripList.length;
+
+        int mittelUx = -1;
+        if(zaelerUx != 0){
+            mittelUx = sum(ripUx)/zaelerUx;
+        }
+        int mittelEntw = -1;
+        if(zaelerEntwickler != 0){
+            mittelEntw = sum(ripEntwickler)/zaelerEntwickler;
+        }
+        int mittelManager = -1;
+        if(zaelerManager != 0){
+            mittelManager = sum(ripManager)/zaelerManager;
+        }
+
+
+
+
+        if(mittelUx == -1 ){
+            ripMean = 0.5F * mittelEntw + 0.5F * mittelManager;
+            if(mittelEntw == -1){
+                ripMean = mittelManager;
+            }
+            if (mittelManager == -1 ){
+                ripMean = mittelEntw;
+            }
+
+        } else if (mittelEntw == -1 ){
+            ripMean = 0.67F * mittelUx + 0.33F * mittelManager;
+
+            if (mittelManager == -1 ){
+                ripMean = mittelUx;
+            }
+
+        }else if (mittelManager == -1 ){
+            ripMean = 0.67F * mittelUx + 0.33F * mittelEntw;
+        }else {
+            ripMean = 0.5F * mittelUx + 0.25F * mittelEntw + 0.25F * mittelManager;
+        }
     }
 
     public void setTimeMittel() {
@@ -110,6 +218,15 @@ public class Result {
             timeStab =  (float) Math.sqrt(devSum/ (z ));
         }
 
+    }
+
+    public int sum(List<Integer> list) {
+        int sum = 0;
+
+        for (int i : list)
+            sum = sum + i;
+
+        return sum;
     }
 
 }
