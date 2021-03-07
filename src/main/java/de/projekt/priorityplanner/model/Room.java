@@ -89,6 +89,7 @@ public class Room {
         for(Feature f : features){
             if(!(f.getIsVoted()))
             {
+                activeFeature = f;
                 return f;
             }
         }
