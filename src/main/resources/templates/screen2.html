@@ -55,7 +55,7 @@
                     <div id="greeting">
                         <h3>Such Empty</h3>
                         <p>Hi, you have no feature selected yet. Create and vote features by opening the
-                        feature board on the top right</p>
+                            feature board on the top right</p>
                         <button type="button" class="button primary" data-toggle="offCanvas">add Features</button>
                     </div>
 
@@ -119,11 +119,30 @@
                     </div>
                     <div id="result">
                         <h4>Bewertung</h4>
-                        <h5>Boost Faktor:</h5>
-                        <div id="boostAuswertung"></div>
-                        <h5>RIP Faktor:</h5>
-                        <div id="ripAuswertung"></div>
-                        <h5>Zeit Faktor:</h5>
+                        <div id="boost-res">
+                            <div class=""><h6>Boost</h6></div>
+                            <div class="grid-x grid-margin-x">
+                            <div class="cell large-6">
+                                <div id="boostAuswertung"></div>
+                            </div>
+                            <div class="cell large-6">
+                                <img src="../img/rocket.svg">
+                            </div>
+                            </div>
+                        </div>
+
+                        <div id="rip-res">
+                            <div class=""><h6>Survival</h6></div>
+                            <div class="grid-x grid-margin-x">
+                                <div class="cell large-6">
+                                    <div id="ripAuswertung"></div>
+                                </div>
+                                <div class="cell large-6">
+                                    <img src="../img/tombstone.svg">
+                                </div>
+                            </div>
+                        </div>
+                        <div class=""><h6>Effort</h6></div>
                         <div id="timeAuswertung"></div>
                         <div class="button-group align-justify">
                             <button class="button primary" id="voteAgain">Vote Again</button>
@@ -261,10 +280,12 @@
     <button class="close-button" data-close aria-label="Close modal" type="button">
         <span aria-hidden="true">&times;</span>
     </button>
-</div>
-<div id="footer" class="grid-x grid-padding-x align-center">
-    <div class="cell">Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a
-            href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+    <div id="footer" class="grid-x grid-padding-x align-center">
+        <div class="cell">Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a
+                href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+        <div><p>In unserer <a href="/docs" target="_blank">Dokumentation</a> findet sich eine Anleitung zum Tool und ein
+            wenig Hintergrundwissen</p></div>
+    </div>
 </div>
 
 <script src="/js/vendor/jquery.js"></script>

@@ -61,15 +61,33 @@ input, textarea, select {
     border-color: var(--light-purple);
 }
 
-.hasVoted {
+.hasVoted .user{
     background-color: var(--color-green);
     border-color: var(--color-green);
+    transition: all ease-in-out 0.2s;
+
 }
 
-.user p {
+.user {
     color: var(--light-purple);
+    margin: auto;
+    margin-left: 0;
+    width: max-content;
 }
-
+.test{
+    text-align: center;
+    display: flex!important;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: end;
+    /*width:100%*/
+}
+.test p{
+    margin-bottom: 0!important;
+}
+.test p:nth-child(3){
+    margin-left: 10px;
+}
 .selected-feature {
     background-color: #734B88;
 }
@@ -101,6 +119,9 @@ input, textarea, select {
 
 #feature-input-row, #result {
     display: none;
+}
+#result img{
+    width: 30%;
 }
 
 #index-pagecontainer, #content {
@@ -181,10 +202,10 @@ input, textarea, select {
 
 #index-pagecontainer #join-box button, #index-pagecontainer #create-box button {
     background-color: var(--button-color-purple);
-    border-radius: 15px;
+    border-radius: 5px;
     margin-top: 30px;
     margin-bottom: 0;
-    width: 100%;
+    width: 50%;
 }
 #selected-feature-display{
     color: var(--color-green);
@@ -400,7 +421,7 @@ input, textarea, select {
     font-size: 19px;
     letter-spacing: 2px;
     font-weight: unset;
-    margin-bottom: 0;
+    margin-bottom: 20px;
 }
 #my-name{
     color: var(--dark-grey);
@@ -480,4 +501,15 @@ input, textarea, select {
 }
 .slider-fill{
     background-color: revert;
+}
+#result h6{
+    text-transform: uppercase;
+    background-color: var(--light-purple);
+    color: white;
+    padding: 10px;
+    width: max-content;
+    font-size: 13px;
+    font-weight: bold;
+    margin: 0!important;
+    padding: 2px 4px;
 }

@@ -7,11 +7,14 @@ let votingpanel = $('#voting-panel')
 //let addButton = $('#addToVoteButton');
 let ergebnisButton = $('#ergebnis');
 let backButton = $('#back');
-
+let votingShown;
 let voteAgainButton = $('#voteAgain');
 let myname = $('#my-name');
 let projectname = $('#project-name');
 let invitehinttext = $('#invite-hint-text')
+var boostIcon = new Image(30, 30);
+var ripIcon =new Image(30, 30);
+
 let featureBar;
 
 let mustHaveTime;
@@ -172,6 +175,7 @@ function resetVotingPanel() {
     let inputs = $(":input[type=range]");
     Array.prototype.forEach.call(inputs, function (input) {
         input.value = "50";
+
     });
     document.querySelector("#bewertung1").value = 50;
     document.querySelector("#bewertung2").value = 50;
@@ -185,9 +189,24 @@ function updateUserVote(user) {
 function updateVote(vote) {
     let userdiv = document.getElementById(vote.user);
     let votediv = userdiv.childNodes[1];
+    votediv.empty();
+    let vote1p = document.createElement("p");
+    let vote2p = document.createElement("p");
+    let vote3p = document.createElement("p");
+
     votediv.setAttribute("class", "test");
-    votediv.innerText = "Boost:" + vote.bewertung1 +
-        " RIP:" + vote.bewertung2 + " Zeit:" + vote.zeit;
+    vote1p.innerText = vote.bewertung1;
+    vote1p.appendChild(boostIcon);
+    votediv.appendChild(boostIcon);
+    votediv.appendChild(vote1p);
+    vote2p.innerText = vote.bewertung2;
+    votediv.appendChild(ripIcon);
+    votediv.appendChild(vote2p);
+    vote3p.innerText = "Time: " + vote.zeit;
+    votediv.appendChild(vote3p)
+
+    // votediv.innerHTML = boostIcon+ vote.bewertung1 +
+    //     " RIP:" + vote.bewertung2 + " Zeit:" + vote.zeit;
 
     updateUserVote(vote.user);
     //   userdiv.append(bewertungsP)
@@ -261,6 +280,11 @@ function onMessageReceived(payload) {
             enableButton();
             resetResult();
             hideVotes();
+            if(!votingShown){
+                toggleElement(document.getElementById("greeting"));
+                toggleElement(document.getElementById("voting-panel"));
+            }
+            votingShown=true;
             break;
         case 'LEAVE':
             updateUsernames(message.usernames);
@@ -282,6 +306,7 @@ function onMessageReceived(payload) {
         case'EMPTY':
             toggleElement(document.getElementById("greeting"));
             toggleElement(document.getElementById("voting-panel"));
+            votingShown= false;
             resetResult();
             resetVotingPanel();
             hideVotes();
@@ -359,13 +384,15 @@ function updateUsernames(users) {
     users.forEach(
         username => {
             let userdiv = document.createElement("div");
-            let uservotep = document.createElement("p");
+            let uservotep = document.createElement("div");
             let usernamep = document.createElement("p");
             usernamep.innerText = username;
             uservotep.classList.add("vote");
             uservotep.style.display = "none";
+
             userdiv.id = username;
-            userdiv.classList.add("user");
+            usernamep.classList.add("user")
+            // userdiv.classList.add("user");
             //userdiv.innerHTML += username;
             userdiv.append(usernamep);
             userdiv.append(uservotep);
@@ -483,6 +510,8 @@ $(document).ready(function () {
     username = sessionStorage.getItem("username");
     roomName = sessionStorage.getItem("roomName");
     roll = sessionStorage.getItem("roll");
+    boostIcon.src = "../img/astronaut.svg";
+    ripIcon.src = "../img/tombstone.svg";
     usernames.append(`<div>${username}</div>`);
     console.log(username);
     console.log(roll);
@@ -491,6 +520,7 @@ $(document).ready(function () {
     myname.text(username);
     projectname.text(roomName);
     invitehinttext.text("Your Room ID is" + roomId);
+    votingShown = true;
 
     let featureElement = document.getElementById("featurePanel");
     featureBar = new featureSidebar(featureElement);
