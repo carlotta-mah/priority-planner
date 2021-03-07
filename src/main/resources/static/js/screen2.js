@@ -175,6 +175,7 @@ function resetVotingPanel() {
     let inputs = $(":input[type=range]");
     Array.prototype.forEach.call(inputs, function (input) {
         input.value = "50";
+        new Foundation.Slider(input, {initialStart: 50});
 
     });
     document.querySelector("#bewertung1").value = 50;
@@ -189,7 +190,7 @@ function updateUserVote(user) {
 function updateVote(vote) {
     let userdiv = document.getElementById(vote.user);
     let votediv = userdiv.childNodes[1];
-    votediv.empty();
+    votediv.innerHTML="";
     let vote1p = document.createElement("p");
     let vote2p = document.createElement("p");
     let vote3p = document.createElement("p");
