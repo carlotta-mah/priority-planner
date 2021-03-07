@@ -130,7 +130,7 @@ function onErgebnisReceived(payload) {
 
     diagramBeschreibung.classList.add("diagramSchrift");
     diagramBeschreibung.appendChild(anzahlFeatures);
-    diagramBeschreibung.innerHTML += " Features in total" +  "<br />";
+    diagramBeschreibung.innerHTML += " Features in total" + "<br />";
     diagramBeschreibung.appendChild(anzahlMustHave);
     diagramBeschreibung.innerHTML += " of them are must haves" + "<br />";
     diagramBeschreibung.appendChild(timeFuerMustHave);
@@ -532,6 +532,11 @@ function openTable(evt, tableName) {
     evt.currentTarget.className += " active";
 }
 
+$(function () {
+    $("#userStoryBoard").sortable();
+    $("#userStoryBoard").disableSelection();
+});
+
 $(document).ready(function () {
     // get session variables
     roomId = parseInt(sessionStorage.getItem("roomId"));
@@ -548,7 +553,7 @@ $(document).ready(function () {
     myname2.text(username);
     projectname.text(roomName);
     projectname2.text(roomName);
-    invitehinttext.html("<b> &nbsp; Your Room ID is" + roomId + "."+"</b>");
+    invitehinttext.html("<b> &nbsp; Your Room ID is" + roomId + "." + "</b>");
     votingShown = true;
 
     let featureElement = document.getElementById("featurePanel");
