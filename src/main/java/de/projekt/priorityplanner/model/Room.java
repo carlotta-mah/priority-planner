@@ -84,5 +84,15 @@ public class Room {
     public void deleteFeature(int id) {
         features.remove(getFeatureById(id));
     }
+
+    public Feature getNextFeature() {
+        for(Feature f : features){
+            if(!(f.getIsVoted()))
+            {
+                return f;
+            }
+        }
+        return null;
+    }
 }
 

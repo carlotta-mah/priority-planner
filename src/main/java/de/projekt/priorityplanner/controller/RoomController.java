@@ -53,9 +53,9 @@ public class RoomController {
         boolean admin = false;
         //int id=  roomId;
         // TODO: add username to actual Database
-       // String s = generateUniqueName(message.getUsername(), Database.getUsernames(roomId));
+        // String s = generateUniqueName(message.getUsername(), Database.getUsernames(roomId));
         String s = message.getUsername();
-        Database.addUsername(roomId,s, message.getRoll());
+        Database.addUsername(roomId, s, message.getRoll());
 
         // add Admin
         if (Database.adminNull(roomId)) {
@@ -70,7 +70,7 @@ public class RoomController {
 
         Room room = Database.getRoom(roomId);
         room.setEvent(MessagePhase.ADDED_USER);
-        messagingTemplate.convertAndSend("/queue/"+roomId, room);
+        messagingTemplate.convertAndSend("/queue/" + roomId, room);
 
         // update all clients in room
 //        MessageToClient messageC = new MessageToClient(
@@ -89,33 +89,33 @@ public class RoomController {
     @MessageMapping("/room/{roomId}/addTest")
     @SendTo("/topic/update")
     public void test(@DestinationVariable int roomId, Principal user, @Payload MessageToServer message,
-                                @Header("simpSessionId") String sessionId){
+                     @Header("simpSessionId") String sessionId) {
 //        return new MessageToClient(
 //                MessagePhase.UPDATE, Database.getUsernames(roomId), null, false, Database.getUserStories(roomId));
         MessageToClient out = new MessageToClient(
                 MessagePhase.UPDATE, Database.getUsernames(roomId), null, false, Database.getUserStories(roomId));
-        simpMessagingTemplate.convertAndSend("/feature/queue/"+roomId, out);
+        simpMessagingTemplate.convertAndSend("/feature/queue/" + roomId, out);
 
     }
 
     @MessageMapping("/room/{roomId}/ergebnis")
     public void sendEgebnis(@DestinationVariable int roomId,
-                           SimpMessageHeaderAccessor headerAccessor){
-       Room room = Database.getRoom(roomId);
+                            SimpMessageHeaderAccessor headerAccessor) {
+        Room room = Database.getRoom(roomId);
 
-       Ergebnis ergebnis = null;
-       if(Database.containsRoom(roomId)) {
-           ergebnis = new Ergebnis(room);
-       }
+        Ergebnis ergebnis = null;
+        if (Database.containsRoom(roomId)) {
+            ergebnis = new Ergebnis(room);
+        }
         messagingTemplate.convertAndSend("/queue/ergebnis/" + roomId, ergebnis);
     }
 
 
     @MessageMapping("/room/{roomId}/addFeature")
     public void addFeature(@DestinationVariable int roomId, @Payload Feature feature,
-                              SimpMessageHeaderAccessor headerAccessor){
+                           SimpMessageHeaderAccessor headerAccessor) {
         if (Database.adminNull(roomId)) {
-           // TODO fehlermeldung
+            // TODO fehlermeldung
         }
         switch (feature.getEvent()) {
             // SEND Phase: add user stories to Database
@@ -135,8 +135,8 @@ public class RoomController {
     }
 
     @MessageMapping("room/{roomId}/result")
-    public void getResult(@DestinationVariable int roomId,@Payload int featureId ){
-        Feature feature =  Database.getRoom(roomId).getFeatureById(featureId);
+    public void getResult(@DestinationVariable int roomId, @Payload int featureId) {
+        Feature feature = Database.getRoom(roomId).getFeatureById(featureId);
         feature.calculateResult();
         feature.setEvent(MessagePhase.RESULT);
         messagingTemplate.convertAndSend("/queue/" + roomId, feature);
@@ -145,7 +145,7 @@ public class RoomController {
 
     @MessageMapping("/room/{roomId}/sendMessage")
     @SendTo("/queue/{roomId}")
-    public void sendMessage(@DestinationVariable String roomId, @Payload MessageToServer message,
+    public void sendMessage(@DestinationVariable int roomId, @Payload MessageToServer message,
                             SimpMessageHeaderAccessor headerAccessor) throws IOException {
         int room = message.getRoomId();
         String sessionId = headerAccessor.getSessionId();
@@ -172,10 +172,10 @@ public class RoomController {
                 //MessageToClient messageC = new MessageToClient(MessagePhase.WAIT, null, html, false);
 
                 // update client in room
-               // messagingTemplate.convertAndSendToUser(sessionId, "/queue/" + room, messageC, createHeaders(sessionId));
+                // messagingTemplate.convertAndSendToUser(sessionId, "/queue/" + room, messageC, createHeaders(sessionId));
 
                 // reduce counter of amount of user who haven't send
-             //   allSend(Database.reduceCounter(room), room);
+                //   allSend(Database.reduceCounter(room), room);
                 break;
             case ADDVOTE:
                 selectVotingFeature(message);
@@ -184,9 +184,9 @@ public class RoomController {
                 Vote vote = message.createVote();
                 String userStoryName = message.getUserStoryName();
                 String userStoryBeschreibung = message.getUserStoryBeschreibung();
-                int raumId =message.getRoomId();
+                int raumId = message.getRoomId();
                 Database.addVote(vote, raumId, message.getFeatureId());
-                if(Database.allVoted(raumId)){
+                if (Database.allVoted(raumId)) {
                     vote.setEvent(MessagePhase.ALLVOTED);
                 }
                 messagingTemplate.convertAndSend("/queue/" + room, vote);
@@ -194,12 +194,21 @@ public class RoomController {
             case VOTEAGAIN:
                 Database.getRoom(message.getRoomId()).getFeatureById(message.getFeatureId()).resetVote();
                 selectVotingFeature(message);
-
-            // TODO: other cases
+                break;
+            case NEXT:
+                Feature f = Database.getNextFeature(roomId);
+                if (f != null) {
+                    f.setEvent(MessagePhase.ADDVOTE);
+                    messagingTemplate.convertAndSend("/queue/" + roomId, f);
+                } else {
+                    MessageToClient nullMessage = new MessageToClient(MessagePhase.EMPTY);
+                    messagingTemplate.convertAndSend("/queue/" + roomId, nullMessage);
+                }
+                break;
         }
     }
 
-    public void selectVotingFeature(MessageToServer message){
+    public void selectVotingFeature(MessageToServer message) {
         int roomId = message.getRoomId();
         Feature selectedFeature = Database.selectFeature(roomId, message.getFeatureId());
         selectedFeature.setEvent(MessagePhase.ADDVOTE);
@@ -217,7 +226,7 @@ public class RoomController {
 
     }
 
-    public void allSend(int c, int room){
+    public void allSend(int c, int room) {
         if (c == 0) {
             mergeStories(room);
         }

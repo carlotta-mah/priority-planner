@@ -21,7 +21,13 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
 p {
     font-family: 'Open Sans', sans-serif;
 }
-
+#pageContainer .off-canvas-wrapper{
+    overflow: visible;
+}
+#pageContainer h3{
+    color: var(--color-green);
+    letter-spacing: 0.5px;
+}
 input, textarea, select {
     border-radius: 0.2em!important;
 }
@@ -175,8 +181,32 @@ input, textarea, select {
 
 #index-pagecontainer #join-box button, #index-pagecontainer #create-box button {
     background-color: var(--button-color-purple);
+    border-radius: 15px;
+    margin-top: 30px;
+    margin-bottom: 0;
+    width: 100%;
 }
+#selected-feature-display{
+    color: var(--color-green);
 
+    text-align: center;
+}
+#selected-feature-display h5{
+    font-size: 13px;
+    letter-spacing: 0;
+    font-weight: bolder;
+    color: var(--dark-grey);
+    margin-bottom: 0;
+}
+#selected-feature-display h4{
+    margin-top: 10px;
+    margin-bottom: 0;
+    font-weight: bold!important;
+}
+#selected-feature-display p{
+    line-height: 1.3em;
+    font-weight: lighter;
+}
 #footer {
     text-align: center;
     color: var(--font-color-light);
@@ -231,6 +261,35 @@ input, textarea, select {
     width: 40px;
     height: 40px;
     margin-left: 18px;
+}
+.top-bar .tooltiptext {
+    visibility: hidden;
+    width: max-content;
+    background-color: rgba(144, 144, 144, 0.5);
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    top: 120%;
+    z-index: 10;
+    padding: 5px 7px;
+}
+.tooltiptext::after {
+    content: " ";
+    position: absolute;
+    bottom: 100%;  /* At the top of the tooltip */
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent rgba(144, 144, 144, 0.5) transparent;
+}
+
+.top-bar li:hover .tooltiptext {
+    visibility: visible;
 }
 
 .top-bar, .top-bar-left, .top-bar-right, .menu {
@@ -351,7 +410,7 @@ input, textarea, select {
 }
 
 .login-box-inner{
-    padding: 10px 40px 30px 40px;
+    padding: 10px 40px 15px 40px;
 }
 .login-box h3{
     font-size: 20px;
@@ -410,4 +469,15 @@ input, textarea, select {
 
 .ergebnisBody{
     background-color: #003568;
+}
+.slider{
+    background-color: var(--unselect-grey);
+    border-radius: 10px;
+}
+.slider-handle{
+    border-radius: 20px;
+    background-color: var(--color-dark-blue);
+}
+.slider-fill{
+    background-color: revert;
 }

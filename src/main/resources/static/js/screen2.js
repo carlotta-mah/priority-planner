@@ -242,19 +242,8 @@ function onMessageReceived(payload) {
                 updateVotes(message.activeFeature.votes);
                 enableButton();
             }
-
-
-            //updateUsernames(message.usernames);
-            //updateFeatures(message.userStories);
-            //admin = message.admin; // TODO: doesn't work? admin still undefined.
             admin = (sessionStorage.getItem("admin"));
-
             break;
-        // case 'FEATURE':
-        //     let userstory = new UserStory(message.title, message.description, message.id);
-        //     featureBar.toggleFeatureInput();
-        //     featureBar.addToBoard(userstory);
-        //     break;
         case 'UPDATE':
             featureBar.updateFeatures(message.userStories);
             break;
@@ -273,11 +262,9 @@ function onMessageReceived(payload) {
             resetResult();
             hideVotes();
             break;
-
         case 'LEAVE':
             updateUsernames(message.usernames);
             break;
-
         case 'VOTE':
             //updateUserVote(message.user, message.bewertung1, message.bewertung2, message.zeit);
             updateVote(message);
@@ -291,8 +278,13 @@ function onMessageReceived(payload) {
             break;
         case 'RESULT':
             setResult(message)
-
-        // TODO: other cases
+            break;
+        case'EMPTY':
+            toggleElement(document.getElementById("greeting"));
+            toggleElement(document.getElementById("voting-panel"));
+            resetResult();
+            resetVotingPanel();
+            hideVotes();
     }
 }
 
@@ -341,16 +333,16 @@ function bigDif(messeage) {
     return 10 < messeage;
 }
 
-function forceSend() {
-    let message = {
-        username: username,
-        userStories: null,
-        roomId: roomId,
-        phase: 'FORCE_SEND'
-    }
-
-    stompClient.send(`${topic}/forceSend`, {}, JSON.stringify(message));
-}
+// function forceSend() {
+//     let message = {
+//         username: username,
+//         userStories: null,
+//         roomId: roomId,
+//         phase: 'FORCE_SEND'
+//     }
+//
+//     stompClient.send(`${topic}/forceSend`, {}, JSON.stringify(message));
+// }
 
 
 function deleteFeature(featureId) {
@@ -389,12 +381,6 @@ function fillBoard(userStories) {
         userStory => userStoryBoard.append(`<h4>${userStory.name}<\h4>`, `<p>${userStory.beschreibung}<\p>`)
     )
 }
-
-
-// function updateHTML(html) {
-//     pageContainer.empty();
-//     pageContainer.append(html);
-// }
 
 function sendBewertung() {
     let bewertung;

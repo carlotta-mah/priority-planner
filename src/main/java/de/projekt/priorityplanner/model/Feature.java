@@ -20,6 +20,7 @@ public class Feature {
     private float ripStab;
     private float timeMean;
     private float timeStab;
+    private Boolean isVoted = false;
 
     public Feature(String title, String description, MessagePhase phase) {
         this.event = phase;
@@ -62,6 +63,7 @@ public class Feature {
 
     public void resetVote(){
         votes.clear();
+        this.isVoted = false;
     }
 
 
@@ -73,6 +75,8 @@ public class Feature {
         this.ripStab = res.ripStab;
         this.timeMean = res.timeMean;
         this.timeStab = res.timeStab;
+        this.isVoted = true;
     }
+
 
 }

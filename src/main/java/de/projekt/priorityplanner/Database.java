@@ -150,4 +150,9 @@ public class Database {
         Room room = rooms1.get(roomId);
         return room.getFeatureById(featureId);
     }
+
+    public static Feature getNextFeature(int roomId) {
+        Room room = rooms1.get(roomId);
+        return room.getNextFeature();
+    }
 }

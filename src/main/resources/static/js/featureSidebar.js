@@ -112,7 +112,14 @@ class featureSidebar {
     }
 
     addNextVote(){
-        console.log("ich muss den Server fragen!")
+        if (stompClient) {
+            let message = {
+                phase: 'NEXT'
+            }
+            // stompClient.send(`${topic}/sendMessage`, {}, JSON.stringify(message));
+            stompClient.send(`${topic}/sendMessage`, {}, JSON.stringify(message));
+        }
+        send = true;
     }
     addBewertung(userstory) {
         let bewertung
