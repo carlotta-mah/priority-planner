@@ -159,6 +159,9 @@ input, textarea, select {
 .selected-feature {
     background-color: #AF9CB9;
 }
+#featurePanel .button{
+    width: 49%;
+}
 
 .addMore {
     border: none;
