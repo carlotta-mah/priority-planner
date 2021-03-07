@@ -79,7 +79,7 @@ public class Ergebnis {
         for (Feature feature : allFeature) {
             if (feature.getRipMean() <= 70 && feature.getRipMean() > 50 && feature.getBoostMean() <= 50) {
                 couldHave.add(feature);
-            } else if (feature.getRipMean() <= 30 &&  feature.getBoostMean() <= 50) {
+            } else if (feature.getRipMean() <= 30 &&  feature.getBoostMean() > 50) {
                 couldHave.add(feature);
             }else if (feature.getRipMean() <= 50 && feature.getRipMean() > 30 && feature.getBoostMean() > 50
                     && feature.getTimeMean() >= aufwandsmarke){
@@ -90,7 +90,7 @@ public class Ergebnis {
 
     private void createWontHave() {
         for (Feature feature : allFeature) {
-            if (feature.getRipMean() <= 50 && feature.getBoostMean() <= 50) {
+            if (feature.getRipMean() <= 50 && feature.getBoostMean() <= 50 && feature.getRipMean() >=0) {
                 wontHave.add(feature);
             }
         }
