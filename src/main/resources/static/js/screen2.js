@@ -12,8 +12,7 @@ let voteAgainButton = $('#voteAgain');
 let myname = $('#my-name');
 let projectname = $('#project-name');
 let invitehinttext = $('#invite-hint-text')
-var boostIcon = new Image(30, 30);
-var ripIcon = new Image(30, 30);
+
 
 let featureBar;
 
@@ -163,7 +162,7 @@ function hideVotes() {
     Array.prototype.forEach.call(voteList, function (voteElement) {
         voteElement.style.display = "none";
     });
-    let userList = document.getElementsByClassName("user");
+    let userList = document.getElementsByClassName("userDiv");
     Array.prototype.forEach.call(userList, function (user) {
         user.classList.remove("hasVoted");
     });
@@ -173,19 +172,12 @@ function hideVotes() {
 
 
 function resetVotingPanel() {
-    //TODO:set sliders and Time to default
     let inputs = $(".slider");
     inputs.each(function () {
         var elem = new Foundation.Slider($(this));
         elem.options.start = 0;
         elem.options.end = 100;
     })
-    //input.val(50).trigger('change');
-    // Array.prototype.forEach.call(inputs, function (input) {
-    //     input.value = "50";
-    //
-    //
-    // });
     document.querySelector("#bewertung1").value = 50;
     document.querySelector("#bewertung2").value = 50;
     document.querySelector("#zeit").value = 0;
@@ -196,6 +188,10 @@ function updateUserVote(user) {
 }
 
 function updateVote(vote) {
+    var boostIcon = new Image(30, 30);
+    var ripIcon = new Image(30, 30);
+    boostIcon.src = "../img/astronaut.svg";
+    ripIcon.src = "../img/tombstone.svg";
     let userdiv = document.getElementById(vote.user);
     let votediv = userdiv.childNodes[1];
     votediv.innerHTML = "";
@@ -400,6 +396,7 @@ function updateUsernames(users) {
             uservotep.style.display = "none";
 
             userdiv.id = username;
+            userdiv.classList.add("userDiv");
             usernamep.classList.add("user")
             // userdiv.classList.add("user");
             //userdiv.innerHTML += username;
@@ -521,8 +518,7 @@ $(document).ready(function () {
     username = sessionStorage.getItem("username");
     roomName = sessionStorage.getItem("roomName");
     roll = sessionStorage.getItem("roll");
-    boostIcon.src = "../img/astronaut.svg";
-    ripIcon.src = "../img/tombstone.svg";
+
     usernames.append(`<div>${username}</div>`);
     console.log(username);
     console.log(roll);
@@ -552,7 +548,12 @@ $(document).ready(function () {
     } else {
         document.getElementById("zeit").value = 0;
     }
-
+    // let ripbar = document.getElementById("rip-bar")
+    // var myBarChart = new Chart(ripbar, {
+    //     type: 'bar',
+    //     data: [12],
+    //     options: {}
+    // });
     //diagramm
     let data = {
         datasets: [{

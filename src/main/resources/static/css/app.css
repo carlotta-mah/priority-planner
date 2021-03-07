@@ -76,7 +76,7 @@ input, textarea, select {
 }
 .test{
     text-align: center;
-    display: flex!important;
+    display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: end;
@@ -87,6 +87,9 @@ input, textarea, select {
 }
 .test p:nth-child(3){
     margin-left: 10px;
+}
+.test p, .test div{
+    display: inline;
 }
 .selected-feature {
     background-color: #734B88;
