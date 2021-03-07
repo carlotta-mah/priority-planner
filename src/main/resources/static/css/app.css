@@ -359,6 +359,9 @@ input, textarea, select {
     height: 40px;
     margin-left: 18px;
 }
+.top-bar .fa-poll, .top-bar .fa-list-alt{
+    font-size: 22px;
+}
 
 .top-bar .tooltiptext {
     visibility: hidden;
@@ -510,7 +513,7 @@ input, textarea, select {
 #my-name {
     color: var(--dark-grey);
     border: 0px solid !important;
-    font-size: 17px;
+    font-size: 1rem;
     margin: 0 29px 0 0;
 }
 
