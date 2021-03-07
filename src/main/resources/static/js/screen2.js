@@ -13,7 +13,7 @@ let myname = $('#my-name');
 let projectname = $('#project-name');
 let invitehinttext = $('#invite-hint-text')
 var boostIcon = new Image(30, 30);
-var ripIcon =new Image(30, 30);
+var ripIcon = new Image(30, 30);
 
 let featureBar;
 
@@ -88,45 +88,47 @@ function onErgebnisReceived(payload) {
 
     $("#mustHaveTable tr:not(:first)").remove();
     message.mustHave.forEach(feature => {
-        addToTable("mustHaveTable",feature.title, feature.description,
-            feature.boostMean,feature.ripMean,feature.timeMean);
+        addToTable("mustHaveTable", feature.title, feature.description,
+            feature.boostMean, feature.ripMean, feature.timeMean);
         mustHaveAnzahl++;
         mustHaveTime = mustHaveTime + feature.timeMean;
     });
     $("#shouldHaveTable tr:not(:first)").remove();
     message.shouldHave.forEach(feature => {
-        addToTable("shouldHaveTable",feature.title, feature.description,
-            feature.boostMean,feature.ripMean,feature.timeMean);
+        addToTable("shouldHaveTable", feature.title, feature.description,
+            feature.boostMean, feature.ripMean, feature.timeMean);
     });
     $("#couldHaveTable tr:not(:first)").remove();
     message.couldHave.forEach(feature => {
-        addToTable("couldHaveTable",feature.title, feature.description,
-            feature.boostMean,feature.ripMean,feature.timeMean);
+        addToTable("couldHaveTable", feature.title, feature.description,
+            feature.boostMean, feature.ripMean, feature.timeMean);
     });
     $("#wontHaveTable tr:not(:first)").remove();
     message.wontHave.forEach(feature => {
-        addToTable("wontHaveTable",feature.title, feature.description,
-            feature.boostMean,feature.ripMean,feature.timeMean);
+        addToTable("wontHaveTable", feature.title, feature.description,
+            feature.boostMean, feature.ripMean, feature.timeMean);
     });
-    message.allFeature.forEach(feature => {featureAnzahl++;});
+    message.allFeature.forEach(feature => {
+        featureAnzahl++;
+    });
 
     //Ausgaben beschreibung
     document.getElementById("diagramBeschreibung").innerHTML = "";
     let timeMustHave = document.createElement("h3");
     timeMustHave.classList.add("diagramSchrift");
-    timeMustHave.innerHTML += "Anzahl Features: " + featureAnzahl+ "<br />";
-    timeMustHave.innerHTML += "Anzahl Must haves: " + mustHaveAnzahl+ "<br />";
-    timeMustHave.innerHTML +="Benötigte Zeit für Must haves: " + mustHaveTime;
+    timeMustHave.innerHTML += "Anzahl Features: " + featureAnzahl + "<br />";
+    timeMustHave.innerHTML += "Anzahl Must haves: " + mustHaveAnzahl + "<br />";
+    timeMustHave.innerHTML += "Benötigte Zeit für Must haves: " + mustHaveTime;
 
     document.getElementById("diagramBeschreibung").appendChild(timeMustHave);
 
 
-     myDognutChart.data = {
+    myDognutChart.data = {
         datasets: [{
-            data: [document.getElementById("mustHaveTable").rows.length-1,
-                document.getElementById("shouldHaveTable").rows.length-1,
-                document.getElementById("couldHaveTable").rows.length-1,
-                document.getElementById("wontHaveTable").rows.length -1],
+            data: [document.getElementById("mustHaveTable").rows.length - 1,
+                document.getElementById("shouldHaveTable").rows.length - 1,
+                document.getElementById("couldHaveTable").rows.length - 1,
+                document.getElementById("wontHaveTable").rows.length - 1],
             backgroundColor: [
                 'rgb(23,212,205)',
                 'rgb(3,31,51)',
@@ -172,12 +174,18 @@ function hideVotes() {
 
 function resetVotingPanel() {
     //TODO:set sliders and Time to default
-    let inputs = $(":input[type=range]");
-    Array.prototype.forEach.call(inputs, function (input) {
-        input.value = "50";
-        new Foundation.Slider(input, {initialStart: 50});
-
-    });
+    let inputs = $(".slider");
+    inputs.each(function () {
+        var elem = new Foundation.Slider($(this));
+        elem.options.start = 0;
+        elem.options.end = 100;
+    })
+    //input.val(50).trigger('change');
+    // Array.prototype.forEach.call(inputs, function (input) {
+    //     input.value = "50";
+    //
+    //
+    // });
     document.querySelector("#bewertung1").value = 50;
     document.querySelector("#bewertung2").value = 50;
     document.querySelector("#zeit").value = 0;
@@ -190,7 +198,7 @@ function updateUserVote(user) {
 function updateVote(vote) {
     let userdiv = document.getElementById(vote.user);
     let votediv = userdiv.childNodes[1];
-    votediv.innerHTML="";
+    votediv.innerHTML = "";
     let vote1p = document.createElement("p");
     let vote2p = document.createElement("p");
     let vote3p = document.createElement("p");
@@ -281,11 +289,11 @@ function onMessageReceived(payload) {
             enableButton();
             resetResult();
             hideVotes();
-            if(!votingShown){
+            if (!votingShown) {
                 toggleElement(document.getElementById("greeting"));
                 toggleElement(document.getElementById("voting-panel"));
             }
-            votingShown=true;
+            votingShown = true;
             break;
         case 'LEAVE':
             updateUsernames(message.usernames);
@@ -307,7 +315,7 @@ function onMessageReceived(payload) {
         case'EMPTY':
             toggleElement(document.getElementById("greeting"));
             toggleElement(document.getElementById("voting-panel"));
-            votingShown= false;
+            votingShown = false;
             resetResult();
             resetVotingPanel();
             hideVotes();
@@ -451,7 +459,8 @@ function sendBewertungAgain() {
     send = true;
 
 }
-function addToTable(tableId,name, beschreibung, boost, rip, time) {
+
+function addToTable(tableId, name, beschreibung, boost, rip, time) {
     var rowLength = document.getElementById(tableId).rows.length;
     var table = document.getElementById(tableId);
     var row = table.insertRow(rowLength);
@@ -466,6 +475,7 @@ function addToTable(tableId,name, beschreibung, boost, rip, time) {
     cell4.innerHTML = rip;
     cell5.innerHTML = time;
 }
+
 function setErgebnis() {
     if (stompClient) {
         let message = {
@@ -483,10 +493,10 @@ function zeigErgebnis() {
     $('#ergebnisDiv').toggle();
     $('#pageContainer').toggle();
 
-    if(document.body.classList.contains("ergebnisBody")){
+    if (document.body.classList.contains("ergebnisBody")) {
         document.body.classList.remove("ergebnisBody")
 
-    }else{
+    } else {
         document.body.classList.add("ergebnisBody");
     }
 }
@@ -536,20 +546,20 @@ $(document).ready(function () {
     //if user has created the room show force send button
     admin = (sessionStorage.getItem("admin"));
 
-    if(roll == "Entwickler"){
+    if (roll == "Entwickler") {
         $('#zeitLabel').toggle();
         $('#zeit').toggle();
-    }else{
+    } else {
         document.getElementById("zeit").value = 0;
     }
 
     //diagramm
     let data = {
         datasets: [{
-            data: [document.getElementById("mustHaveTable").rows.length-1,
-                document.getElementById("shouldHaveTable").rows.length-1,
-                document.getElementById("couldHaveTable").rows.length-1,
-                document.getElementById("wontHaveTable").rows.length -1],
+            data: [document.getElementById("mustHaveTable").rows.length - 1,
+                document.getElementById("shouldHaveTable").rows.length - 1,
+                document.getElementById("couldHaveTable").rows.length - 1,
+                document.getElementById("wontHaveTable").rows.length - 1],
             backgroundColor: [
                 'rgb(23,212,205)',
                 'rgb(1,54,105)',
@@ -579,7 +589,7 @@ $(document).ready(function () {
     }
 
     myDognutChart = new Chart(ctxDognut, configDognut);
-    $('#offCanvas').on('closed.zf.offCanvas', function(event) {
+    $('#offCanvas').on('closed.zf.offCanvas', function (event) {
         featureBar.showOpenInputButton();
     });
 
