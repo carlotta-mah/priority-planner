@@ -442,6 +442,12 @@ input, textarea, select {
 
     background-color: var(--card-grey);
 }
+#offCanvas{
+    width:22rem;
+}
+.js-off-canvas-overlay{
+    background: rgba(13, 13, 13, 0.4);
+}
 
 #open-feature-input-row {
     margin-top: 20px;
