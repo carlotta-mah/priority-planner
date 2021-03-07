@@ -227,7 +227,7 @@ function updateVote(vote) {
     vote2p.innerText = vote.bewertung2;
     // votediv.appendChild(ripIcon);
     votediv.appendChild(vote2p);
-    vote3p.innerText = "Time: " + vote.zeit;
+    vote3p.innerText = vote.zeit;
     votediv.appendChild(vote3p)
 
     // votediv.innerHTML = boostIcon+ vote.bewertung1 +
@@ -340,7 +340,7 @@ function onMessageReceived(payload) {
 
 function enableButton() {//welcher button???
     document.getElementById('voteButton').disabled = false;
-    document.getElementById('voteButton').classList = "button";
+    document.getElementById('voteButton').classList.add("button");
 }
 
 function requestResult() {

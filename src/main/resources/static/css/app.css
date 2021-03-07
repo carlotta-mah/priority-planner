@@ -44,7 +44,6 @@ input, textarea, select {
     color: azure;
     display: flex;
     flex-direction: column;
-    border: 1px solid;
     border-color: #031F33;
     border-radius: 1em;
 }
@@ -64,24 +63,30 @@ input, textarea, select {
     margin-bottom: 1px;
     background-color: var(--color-green);
 }
+.featureList .button:focus {
+    background-color: var(--color-green);
+}
 
 .user {
-    padding: 15px;
+    padding: 12px 15px;
     margin: 10px 0;
     border-radius: 1em;
-    border: 3px solid;
-    border-color: var(--light-purple);
+    /*border: 3px solid;*/
+    background-color: #9cc6c4;
+    border-color: var(--color-green);
+    color: white;
+    font-weight: normal;
+    letter-spacing: 0.6px;
 }
 
 .hasVoted .user {
-    background-color: var(--color-green);
-    border-color: var(--color-green);
+    background-color: var(--light-purple);
+    border-color: var(--light-purple);
     transition: all ease-in-out 0.2s;
 
 }
 
 .user {
-    color: var(--light-purple);
     margin: auto 10px auto 0;
     width: max-content;
 }
@@ -208,11 +213,13 @@ input, textarea, select {
 #index-pagecontainer h1 {
     color: var(--color-green);
     text-transform: uppercase;
-    font-weight: bold;
-    letter-spacing: 1px;
-    font-size: 48px;
+    font-weight: 300;
+    letter-spacing: 2px;
+    font-size: 53px;
     -webkit-text-shadow: 0px 12px 36px 8px rgba(1, 1, 1, 0.63);
     text-shadow: 0px 12px 36px 8px rgba(1, 1, 1, 0.63);
+    margin-bottom: 75px;
+    margin-top: 60px;
 
 }
 
@@ -267,7 +274,7 @@ input, textarea, select {
     border-radius: 5px;
     margin-top: 30px;
     margin-bottom: 0;
-    width: 50%;
+    min-width: 50%;
     letter-spacing: 2px;
 }
 
@@ -650,4 +657,7 @@ th{
 
 #userStoryInput input::placeholder, #userStoryInput textarea::placeholder {
     color: #6c6565;
+}
+#ripAuswertung, #boostAuswertung, #timeAuswertung{
+    text-align: right;
 }
