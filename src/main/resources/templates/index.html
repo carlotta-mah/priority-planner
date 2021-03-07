@@ -23,21 +23,21 @@
             <div id="login-box-container" class="grid-x grid-padding-x" data-equalizer data-equalize-on="large">
                 <div id="create-box" class="large-6 medium-6 cell login-box">
                     <div class="primary callout">
-                        <h3>Erstelle einen neuen Raum</h3>
+                        <h3>Create a new Room</h3>
                         <div class="login-box-inner">
-                            <label for="produkt-name">Produktname:</label>
-                            <input id="produkt-name" type="text" placeholder="Produktname">
+                            <label for="produkt-name">Product name:</label>
+                            <input id="produkt-name" type="text" placeholder="Product name">
                             <label for="creator-name">Username:</label>
-                            <input id="creator-name" type="text" placeholder="Username" onkeydown="creatRoomByEnter()">
-                            <label for="create-rollen">Rolle:</label>
+                            <input id="creator-name" type="text" placeholder="User name" onkeydown="creatRoomByEnter()">
+                            <label for="create-rollen">Role:</label>
                             <select name="create-rollen" id="create-rollen" onchange="let selectedOption='selected-option';
                         this.className = selectedOption">
                                 <option style="color:gray" class="default-option" disabled value="" selected>Choose a
                                     Role
                                 </option>
-                                <option value="Gründer">Gründer:in</option>
+                                <option value="Gründer">Founder</option>
                                 <option value="Product Owner">Product Owner</option>
-                                <option value="Entwickler">Entwickler:in</option>
+                                <option value="Entwickler">Developer</option>
                                 <option value="User Experience">User Experience</option>
                                 <option value="Manager">Manager</option>
                             </select>
@@ -48,23 +48,23 @@
                 </div>
                 <div id="join-box" class="large-6 medium-6 cell login-box">
                     <div class="callout">
-                        <h3>Trete einem exsistierenden Raum bei</h3>
+                        <h3>join an exsisting room</h3>
                         <div class="login-box-inner">
                             <label for="joiner-name">Name</label>
-                            <input id="joiner-name" type="text" placeholder="Username">
-                            <label for="joiner-rollen">Rolle:
+                            <input id="joiner-name" type="text" placeholder="User name">
+                            <label for="joiner-rollen">Role:
                                 <select name="joiner-rollen" id="joiner-rollen" onchange=" let selectedOption='selected-option';
                                         this.className = selectedOption">
                                     <option class="default-option" value="" disabled selected="selected">Choose a Role
                                     </option>
-                                    <option value="Gründer">Gründer:in</option>
+                                    <option value="Gründer">Founder</option>
                                     <option value="Product Owner">Product Owner</option>
-                                    <option value="Entwickler">Entwickler:in</option>
+                                    <option value="Entwickler">Developer</option>
                                     <option value="User Experience">User Experience</option>
                                     <option value="Manager">Manager</option>
                                 </select>
                             </label>
-                            <label for="room-id">Raum-ID</label>
+                            <label for="room-id">Room ID</label>
                             <input id="room-id" type="text" placeholder="Room ID" onkeydown="joinRoomByEnter(this)"
                                    onkeypress='validate(event)'>
                             <button class="button primary" id="joinRoomButton">Join Room</button>
