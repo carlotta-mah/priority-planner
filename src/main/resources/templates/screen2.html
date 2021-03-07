@@ -111,15 +111,15 @@
                                 wie viel Aufwand bedeutet dieses Feature</label>
                             <input type="text" id="zeit" name="zeit" value="0" style="display:none">
 
-                            <button class="addMore button" title="erst Feature zum Voten hinzufügen" id="voteButton"
+                            <button class="addMore primary button" title="erst Feature zum Voten hinzufügen" id="voteButton"
                                     disabled>
                                 Vote
                             </button>
                         </div>
                     </div>
                     <div id="result">
-                        <h4>Bewertung</h4>
-                        <div id="boost-res">
+                        <h4>Feature-Results</h4>
+                        <div id="boost-res" class="feature-result-row">
                             <div class=""><h6>Boost</h6></div>
                             <div class="grid-x grid-margin-x">
                                 <div class="cell large-6">
@@ -131,20 +131,22 @@
                             </div>
                         </div>
 
-                        <div id="rip-res">
+                        <div id="rip-res" class="feature-result-row">
                             <div class=""><h6>Survival</h6></div>
                             <div class="grid-x grid-margin-x">
                                 <div class="cell large-6">
                                     <div id="ripAuswertung"></div>
-<!--                                    <canvas id="rip-bar" width="400" height="400"></canvas>-->
+                                    <!--                                    <canvas id="rip-bar" width="400" height="400"></canvas>-->
                                 </div>
                                 <div class="cell large-6">
                                     <img src="../img/tombstone.svg">
                                 </div>
                             </div>
                         </div>
-                        <div class=""><h6>Effort</h6></div>
-                        <div id="timeAuswertung"></div>
+                        <div id="time-res" class="feature-result-row">
+                            <div class=""><h6>Effort</h6></div>
+                            <div id="timeAuswertung"></div>
+                        </div>
                         <div class="button-group align-justify">
                             <button class="button primary" id="voteAgain">Vote Again</button>
                             <button class="button primary" title="next" id="next">vote next feature</button>
@@ -195,6 +197,12 @@
                 </button>
             </div>
         </div>
+    </div>
+    <div id="footer" class="grid-x grid-padding-x align-center">
+        <div class="cell">Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a
+                href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+        <div><p>In unserer <a href="/docs" target="_blank">Dokumentation</a> findet sich eine Anleitung zum Tool und ein
+            wenig Hintergrundwissen</p></div>
     </div>
 </div>
 
@@ -270,6 +278,7 @@
     </div>
 
 
+
 </div>
 
 <div class="reveal" id="inviteModal" data-reveal>
@@ -277,16 +286,10 @@
     <p>To join the Room, your team members must open <a href="#">www.app.de</a> and enter the Room
         ID in the joining
         section.</p>
-    <p id="invite-hint-text">The Room-ID is: </p>
+    <p id="invite-hint-text">The Room-ID is: &nbsp; </p>
     <button class="close-button" data-close aria-label="Close modal" type="button">
         <span aria-hidden="true">&times;</span>
     </button>
-    <div id="footer" class="grid-x grid-padding-x align-center">
-        <div class="cell">Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a
-                href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
-        <div><p>In unserer <a href="/docs" target="_blank">Dokumentation</a> findet sich eine Anleitung zum Tool und ein
-            wenig Hintergrundwissen</p></div>
-    </div>
 </div>
 
 <script src="/js/vendor/jquery.js"></script>

@@ -188,10 +188,12 @@ function updateUserVote(user) {
 }
 
 function updateVote(vote) {
-    var boostIcon = new Image(30, 30);
-    var ripIcon = new Image(30, 30);
-    boostIcon.src = "../img/astronaut.svg";
-    ripIcon.src = "../img/tombstone.svg";
+    // var boostIcon = new Image(30, 30);
+    // var ripIcon = new Image(30, 30);
+    // var timeIcon = new Image(30, 30);
+    // boostIcon.src = "../img/astronaut.svg";
+    // ripIcon.src = "../img/tombstone.svg";
+    // timeIcon.src = "../img/uhr-2.svg";
     let userdiv = document.getElementById(vote.user);
     let votediv = userdiv.childNodes[1];
     votediv.innerHTML = "";
@@ -201,11 +203,11 @@ function updateVote(vote) {
 
     votediv.setAttribute("class", "test");
     vote1p.innerText = vote.bewertung1;
-    vote1p.appendChild(boostIcon);
-    votediv.appendChild(boostIcon);
+    // vote1p.appendChild(boostIcon);
+    // votediv.appendChild(boostIcon);
     votediv.appendChild(vote1p);
     vote2p.innerText = vote.bewertung2;
-    votediv.appendChild(ripIcon);
+    // votediv.appendChild(ripIcon);
     votediv.appendChild(vote2p);
     vote3p.innerText = "Time: " + vote.zeit;
     votediv.appendChild(vote3p)
@@ -336,22 +338,22 @@ function setResult(feature) {
     document.getElementById("result").style.display = "block";
     document.getElementById("voting").style.display = "none";
 
-    document.getElementById("boostAuswertung").innerText = "Mittelwert: " + feature.boostMean + "\r";
-    document.getElementById("boostAuswertung").innerText += "Standartabweichung: " + feature.boostStab;
+    document.getElementById("boostAuswertung").innerText = "Average: " + feature.boostMean + "\r";
+    document.getElementById("boostAuswertung").innerText += "Avg. Diff.: " + feature.boostStab;
     if (bigDif(feature.boostStab)) {
-        document.getElementById("boostAuswertung").classList.add("bigDif");
+        document.getElementById("boost-res").classList.add("bigDif");
     }
 
-    document.getElementById("ripAuswertung").innerText = "Mittelwert: " + feature.ripMean + "\r";
-    document.getElementById("ripAuswertung").innerText += "Standartabweichung: " + feature.ripStab;
+    document.getElementById("ripAuswertung").innerText = "Average: " + feature.ripMean + "\r";
+    document.getElementById("ripAuswertung").innerText += "Avg. Diff.: " + feature.ripStab;
     if (bigDif(feature.ripStab)) {
-        document.getElementById("ripAuswertung").classList.add("bigDif");
+        document.getElementById("rip-res").classList.add("bigDif");
     }
 
-    document.getElementById("timeAuswertung").innerText = "Mittelwert: " + feature.timeMean + "\r";
-    document.getElementById("timeAuswertung").innerText += "Standartabweichung: " + feature.timeStab;
+    document.getElementById("timeAuswertung").innerText = "Average: " + feature.timeMean + "\r";
+    document.getElementById("timeAuswertung").innerText += "Avg. Diff.: " + feature.timeStab;
     if (bigDif(feature.timeStab)) {
-        document.getElementById("timeAuswertung").classList.add("bigDif");
+        document.getElementById("time-res").classList.add("bigDif");
     }
 
     document.getElementById("bewertung-" + feature.id).innerText
@@ -526,7 +528,7 @@ $(document).ready(function () {
     votingpanel.hide();
     myname.text(username);
     projectname.text(roomName);
-    invitehinttext.text("Your Room ID is" + roomId);
+    invitehinttext.html("<b> &nbsp; Your Room ID is" + roomId + "."+"</b>");
     votingShown = true;
 
     let featureElement = document.getElementById("featurePanel");

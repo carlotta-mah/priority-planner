@@ -73,6 +73,7 @@ class featureSidebar {
         button.title = myId;
         button.id = "select-" + myId;
         button.classList.add('button');
+        button.classList.add('primary')
         button.innerHTML = "Vote now";
         var that = this;
 
@@ -90,7 +91,8 @@ class featureSidebar {
         });
         newDiv.appendChild(button);
         var deleteButton = document.createElement("button");
-        deleteButton.innerText ="delete";
+        deleteButton.innerHTML ="<i class=\"fas fa-trash-alt\"></i>";
+        deleteButton.classList.add("delete-button");
         deleteButton.setAttribute("aria-labelledby", myId);
         deleteButton.addEventListener("click", function (){
             that.sendDeleteFeature(this.getAttribute("aria-labelledby"));
