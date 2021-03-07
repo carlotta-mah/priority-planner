@@ -22,8 +22,8 @@ public class User {
             case "Nutzer":
                 this.roll = UserRoll.UserExperience;
                 break;
-            case "Marketing":
-                this.roll = UserRoll.Marketing;
+            case "Manager":
+                this.roll = UserRoll.Manager;
                 break;
             default:
                 this.roll = UserRoll.KeineRolle;
