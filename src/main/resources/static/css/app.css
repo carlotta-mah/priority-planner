@@ -578,7 +578,11 @@ input, textarea, select {
     color: #ececec;
     line-height: 2.0;
     padding-left: 30px;
+    letter-spacing: 5px;
     font-size: 12px;
+    position: relative;
+    left: 25px;
+    text-transform: uppercase;
 }
 
 .seite1 {

@@ -134,7 +134,7 @@ function onErgebnisReceived(payload) {
     diagramBeschreibung.appendChild(anzahlMustHave);
     diagramBeschreibung.innerHTML += " of them are must haves" + "<br />";
     diagramBeschreibung.appendChild(timeFuerMustHave);
-    diagramBeschreibung.innerHTML += " days are needed for the must haves" + "<br />";
+    diagramBeschreibung.innerHTML += " days for the must haves" + "<br />";
 
 
     document.getElementById("diagramBeschreibung").appendChild(diagramBeschreibung);
@@ -266,9 +266,9 @@ function setSelectedFeature(title, description, id) {
 function resetResult() {
     document.getElementById("result").style.display = "none";
     document.getElementById("voting").style.display = "block";
-    document.getElementById("ripAuswertung").classList.remove("bigDif");
-    document.getElementById("boostAuswertung").classList.remove("bigDif");
-    document.getElementById("timeAuswertung").classList.remove("bigDif");
+    document.getElementById("boost-res").classList.remove("bigDif");
+    document.getElementById("rip-res").classList.remove("bigDif");
+    document.getElementById("time-res").classList.remove("bigDif");
 }
 
 // called when server calls
