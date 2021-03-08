@@ -1,5 +1,6 @@
 package de.projekt.priorityplanner.model;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -84,6 +85,7 @@ public class Result {
         }else {
             boostMean = 0.25F * mittelUx + 0.25F * mittelEntw + 0.5F * mittelManager;
         }
+        boostMean = round(boostMean,2);
     }
 
     public void setRipMittel() {
@@ -146,6 +148,7 @@ public class Result {
         }else {
             ripMean = 0.5F * mittelUx + 0.25F * mittelEntw + 0.25F * mittelManager;
         }
+        ripMean = round(ripMean,2);
     }
 
     public void setTimeMittel() {
@@ -174,7 +177,7 @@ public class Result {
         for(int i= 0; i< boostList.length; i++) {
             devSum+= Math.pow(boostList[i] -mittelwert, 2);
         }
-        boostStab =  (float) Math.sqrt(devSum/ (boostList.length ));
+        boostStab =  round((float) Math.sqrt(devSum/ (boostList.length )),2);
     }
 
     public void setRipStabb() {
@@ -187,7 +190,7 @@ public class Result {
         for(int i= 0; i< ripList.length; i++) {
             devSum+= Math.pow(ripList[i] -mittelwert, 2);
         }
-        ripStab = (float) Math.sqrt(devSum/ (ripList.length ));
+        ripStab = round((float) Math.sqrt(devSum/ (ripList.length )),2);
     }
 
     public void setTimeStabb() {
@@ -227,6 +230,11 @@ public class Result {
             sum = sum + i;
 
         return sum;
+    }
+    public static float round(float d, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(Float.toString(d));
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
     }
 
 }
