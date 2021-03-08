@@ -553,7 +553,7 @@ $(document).ready(function () {
     myname2.text(username);
     projectname.text(roomName);
     projectname2.text(roomName);
-    invitehinttext.html("<b> &nbsp; Your Room ID is" + roomId + "." + "</b>");
+    invitehinttext.html("<b> &nbsp; Your Room ID is &nbsp;" + roomId + "." + "</b>");
     votingShown = true;
 
     let featureElement = document.getElementById("featurePanel");

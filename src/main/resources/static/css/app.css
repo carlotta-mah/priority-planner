@@ -459,8 +459,9 @@ input, textarea, select {
 .tab {
     overflow: hidden;
     //border: 1px solid #ccc;
-    background-color: #f1f1f1;
+    //background-color: #f1f1f1;
     padding-top: 15px ;
+    background: transparent;
 }
 
 /* Style the buttons inside the tab */
@@ -503,7 +504,14 @@ input, textarea, select {
 
 
 .diagram {
-    background-color: #015478;
+    background-color: #003568;
+    border-radius: 25px;
+    box-shadow: 4px 4px 9px 1px #00000082;
+
+    margin-bottom: 15px;
+    display: block;
+    background: transparent url('https://image.ibb.co/bT4N7T/clouds.png') top center;
+
 }
 
 #voting-panel {
@@ -606,7 +614,9 @@ input, textarea, select {
 }
 
 .ergebnisBody {
-    background-color: #003568;
+    //background-color: #003568;
+    background: rgb(60,60,157);
+    background: linear-gradient(228deg, rgba(60,60,157,1) 0%, rgba(0,53,104,1) 100%);
 }
 
 .slider {
@@ -688,3 +698,8 @@ th{
 #ripAuswertung, #boostAuswertung, #timeAuswertung{
     text-align: right;
 }
+
+.colorFirstLine{
+    background-color: #aaa;
+}
+
