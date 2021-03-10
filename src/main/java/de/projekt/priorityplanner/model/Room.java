@@ -15,6 +15,7 @@ import java.util.Map;
  * @data 14.03.2021
  */
 @Data
+
 public class Room {
     private int id;
     private String roomName;
@@ -27,14 +28,14 @@ public class Room {
     /**
      * Inizalisiert den Raum.
      *
-     * @param id Die RaumId
-     * @param roomName Den Raumname
-     * @param features Liste von Features die im Raum eingetragen wurden
-     * @param users Liste von Usern die sich in dem Raum aufhalten.
+     * @param id            Die RaumId
+     * @param roomName      Den Raumname
+     * @param features      Liste von Features die im Raum eingetragen wurden
+     * @param users         Liste von Usern die sich in dem Raum aufhalten.
      * @param activeFeature Das ausgewählte Feature
-     * @param event Das Event
+     * @param event         Das Event
      */
-    public Room(int id, String roomName,List<Feature> features, List<User> users, Feature activeFeature, MessagePhase event) {
+    public Room(int id, String roomName, List<Feature> features, List<User> users, Feature activeFeature, MessagePhase event) {
         this.id = id;
         this.roomName = roomName;
         this.features = features;
@@ -46,29 +47,32 @@ public class Room {
 
     /**
      * Gibt eine Liste von Name der User die sich in dem Raum aufhalten
+     *
      * @return Liste von Usernamen in vorm einer Stringliste
      */
-    public List getOnlyUserNames(){
+    public List getOnlyUserNames() {
         List<String> userNames = new LinkedList<>();
-        for (User user: users) {
-                userNames.add(user.getName());
+        for (User user : users) {
+            userNames.add(user.getName());
         }
         return userNames;
     }
 
     /**
      * Fügt ein User dem Raum hinzu
+     *
      * @param newUser User der hinzugefügt werden soll.
      */
-    public void addUser(User newUser) {
+    public synchronized void addUser(User newUser) {
         users.add(newUser);
     }
 
     /**
      * Fügt ein Feature dem Raum hinzu
+     *
      * @param newFeature Das neue Feature
      */
-    public void addFeature(Feature newFeature) {
+    public synchronized void addFeature(Feature newFeature) {
         newFeature.setId(idCount);
         idCount++;
         features.add(newFeature);
@@ -76,25 +80,36 @@ public class Room {
 
     /**
      * Entfernt ein User aus dem Raum
-     * @param username User der entfernt werden soll
+     *
+     * @param username Name des User der entfernt werden soll
      */
-    public void removeUser(User username) {
-        users.remove(username);
+    public synchronized void removeUser(String username) {
+        users.removeIf(user -> user.getName().equals(username));
+    }
+
+    /**
+     * Entfernt ein User aus dem Raum
+     *
+     * @param user User der entfernt werden soll
+     */
+    public synchronized void removeUser(User user) {
+        users.remove(user);
     }
 
     /**
      * Gibt die Anzahl der Votes die bereits für das ausgewählte Feature schon abgestimmt haben
+     *
      * @return Anzahl der Votes
      */
-    public int getNumberOfVotes(){
-        if(activeFeature != null){
+    public int getNumberOfVotes() {
+        if (activeFeature != null) {
             return activeFeature.getNumberOfVotes();
-        }
-        else return 0;
+        } else return 0;
     }
 
     /**
      * Setzt das activeFeature auf das Feature welches als Parameter übergeben wird
+     *
      * @param id Id des neuen aktven Feature
      * @return
      */
@@ -110,13 +125,14 @@ public class Room {
 
     /**
      * Gibt ein Feature anhand der Id
+     *
      * @param id Id des gesuchten Features
      * @return Passendes Feature zur Id
      */
-    public Feature getFeatureById(int id){
-        for (Feature feature:features) {
-            if (feature.getId() == id){
-                return  feature;
+    public synchronized Feature getFeatureById(int id) {
+        for (Feature feature : features) {
+            if (feature.getId() == id) {
+                return feature;
             }
         }
         //TODO: fehlerbehandlung
@@ -124,30 +140,32 @@ public class Room {
     }
 
     /**
-     * Gibt die Id vom Feature
-     * @param feature Das Feature von dem die Id gefordert wird
-     * @return FeatureId als int
+     * gibt den aktuellen FeatureCount wieder
+     *
+     * @return
      */
-    public int getFeatureId(Feature feature) {
+    public int getFeatureCount() {
         return idCount;
     }
 
+
     /**
      * Löscht ein Feature aus dem Raum
+     *
      * @param id Id des Feature welches gelöscht werden soll
      */
-    public void deleteFeature(int id) {
+    public synchronized void deleteFeature(int id) {
         features.remove(getFeatureById(id));
     }
 
     /**
      * Gib das nächste Feature des Raumes zurück und setzt das activeFeature neu.
+     *
      * @return das nue activeFeature
      */
     public Feature getNextFeature() {
-        for(Feature f : features){
-            if(!(f.getIsVoted()))
-            {
+        for (Feature f : features) {
+            if (!(f.getIsVoted())) {
                 activeFeature = f;
                 return f;
             }

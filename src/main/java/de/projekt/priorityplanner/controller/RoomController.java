@@ -151,32 +151,6 @@ public class RoomController {
         String sessionId = headerAccessor.getSessionId();
 
         switch (message.getPhase()) {
-            // SEND Phase: add user stories to Database
-            case SEND:
-                /*message.getUserStories().forEach(
-                        userStory -> Database.addUserStory(room, userStory)
-                );*/
-
-                UserStory userStory = message.createUserStory();
-                Database.addUserStory(room, userStory);
-
-
-                File input = new ClassPathResource("templates/screen2.html").getFile();
-                String html = Jsoup.parse(input, "UTF-8", "").toString();
-
-                MessageToClient messageC = new MessageToClient(
-                        MessagePhase.SEND, Database.getUsernames(room), null, true, Database.getUserStories(room));
-                messagingTemplate.convertAndSend("/queue/" + room, messageC);
-
-
-                //MessageToClient messageC = new MessageToClient(MessagePhase.WAIT, null, html, false);
-
-                // update client in room
-                // messagingTemplate.convertAndSendToUser(sessionId, "/queue/" + room, messageC, createHeaders(sessionId));
-
-                // reduce counter of amount of user who haven't send
-                //   allSend(Database.reduceCounter(room), room);
-                break;
             case ADDVOTE:
                 selectVotingFeature(message);
                 break;

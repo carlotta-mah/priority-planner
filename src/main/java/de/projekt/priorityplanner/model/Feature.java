@@ -3,9 +3,7 @@ package de.projekt.priorityplanner.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Ein Feature. Ein Feature besteht aus einem Titel, einer Beschreibung, einer
@@ -41,7 +39,7 @@ public class Feature {
         this.event = phase;
         this.title = title;
         this.description = description;
-        this.votes = new LinkedList<>();
+        this.votes = Collections.synchronizedList(new ArrayList<>());
         this.boostMean = 0;
         this.boostStab = 0;
         this.ripMean = 0;
@@ -55,7 +53,7 @@ public class Feature {
      *
      * @param vote Eine Bewertung des Features
      */
-    public void addVote(Vote vote) {
+    public synchronized void addVote(Vote vote) {
         String voteName = vote.getUser();
         for (Vote voteVonList : votes) {
             if (voteVonList.getUser().equalsIgnoreCase(voteName)) {
@@ -97,7 +95,7 @@ public class Feature {
     /**
      * Leert die Voteliste.
      */
-    public void resetVote(){
+    public synchronized void resetVote(){
         votes.clear();
         this.isVoted = false;
     }
@@ -105,7 +103,7 @@ public class Feature {
     /**
      * Berechnet alle Mittelwerte und Standardabweichungen mit hilfe der Result Klasse.
      */
-    public void calculateResult(){
+    public synchronized void calculateResult(){
         Result res = new Result(votes);
         this.boostMean = res.boostMean;
         this.boostStab = res.boostStab;
