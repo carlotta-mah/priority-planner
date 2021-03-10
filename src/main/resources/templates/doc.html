@@ -30,8 +30,84 @@
             </div>
             <div class="columns large-9">
                 <div class="sections">
+                    <section id="how" data-magellan-target="how">
+                        <h3>Vorgehensweise: Wie finde ich nun ein MVP?</h3>
+                        <h4>Produkt in Funktionen zerlegen</h4>
+                        <p> Es ist zunächst wichtig, das Produkt, welches man im Sinn hat, in seine einzelnen Funktionen
+                            zu zerlegen, um jeweiligen Funktionen priorisieren zu können. Das kann im <b>MVP-Finder</b>
+                            in der Funktion "add Feature" realisiert werden. Einfach Das Feature beschreiben und auf
+                            "save" klicken!</p>
+                        <h4>Stakeholder festlegen</h4>
+                        <p>Wer ist in meinem Projekt eingentlich wichitg? Wer sollte mit entscheiden was die wichtigsten
+                            Funktionen/Funktionalitäten sind? Das hängt natürlich stark vom Unternehmen und vom Produkt
+                            ab. In dem Abschnitt <a href="#rollen">Rollen</a> haben wir eine Einteilung vorgenommen die
+                            als Grundlage genutzt werden kann. </p>
+                        <h4>Bewertung der Features</h4>
+                        <p> Nun muss man sich noch überlegen wie man die Funktionen/Features des Produkts tatsächlich
+                            bewerten möchte. Auch das Bewewrtungssystem sollte entsprechend der Situation um Unternehmen
+                            ausgewählt werden. Für das Bewertungssystem, das wir gewähl haben, haben wir aktuelle und
+                            etablierte Forschungsergebnisse, sowie Stimmen aus der Praxis mit einbezogen. Unser
+                            Bewertungssystem basiert auf einem Paper von <a
+                                    href="https://www.tandfonline.com/doi/full/10.1080/14783363.2020.1770588?casa_token=6D4Rya4yFj0AAAAA%3AP1ocUMh827TzWE8FUQSjrTvU5-u4FPBKdtpJ00YXq5HOLa96_fTi8RaZB-nSBDEDCESrNTh5N-zCvRs">
+                                Lee und Geum (2020)</a>. Dort wird vorgeschlagen die Bewertung von Produkt-Features nach
+                            zwei Faktoren zu bewerten.
+                            Der erste Faktor beschreibt die Relevanz des Features für die Überlebensfähigkeit des
+                            Produktes. Bei uns heiß dieser Faktor Überlebensfaktor.
+                            Der zweite Faktor bezieht sich auf den Wettbewerbsvorteil, den die Funktion dem Produkt
+                            bringt. Dieser heißt bei uns Boost-Faktor.
+                            Zusätzlich ist auch der Aufwand der für die Realisierung gebraucht wird nicht uneheblich für
+                            die Bewertung und wird deshalb mit einbezogen.
+                            Boost- und Überlebensfaktor sollen möglichst spontan geschätzt werden. Daher bieten wir den
+                            Nutzern einen Schieberegler, den sie einstellen können. Damit wollen wir vermeiden zu starr
+                            in einem Zahlensystem zu denken. Für die Auswetung wird der Regler aber auf eine Skala von
+                            0-100% abgebildet.
+                        </p>
+                        <p>Auch die Rollen haben einen Einfluss auf die Bewertung. Generell gehen wir davon aus, dass
+                            vor allem der Entwickler:in ("Developer") den Aufwand einschätzen kann. Deshalb soll auch
+                            nir er/sie den Aufwand schätzen. </p>
+                        <p>Der Überlebens- und der Boost-Faktor werden von allen Rollen geschätzt, aber die Schätzungen
+                            werden unterschiedliche gewichtet. Dazu mehr in dem Abschnitt <a
+                                    href="#ergebnis">Ergebnis</a></p>
+                        <h4>Auswertung</h4>
+                        <p>Und was machen wir jetzt mit den Zahlen? Wir müssen sie nun noch interpretieren. Hier stellt
+                            sich natürlich die Frage, welche dieser Features nun in unser MVP hinein gehören - es muss
+                            also eine Kategorisierung der Features stattfinden.
+                            Wir haben uns hierbei für die sogenante MoSCoW-Methode entschieden. Dabei werden Features in
+                            folgende Kategorien aufgeteilt:</p>
+                        <ul>
+                            <li>
+                                <b>Must-Have-Feature</b>
+                                Die Features die hier auftauchen sind unverzichtbare Features. Diese können in keinem
+                                Fall weggelassen werden, da dies zum Scheitern des gesamten Projektes führen würde. Sie
+                                stellen somit die Minimalanforderungen an das Produkt dar.
+                            </li>
+                            <li>
+                                <b>Should-Have-Feature</b>
+                                Auch diese Features und Funktionen sind relevant für das Projekt, lösen jedoch kein
+                                Scheitern beim Weglassen aus. Sie sind also nicht im selben Maße erfolgskritisch wie die
+                                erste Kategorie. Jedoch sollten diese Features ebenfalls berücksichtigt werden, solange
+                                sie nicht im Konflikt mit den Must-Have-Features stehen.
+                            </li>
+                            <li>
+                                <b>Could-Have-Feature</b>
+                                Features dieser Priorisierungsstufe haben eine geringe Relevanz und werden erst
+                                betrachtet, wenn obige bereits umgesetzt worden und noch Restkapazitäten zur Umsetzung
+                                der Could-Have-Features übrig ist. Sie gehören also zu den "Nice to Have"-Features
+                            </li>
+                            <li>
+                                <b>Won't-Have-Features</b>
+                                Diese Features haben die geringste Relevanz und werden nicht betrachtet. Sie besitzen
+                                dennoch
+                                fachlichen oder zeitlichen Wert und werden notiert.
+                            </li>
+                        </ul>
+                        <p>
+                            In dem Abschnitt <a href="#ergebnis">Ergebnisse</a> finden sich weitere Informationen zu der
+                            Berechnung der Einteilung.
+                        </p>
+                    </section>
                     <section id="defs" data-magellan-target="defs">
-                        <h3>Was ist ein MVP und warum brauchen wir das?</h3>
+                        <h3>Was ist ein MVP? Und warum brauchen wir das?</h3>
                         <p> Das MVP, also Minimal Viable Product, ist ein brauchbares Produkt mit
                             minimalenEigenschaften. Es
                             ist eine Version eines neuen Produkts, die mit geringem Aufwand erstelltund zur Gewinnung
@@ -43,21 +119,6 @@
                             Feedback von Kunden oder Anwendernbasiert. Ein Minimum Viable Product besitzt nur wenige
                             Features, diese müssen abermöglichst reibungslos laufen. Eigenschaften des MVPs sind also
                             Praktibilität und alleinigeExistenzfähigkeit.</p>
-                    </section>
-                    <section id="how" data-magellan-target="how">
-                        <h3>Wie finde ich nun ein MVP? - Die Vorgehensweise</h3>
-                        <h4>Produkt in Funktionen zerlegen</h4>
-                        <p> Es ist zunächst wichtig, das Produkt, welches man im Sinn hat, in seine einzelnen Funktionen
-                            zu zerlegen, um jeweiligen Funktionen priorisieren zu können. Das kann im <b>MVP-Finder</b>
-                            in der Funktion "add Feature" realisiert werden. Einfach Das Feature beschreiben und auf
-                            "save" klicken!</p>
-                        <h4>Stakeholder festlegen</h4>
-                        <p>Wer ist in meinem Projekt eingentlich wichitg? Wer sollte mit entscheiden was die wichtigsten
-                            Funktionen/Funktionalitäten sind? Das hängt natürlich stark vom Unternehmen und vom Produkt
-                            ab. In dem Abschnitt <a href="#rollen">Rollen</a> haben wir eine Einteilung vorgenommen die
-                            als Grundlage genutzt werden kann. </p>
-                        <h4>Bewertung der Funktionen</h4>
-                        <p></p>
                     </section>
                     <section id="start" data-magellan-target="start">
                         <h3>Nutzung der MVP-Finder App</h3>
@@ -113,7 +174,7 @@
                             der verschiedenen Rollen kann später bei der Interpretation der <a
                                     href="ergebnis">Ergebisse</a>
                             hilfreich sein.</p>
-                        <h4>Gründer:</h4>
+                        <h4>Gründer:in</h4>
                         <p>Der Gründer und gleichzeitig die Führung des Start-Ups ist die Person, die die
                             ursprüngliche Vision des Produktes hat, auf welcher der gesamte Entwicklungprozessbasiert.
                             Diese
@@ -125,7 +186,7 @@
                             externe Interessensgruppen. Aus den genannten Gründen und besonders im Kontext eines
                             Start-Upssollte die Bewertung der Features durch den Gründer selbst direkt eingebracht
                             werden.
-                        <h4>2.Product Owner</h4>
+                        <h4>Product Owner</h4>
                         <p>Der Product Owner des Projektes ist eine einzelne Person und kein Team,
                             sodassgewährleistet ist, dass bei Rückfragen eine durchgehende Konsistenz der
                             Antwortenherrscht.
@@ -148,7 +209,30 @@
                             noch
                             hinzufügen..Agiledeveloper skills & Scrum Erfolgsphänomen )
                         </p>
-                        <h4>Entwickler</h4>
+                        <h4>Manager:in (Manager)</h4>
+                        <p>
+                            Diese Stakeholder-Kategorie fasst alle Arten von Managern zusammen, die aus verschiedenen
+                            Abteilungen des Unternehmens stammen können und bestimmte Aspekte im Kontext der
+                            Produkt-Entwicklung und letztendlich auch Vermarktung im Blick haben. Ein Beispiel hierfür
+                            wäre vor allem der Manager aus dem Marketing, welcher die Vermarktung des Unternehmens als
+                            Marke, seine Richtlinien und die potentiellen Kunden des Unternehmens und deren Bedürfnisse
+                            vor Augen hat. Er schaut vor primär auf die Anforderungen, die einen hohen Martkwert
+                            erzeugen. Wobei, z.B., andererseits ein Manager aus dem Bereich Finanzen, vor allem im
+                            Hinblick auf das Budget,
+                            mehr die Anforderungen fokusiert, die wenig Kosten verursachen.
+                        </p>
+                        <h4>UX-Researcher (User Experience)</h4>
+                        <p>
+                            Mitarbeiter im Bereich User Experience (UX) sind spezialisiert auf die Bedürfnisse und
+                            eventuellen Problemstellungen der Endnutzer des Produkts, so wie die Analyse ihres
+                            generellen Nutzungsverhaltens. Sie beschäftigen sich mit zwei zentralen Fragestellungen: Wer
+                            sind unsere Kunden und welche Aufgabe oder Problemstellung versuchen sie zu lösen? Hierbei
+                            müssen sie durch ihre Nachforschungen das Verhalten der Nutzer, ihre Bedürfnisse, Ziele, als
+                            auch ihre Schmerzfaktoren, analysieren. Dieser Faktor bezeichnet dabei Aspekte,
+                            mit denen die Nutzer Probleme haben bzw. Dinge, die ihnen an bisherigen Lösungen missfallen.
+                            Dieses kann beispielsweise durch Interviews der Kunden oder Umfragen geschehen.
+                        </p>
+                        <h4>Entwickler:in (Developer)</h4>
                         <p>Die Entwickler sind
                             diejenigen, die für die tatsächliche Implementation der einzelnenFeatures verantwortlich
                             sind.
@@ -165,39 +249,69 @@
                             allem bei der Aufwandsschätzung gefragt, aber auch generell bei derZusammenstellung der
                             Features, die das Produkt mindestens haben sollte.</p>
                     </section>
+                    <p>Gründer:inen und Product Owner werden der übergeordneten Gruppe der Verantwortlichen zugerechnet. </p>
                     <section id="ergebnis" data-magellan-target="ergebnis">
                         <h3>Ergebnis</h3>
-                        <p>Generell unterteilen wir die Features in vier Gruppen</p>
+                        <h4>Gewichting der Rollen</h4>
+                        <p>
+                            Je nachdem welche Gruppen vertreten sind, variiert die Gewichtung. Die jeweiligen
+                            Berehcnungen sind der untenstehenden Tabelle zu entnehmen. Hierbei werden die Formeln
+                            jeweils für den Boost- und den Überlebensfaktor angegeben. Der Aufwand wird in einem
+                            ungewichteten arithmetischen Mittel zusammengefasst, da er nur von den Entwickler:innen
+                            gewertet
+                            wird.
+                        </p>
+                        <table>
+                            <tr>
+                                <th>Anwesende Rollen</th>
+                                <th>Überlebensfaktor</th>
+                                <th>Boost-Faktor</th>
+                            </tr>
+                            <tr>
+                                <td>Alle</td>
+                                <td>U*0,5 + E*0,25 + M*0,25</td>
+                                <td>M*0,5 + U*0,25 + E*0,25</td>
+                            </tr>
+                            <tr>
+                                <td>Manager:innen und Entwickler:innen (oder UX-Researcher)</td>
+                                <td>M*2/3 + U(oder E)*0,1/3</td>
+                                <td>U*2/3 + E(oder M)*0,1/3</td>
+                            </tr>
+                            <tr>
+                                <td>Manager:innen und Entwickler:innen</td>
+                                <td>E*0,5 + M*0,5</td>
+                                <td>E*0,5 + M*0,5</td>
+                            </tr>
+                        </table>
+                        <p>U (für UX-Researcher), E (für Entwickler:innen), M (für Manager:innen) sind jeweils die
+                            ungewichteten arithmetischen Mittel in den jeweiligen Gruppen. Die Rollen Gründer:innen und
+                            Product Owner werden jeweils der höher gewichteten Gruppe zugerechnet.</p>
+                        <h4>Kategorisierung der Features</h4>
+                        <p>Generell unterteilen wir die Features, wie oben bescchrieben in vier Gruppen</p>
                         <ol>
                             <li>
-
-                                <b>Must have</b> Die Features die hier auftauchen sind unverzichtbare Features. Diese
-                                können
-                                in keinem Fall weggelassen werden, da dies zum Scheitern des gesamten Projektes führen
-                                würde. Sie werden also als die Minimalanforderungen an das Produkt angesehen.
+                                <b>Must have</b>
                             </li>
                             <li>
-
-                                <b>Should have</b> Auch diese Features und Funktionen sind auch relevant für das
-                                Projekt,
-                                lösen jedoch kein Scheitern beim Weglassen aus. Sie sind also nicht so erfolgskritisch.
-                                Wenn
-                                diese Features sollten auch berücksichtigt werden, solange sie nicht im Konflikt mit den
-                                Must have Features stehen.
+                                <b>Should have</b>
                             </li>
                             <li>
-
-                                <b>Could have</b> Features dieser Priorisierungsstufe haben eine geringe Relevanz und
-                                werden
-                                erst betrachtet,wenn obige bereits umgesetzt worden und noch Restkapazitäten zur
-                                Umsetzung
-                                der Could-have-Features übrig ist. Sie gehören also zu den "nice to have"-Features
+                                <b>Could have</b>
                             </li>
-                            <b>Won’t have</b> Diese Features haben die geringste Relevanz und werden nicht betrachtet.
-                            Sie
-                            besitzen dennoch fachlichen oder zeitlichen Wert und werden notiert.
-                            <li></li>
+                            <li>
+                                <b>Won’t have</b>
+                            </li>
                         </ol>
+                        <p>
+                            Die Features werden also basierend auf der MoSCoW-Methode ausgewertet.
+                            Um festzulegen, welches Feature in welche Kategorie fällt haben wir ein Bewertungsschema
+                            festgelegt das weiter untem im Bild zu sehen ist.
+
+                            Dabei fällt auf: Der Wert des Überlebensfaktors spielt dabei eine zentrale Rolle. Wenn der
+                            Überlebensfaktor über 80% steigt (Überleben ohne das Featue also unwahrscheinlich), ist es
+                            automatisch ein Must-Have.
+                        </p>
+                        <img src="../img/MOSCOW.png">
                     </section>
                 </div>
             </div>
