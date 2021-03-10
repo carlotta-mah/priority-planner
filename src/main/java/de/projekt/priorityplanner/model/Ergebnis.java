@@ -1,9 +1,14 @@
 package de.projekt.priorityplanner.model;
 
 import lombok.Data;
-
 import java.util.LinkedList;
 import java.util.List;
+/**
+ * Ein Ergebnis teilt alle Features eines Raumes auf die Listen mustHave, shouldHave, couldHave und WontHave auf.
+ *
+ * @author Mia Mahncke, Nedim Seroka
+ * @data 14.03.2021
+ */
 
 @Data
 public class Ergebnis {
@@ -14,6 +19,12 @@ public class Ergebnis {
 
     private List<Feature> allFeature;
 
+    /**
+     * Initialisiert ein Ergebnis, indem die Features auf die Listen mustHave, shouldHave, coulHave und WontHave
+     * aufgeteilt werten.
+     *
+     * @param room Der Raum von dem das Ergebnis ertellt werden soll.
+     */
     public Ergebnis(Room room) {
         mustHave = new LinkedList<>();
         shouldHave = new LinkedList<>();
@@ -28,6 +39,9 @@ public class Ergebnis {
         createWontHave();
     }
 
+    /**
+     * Fügt die passenden Features der MustHave Liste hinzu.
+     */
     private void createMustHaves() {
         for (Feature feature : allFeature) {
             if (feature.getRipMean() > 80 && feature.getRipMean() <= 100) {
@@ -38,6 +52,9 @@ public class Ergebnis {
         }
     }
 
+    /**
+     * Fügt die passenden Features der ShouldHave Liste hinzu.
+     */
     private void createShouldHave() {
         for (Feature feature : allFeature) {
             if (feature.getRipMean() <= 80 && feature.getRipMean() > 70 && feature.getBoostMean() <= 80) {
@@ -46,7 +63,6 @@ public class Ergebnis {
                 shouldHave.add(feature);
             }
         }
-
         float gesamtAufwand = 0;
         for (Feature feature1 : mustHave) {
             gesamtAufwand = feature1.getTimeMean() + gesamtAufwand;
@@ -65,6 +81,9 @@ public class Ergebnis {
 
     }
 
+    /**
+     * Fügt die passenden Features der CouldHave Liste hinzu.
+     */
     private void createCouldHave() {
         float gesamtAufwand = 0;
         for (Feature feature1 : mustHave) {
@@ -88,6 +107,9 @@ public class Ergebnis {
         }
     }
 
+    /**
+     * Fügt die passenden Features der WontHave Liste hinzu.
+     */
     private void createWontHave() {
         for (Feature feature : allFeature) {
             if (feature.getRipMean() <= 50 && feature.getBoostMean() <= 50 && feature.getRipMean() >=0) {

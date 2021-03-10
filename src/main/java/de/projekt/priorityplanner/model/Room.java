@@ -7,8 +7,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Ein Raum. Ein Raum besteht aus einer Id, einem Raumnamen, Liste von Features, Liste von Usern und
+ * einem ausgewähltem Feature
+ *
+ * @author Mia Mahncke, Nedim Seroka
+ * @data 14.03.2021
+ */
 @Data
-
 public class Room {
     private int id;
     private String roomName;
@@ -18,6 +24,16 @@ public class Room {
     private de.projekt.priorityplanner.model.MessagePhase event;
     static private int idCount;
 
+    /**
+     * Inizalisiert den Raum.
+     *
+     * @param id Die RaumId
+     * @param roomName Den Raumname
+     * @param features Liste von Features die im Raum eingetragen wurden
+     * @param users Liste von Usern die sich in dem Raum aufhalten.
+     * @param activeFeature Das ausgewählte Feature
+     * @param event Das Event
+     */
     public Room(int id, String roomName,List<Feature> features, List<User> users, Feature activeFeature, MessagePhase event) {
         this.id = id;
         this.roomName = roomName;
@@ -28,6 +44,10 @@ public class Room {
         idCount = 0;
     }
 
+    /**
+     * Gibt eine Liste von Name der User die sich in dem Raum aufhalten
+     * @return Liste von Usernamen in vorm einer Stringliste
+     */
     public List getOnlyUserNames(){
         List<String> userNames = new LinkedList<>();
         for (User user: users) {
@@ -36,27 +56,48 @@ public class Room {
         return userNames;
     }
 
+    /**
+     * Fügt ein User dem Raum hinzu
+     * @param newUser User der hinzugefügt werden soll.
+     */
     public void addUser(User newUser) {
         users.add(newUser);
     }
 
+    /**
+     * Fügt ein Feature dem Raum hinzu
+     * @param newFeature Das neue Feature
+     */
     public void addFeature(Feature newFeature) {
         newFeature.setId(idCount);
         idCount++;
         features.add(newFeature);
     }
 
+    /**
+     * Entfernt ein User aus dem Raum
+     * @param username User der entfernt werden soll
+     */
     public void removeUser(User username) {
         users.remove(username);
     }
 
-
+    /**
+     * Gibt die Anzahl der Votes die bereits für das ausgewählte Feature schon abgestimmt haben
+     * @return Anzahl der Votes
+     */
     public int getNumberOfVotes(){
         if(activeFeature != null){
             return activeFeature.getNumberOfVotes();
         }
         else return 0;
     }
+
+    /**
+     * Setzt das activeFeature auf das Feature welches als Parameter übergeben wird
+     * @param id Id des neuen aktven Feature
+     * @return
+     */
     public Feature selectFeature(int id) {
         for (Feature feature : features) {
             if (feature.equals(id)) {
@@ -67,6 +108,11 @@ public class Room {
         return null;//TODO Fehlerbehandlung
     }
 
+    /**
+     * Gibt ein Feature anhand der Id
+     * @param id Id des gesuchten Features
+     * @return Passendes Feature zur Id
+     */
     public Feature getFeatureById(int id){
         for (Feature feature:features) {
             if (feature.getId() == id){
@@ -77,14 +123,27 @@ public class Room {
         return null;
     }
 
+    /**
+     * Gibt die Id vom Feature
+     * @param feature Das Feature von dem die Id gefordert wird
+     * @return FeatureId als int
+     */
     public int getFeatureId(Feature feature) {
         return idCount;
     }
 
+    /**
+     * Löscht ein Feature aus dem Raum
+     * @param id Id des Feature welches gelöscht werden soll
+     */
     public void deleteFeature(int id) {
         features.remove(getFeatureById(id));
     }
 
+    /**
+     * Gib das nächste Feature des Raumes zurück und setzt das activeFeature neu.
+     * @return das nue activeFeature
+     */
     public Feature getNextFeature() {
         for(Feature f : features){
             if(!(f.getIsVoted()))

@@ -5,6 +5,12 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Die Klasse Result bestimmt die Mittelwerte und Standardabweichungen der Voteliste.
+ *
+ * @author Mia Mahncke, Nedim Seroka
+ * @data 14.03.2021
+ */
 public class Result {
     public float boostMean;
     public float boostStab;
@@ -14,6 +20,10 @@ public class Result {
     public float timeStab;
     private List<Vote> votes;
 
+    /**
+     * Bestimmt die Mittelwerte und Standardabweichungen anhade der Voteliste die als Parameter übergeben wird.
+     * @param votes Eine Voteliste
+     */
     public Result(List votes){
         this.votes = votes;
         setBoostMittel();
@@ -25,7 +35,10 @@ public class Result {
         setTimeStabb();
     }
 
-    public void setBoostMittel() {
+    /**
+     * Setzt den Mittelwerte der Boostfaktoren anhand der Voteliste.
+     */
+    private void setBoostMittel() {
         List<Integer> boostUX = new LinkedList<Integer>();
         List<Integer> boostEntwickler = new LinkedList<Integer>();
         List<Integer> boostManager = new LinkedList<Integer>();
@@ -61,9 +74,6 @@ public class Result {
             mittelManager = sum(boostManager)/zaelerManager;
         }
 
-
-
-
         if(mittelUx == -1 ){
             boostMean = 0.33F * mittelEntw + 0.67F * mittelManager;
             if(mittelEntw == -1){
@@ -88,7 +98,10 @@ public class Result {
         boostMean = round(boostMean,2);
     }
 
-    public void setRipMittel() {
+    /**
+     * Setzt den Mittelwerte der Survivalfactoren anhand der Voteliste.
+     */
+    private void setRipMittel() {
         List<Integer> ripUx = new LinkedList<Integer>();
         List<Integer> ripEntwickler = new LinkedList<Integer>();
         List<Integer> ripManager = new LinkedList<Integer>();
@@ -151,7 +164,10 @@ public class Result {
         ripMean = round(ripMean,2);
     }
 
-    public void setTimeMittel() {
+    /**
+     * Setzt den Mittelwerte der Zeitangaben anhand der Voteliste.
+     */
+    private void setTimeMittel() {
         int gesamt = 0;
         int z = 0;
         for (int i = 0; i < votes.size(); i++) {
@@ -167,7 +183,10 @@ public class Result {
         }
     }
 
-    public void setBoostStabb() {
+    /**
+     * Setzt die Standardabweichung von den Boostfacktoren anhand der Voteliste.
+     */
+    private void setBoostStabb() {
         int[] boostList = new int[votes.size()];
         for (int i = 0; i < votes.size(); i++) {
             boostList[i] = votes.get(i).getBewertung1();
@@ -179,8 +198,10 @@ public class Result {
         }
         boostStab =  round((float) Math.sqrt(devSum/ (boostList.length )),2);
     }
-
-    public void setRipStabb() {
+    /**
+     * Setzt die Standardabweichung von den Survivalfactoren anhand der Voteliste.
+     */
+    private void setRipStabb() {
         int[] ripList = new int[votes.size()];
         for (int i = 0; i < votes.size(); i++) {
             ripList[i] = votes.get(i).getBewertung2();
@@ -193,7 +214,10 @@ public class Result {
         ripStab = round((float) Math.sqrt(devSum/ (ripList.length )),2);
     }
 
-    public void setTimeStabb() {
+    /**
+     * Setzt die Standardabweichung von den Zeiten anhand der Voteliste.
+     */
+    private void setTimeStabb() {
         List<Integer> timeList = new LinkedList<Integer>();
         int gesamt = 0;
         int z = 0;
@@ -223,6 +247,11 @@ public class Result {
 
     }
 
+    /**
+     * Summiert eine Liste.
+     * @param list Eine Liste die Summiert werden soll.
+     * @return Die Summe als Integer
+     */
     public int sum(List<Integer> list) {
         int sum = 0;
 
@@ -231,8 +260,16 @@ public class Result {
 
         return sum;
     }
-    public static float round(float d, int decimalPlace) {
-        BigDecimal bd = new BigDecimal(Float.toString(d));
+
+    /**
+     * Rundet ein Float auf eine bestimmte Nachkommerstelle.
+     *
+     * @param number Die Floatzahl die gerundet werden soll.
+     * @param decimalPlace Anzahl der Nachkommerstellen
+     * @return gerundeter Float
+     */
+    public static float round(float number, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(Float.toString(number));
         bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
         return bd.floatValue();
     }

@@ -5,7 +5,13 @@ import lombok.Data;
 
 import java.util.LinkedList;
 
-// Message send by client
+/**
+ * Die Klasse MessageToServer representiert die Nachricht die vom Client zum Server geschickt wird.
+ * Beihaltet Username, RaumId, FeatureId, Rolle des Users, und den Content als Liste.
+ *
+ * @author Mia Mahncke, Nedim Seroka
+ * @data 14.03.2021
+ */
 @Data
 @AllArgsConstructor
 public class MessageToServer {
@@ -16,8 +22,11 @@ public class MessageToServer {
     private LinkedList<String> content;
     private de.projekt.priorityplanner.model.MessagePhase phase;
 
+    /**
+     * Erstellt eine UserSory aus der Message
+     * @return Eine UserStory die in der Nachricht verschickt weurde
+     */
     public UserStory createUserStory() {
-
         int bewertung1;
         String bew1 = content.get(2);
         bewertung1 = Integer.parseInt(bew1);
@@ -33,6 +42,10 @@ public class MessageToServer {
         return new UserStory(content.get(0), content.get(1),bewertung1,bewertung2, zeit );
     }
 
+    /**
+     * Erstellt ein Vote aus der Message.
+     * @return Eine Bewerung in Form der Klasse Vote
+     */
     public Vote createVote(){
 
         int bewertung1;
@@ -50,15 +63,20 @@ public class MessageToServer {
         return new Vote(username,bewertung1,bewertung2,zeit, MessagePhase.VOTE, roll);
     }
 
+    /**
+     * Gibt den Name des Features, welches in der Nachricht verschickt wurde.
+     * @return Name des Features
+     */
     public String getUserStoryName(){
         return content.get(0);
     }
 
+    /**
+     * Gibt die Beschreibung des Features zurück, welches in der Nachricht verschickt wurde.
+     * @return Beschreibung des Features
+     */
     public String getUserStoryBeschreibung(){
         return content.get(1);
     }
 
-    public UserStory createUserStoryHead() {
-        return new UserStory(content.get(0), content.get(1));
-    }
 }

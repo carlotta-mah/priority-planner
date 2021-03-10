@@ -20,6 +20,11 @@ async function createRoom() {
         .then(r => r.json())
         .catch()
     */
+    roll = document.getElementById("create-rollen").value;
+    if(roll == ""){
+        alert("Please choose your Role");
+        return false;
+    }
     roomName = produktInput.val();
     const Http = new XMLHttpRequest();
     const url = '/create-room/';
@@ -67,7 +72,10 @@ function joinExistingRoom2(roomId){
     if(roomId) {
         username = nameInput.val();
         roll = document.getElementById("joiner-rollen").value;
-
+        if(roll == ""){
+            alert("Please choose your Role");
+            return false;
+        }
         if(username.isEmpty()){
             username = "User";
         }
