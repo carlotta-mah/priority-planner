@@ -1,5 +1,6 @@
 'use strict';
 
+//inizalisiert die Elemente der index.html
 let produktInput = $('#produkt-name');
 let nameInput = $('#joiner-name');
 let roomInput = $('#room-id');
@@ -13,6 +14,9 @@ let username;
 let roomId;
 let roll;
 
+/**
+ * Erstellt ein Neuen Raum
+ */
 // creates a new room and joins it
 async function createRoom() {
     /*
@@ -41,11 +45,14 @@ async function createRoom() {
             joinRoom(roomId);
         }
     }
-
-
 }
 
-// joins a room (switches page with new url)
+/**
+ * Tritt einem neuen Raum bei. Die Id wird übergeben.
+ * Außerdem wird die Seiter zum screen2.html gewechselt
+ *
+ * @param roomId Die RaumID
+ */
 function joinRoom(roomId) {
     if (roomId) {
         username = nameInput.val();
@@ -56,7 +63,7 @@ function joinRoom(roomId) {
             username = "User";
         }
 
-        // store variables for next page (there is other ways to store variables, eg cookies)
+        // Variablen werden im Storage gespeichert damit sie auf der nächsten seite zur verfügung stehen
         sessionStorage.setItem("roomName", roomName);
         sessionStorage.setItem("roomId", roomId);
         sessionStorage.setItem("username", username);
@@ -68,6 +75,11 @@ function joinRoom(roomId) {
     }
 }
 
+/**
+ * Tritt eine alten Raum bei
+ *
+ * @param roomId  Die RaumId
+ */
 function joinExistingRoom2(roomId){
     if(roomId) {
         username = nameInput.val();
@@ -107,16 +119,26 @@ function joinExistingRoom2(roomId){
         }
     }
 }
+
+/**
+ * Prüft ob das Eingabefeld für den Username leer ist.
+ * @returns {boolean} Wenn leer dann true, sonst false
+ */
 String.prototype.isEmpty = function() {
     return (this.length === 0 || !this.trim());
 };
 
-//aktiviert die Enter taste zum betreten des Raumes
+/**
+ * aktiviert die Enter taste zum betreten des Raumes
+ */
 function creatRoomByEnter(){
     if(event.key === 'Enter') {
         createRoom();
     }
 }
+/**
+ * aktiviert die Enter taste zum betreten des Raumes
+ */
 function joinRoomByEnter(idInTest){
     if(event.key === 'Enter') {
         joinExistingRoom2(idInTest.value);

@@ -1,13 +1,17 @@
 $(document).foundation()
 
+
+/**
+ * Diese Funktion sorgt dafür das nur Zahlen erkant werden
+ * @param evt Das Event
+ */
 function validate(evt) {
     var theEvent = evt || window.event;
 
-    // Handle paste
     if (theEvent.type === 'paste') {
         key = event.clipboardData.getData('text/plain');
     } else {
-        // Handle key press
+        // wenn eine Taste gedrückt wird
         var key = theEvent.keyCode || theEvent.which;
         key = String.fromCharCode(key);
     }
@@ -17,6 +21,11 @@ function validate(evt) {
         if(theEvent.preventDefault) theEvent.preventDefault();
     }
 }
+
+/**
+ * Aktiviert bzw. deaktiviert ein Object. Wenn "none" dann wird es auf "block" gesetzt sonst auf "none"
+ * @param open Das Object welches deaktiviert / Aktiviert werden soll
+ */
 function toggleElement(open) {
 
     if (open.style.display === "none") {

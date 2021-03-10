@@ -22,7 +22,14 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
-// Controller for creating a room and adding a user to it
+/**
+ * Ein RoomController reguliert die Komunikation von Client und Server.
+ * Die Klasse sorgt also dafür das Räume richtige erstellt und User richtig hinzugefügt werden.
+ * Änderungen auf Clientseite wird hier entgegen genommen verarbeitet und weitergeleitet.
+ *
+ * @author Mia Mahncke, Nedim Seroka
+ * @data 14.03.2021
+ */
 @Slf4j
 @Controller
 public class RoomController {
@@ -32,7 +39,11 @@ public class RoomController {
     @Autowired
     private SimpMessageSendingOperations messagingTemplate;
 
-    // creates a new room and returns roomId
+    /**
+     * Erstellt ein Neuen Raum und gibt die RoomId zurück
+     * @param produktName Der Name des zu entwerfenden Produkt oder auch Name des Raums
+     * @return Die RaumId
+     */
     @ResponseBody
     @RequestMapping("/create-room")
     public int createRoom(@RequestHeader("produktName") String produktName) {
@@ -41,16 +52,20 @@ public class RoomController {
         return roomId;
     }
 
-
+    /**
+     * Fügt ein User einem Raum hinzu und updatet alle anderen Clients duch eine update Message
+     *
+     * @param roomId Die RaumId
+     * @param user Der User der hinzugefügt werden soll
+     * @param message Die Nachricht die vom Client geschickt worden ist
+     * @param headerAccessor Header der Nachricht
+     */
     // adds a username to a room and sends a updateMessage to all users of that room
     @MessageMapping("/room/{roomId}/addUser")
     public void addUser(@DestinationVariable int roomId, Principal user, @Payload MessageToServer message,
                         SimpMessageHeaderAccessor headerAccessor) {
-        //int room = message.getRoomId();
         boolean admin = false;
-        //int id=  roomId;
         // TODO: add username to actual Database
-        // String s = generateUniqueName(message.getUsername(), Database.getUsernames(roomId));
         String s = message.getUsername();
         Database.addUser(roomId, s, message.getRoll());
 
@@ -68,18 +83,26 @@ public class RoomController {
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
+   /*
     @MessageMapping("/room/{roomId}/addTest")
     @SendTo("/topic/update")
     public void test(@DestinationVariable int roomId, Principal user, @Payload MessageToServer message,
                      @Header("simpSessionId") String sessionId) {
-//        return new MessageToClient(
-//                MessagePhase.UPDATE, Database.getUsernames(roomId), null, false, Database.getUserStories(roomId));
         MessageToClient out = new MessageToClient(
                 MessagePhase.UPDATE, Database.getUsernames(roomId), null, false, Database.getFeatures(roomId));
         simpMessagingTemplate.convertAndSend("/feature/queue/" + roomId, out);
 
     }
+*/
 
+    /**
+     * Sendet auf Nachfrage die aktuellen Ergebnisse an die Clients über die ergebnis Queue.
+     * Das Ergebnis beinhaltet die einteilung in
+     * mustHave, shouldHave, couldHave und wontHave;
+     *
+     * @param roomId Die RaumId
+     * @param headerAccessor Header der Client Nachricht
+     */
     @MessageMapping("/room/{roomId}/ergebnis")
     public void sendEgebnis(@DestinationVariable int roomId,
                             SimpMessageHeaderAccessor headerAccessor) {
@@ -92,7 +115,13 @@ public class RoomController {
         messagingTemplate.convertAndSend("/queue/ergebnis/" + roomId, ergebnis);
     }
 
-
+    /**
+     * Verwaltet das Hinzufügen und Löschen von Features über die Feature Queue.
+     * Die Datenbank wird dementsprechend angepasst
+     * @param roomId Die RaumId
+     * @param feature Das Feature welches hinzugefügt oder gelöscht werden soll
+     * @param headerAccessor Header der Nachricht
+     */
     @MessageMapping("/room/{roomId}/addFeature")
     public void addFeature(@DestinationVariable int roomId, @Payload Feature feature,
                            SimpMessageHeaderAccessor headerAccessor) {
@@ -112,6 +141,13 @@ public class RoomController {
         }
     }
 
+    /**
+     * Sendet auf Nachfrage das Aktuelle Result an die Clients über die Queue.
+     * Das Result beinhaltet sämtliche Mittelwerte und Standdardabweichungen
+     *
+     * @param roomId Die RaumId
+     * @param featureId Header der Client Nachricht
+     */
     @MessageMapping("room/{roomId}/result")
     public void getResult(@DestinationVariable int roomId, @Payload int featureId) {
         Feature feature = Database.getRoom(roomId).getFeatureById(featureId);
@@ -121,6 +157,14 @@ public class RoomController {
 
     }
 
+    /**
+     * Verwaltet die Votes. Es wird zwichen den Fällen ADDVOTE, VOTE, VOTEAGAIN und NEXT unterschieden.
+     * Die Clientseite wird entsprechen der Fälle synchronisiert.
+     * @param roomId Die RaumId
+     * @param message Die Nachricht vom Clienten
+     * @param headerAccessor Header der Nachricht
+     * @throws IOException
+     */
     @MessageMapping("/room/{roomId}/sendMessage")
     @SendTo("/queue/{roomId}")
     public void sendMessage(@DestinationVariable int roomId, @Payload MessageToServer message,
@@ -160,6 +204,10 @@ public class RoomController {
         }
     }
 
+    /**
+     * Befasst sich mit dem Fall das ein Feature zum Voten ausgewählt wird.
+     * @param message Die Nachricht vom Client
+     */
     public void selectVotingFeature(MessageToServer message) {
         int roomId = message.getRoomId();
         Feature selectedFeature = Database.selectFeature(roomId, message.getFeatureId());
@@ -178,19 +226,12 @@ public class RoomController {
 
     }
 
-    public void allSend(int c, int room) {
-        if (c == 0) {
-            mergeStories(room);
-        }
-    }
-
-    public void mergeStories(int room) {
-        // update all clients in room
-        MessageToClient messageC = new MessageToClient(
-                MessagePhase.MERGE, Database.getFeatures(room), null, false, Database.getFeatures(room));
-        messagingTemplate.convertAndSend("/queue/" + room, messageC);
-    }
-
+    /**
+     * Wenn ein Client Nachricht forciert werden soll
+     * @param roomId Die RaumId
+     * @param message Die Nachricht vom Clienten
+     * @param headerAccessor Header der Nachricht
+     */
     @MessageMapping("/room/{roomId}/forceSend")
     private void forceSend(@DestinationVariable String roomId, @Payload MessageToServer message,
                            SimpMessageHeaderAccessor headerAccessor) {
@@ -202,12 +243,4 @@ public class RoomController {
         messagingTemplate.convertAndSend("/queue/" + room, messageC);
     }
 
-    private MessageHeaders createHeaders(String sessionId) {
-        SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor
-                .create(SimpMessageType.MESSAGE);
-        headerAccessor.setSessionId(sessionId);
-        headerAccessor.setLeaveMutable(true);
-        return headerAccessor.getMessageHeaders();
-
-    }
 }

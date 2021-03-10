@@ -4,7 +4,6 @@ let usernames = $('#usernames');
 let voteButton = $('#voteButton');
 let nextButton = $('#next');
 let votingpanel = $('#voting-panel')
-//let addButton = $('#addToVoteButton');
 let ergebnisButton = $('#ergebnis');
 let bewertungButton = $('#ergebnis2');
 let backButton = $('#back');
@@ -18,37 +17,42 @@ let invitehinttext = $('#invite-hint-text')
 
 
 let featureBar;
-
 let mustHaveTime;
 let mustHaveAnzahl;
 let featureAnzahl;
 
-let projektName;
+//algemeine Variablen
 let username;
 let roomId;
 let topic;
 let currentSubscription;
 let stompClient;
 let admin;
-let userStories;
 let send;
 const userStoryBoardDiv = document.getElementById("userStoryBoard");
 
+//diagramm
 let ctxDognut;
 let myDognutChart
 
-let boostList = [];
 let ripList = [];
 let timeList = [];
 
 
-// connect via websocket with server for bidirectional communication
+/**
+ * Verbindung über Websocket mit Server für die Kommunikation
+ */
 function connect() {
     let socket = new SockJS('/ws');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, onConnected, onError);
 }
 
+/**
+ * Bearbeitet den Fall wenn sich die Fatures in der Datenbank ändern
+ *
+ * @param payload Feature welches hinzugefügt bzw. gelöscht werden soll.
+ */
 function onFeatureReceived(payload) {
     let message = JSON.parse(payload.body);
     switch (message.event) {
@@ -64,7 +68,9 @@ function onFeatureReceived(payload) {
     }
 }
 
-// subscribe to websocket channel corresponding to roomId to receive messages from server
+/**
+ * Abonnieren den Websocket-Kanal, der der roomId entspricht, um Nachrichten vom Server zu empfangen
+ */
 function registerInRoom() {
     // TODO: popup window or something to set a username in case user didn't come from start window
 
@@ -82,6 +88,10 @@ function registerInRoom() {
     // TODO: receive everything and show, meanwhile hide everything
 }
 
+/**
+ * Wenn sich das Ergebgnis in der Datenbank ändert sich das durch diese Funktion auch im Client
+ * @param payload Das aktuelle Ergebnis
+ */
 function onErgebnisReceived(payload) {
     let message = JSON.parse(payload.body);
     mustHaveAnzahl = 0;
@@ -140,6 +150,7 @@ function onErgebnisReceived(payload) {
     document.getElementById("diagramBeschreibung").appendChild(diagramBeschreibung);
 
 
+    //aktualisiert das Diagramm
     myDognutChart.data = {
         datasets: [{
             data: [document.getElementById("mustHaveTable").rows.length - 1,
@@ -160,21 +171,32 @@ function onErgebnisReceived(payload) {
     myDognutChart.update();
 }
 
-// called when websocket connection is set up
+/**
+ * wird aufgerufen, wenn eine Websocket-Verbindung aufgebaut wird
+ */
 function onConnected() {
     registerInRoom()
 }
 
-// called when websocket connection failed
+/**
+ * wird aufgerufen, wenn eine Websocket-Verbindung fehlschlägt
+ */
 function onError() {
     // TODO: something like go back to main page or show error page
     window.location.href = "";
 }
 
+/**
+ * gibt die aktuelle Id wider und erhöt den idGenerator um 1
+ * @returns {number} aktuelle Id
+ */
 function getId() {
     return idGenerator++;
 }
 
+/**
+ * versteckt die Votes
+ */
 function hideVotes() {
     let voteList = document.getElementsByClassName("test");
     Array.prototype.forEach.call(voteList, function (voteElement) {
@@ -184,11 +206,11 @@ function hideVotes() {
     Array.prototype.forEach.call(userList, function (user) {
         user.classList.remove("hasVoted");
     });
-
-
 }
 
-
+/**
+ * Resettet die VotingPanels auf die default werte
+ */
 function resetVotingPanel() {
     let inputs = $(".slider");
     inputs.each(function () {
@@ -201,17 +223,19 @@ function resetVotingPanel() {
     document.querySelector("#zeit").value = 0;
 }
 
+/**
+ * Makiert die User die schon gevoted hat
+ * @param user der zu makierende User
+ */
 function updateUserVote(user) {
     document.getElementById(user).classList.add('hasVoted');
 }
 
+/**
+ * updatet eine einzelne Stimme
+ * @param vote Der Vote der geupdatet werden soll
+ */
 function updateVote(vote) {
-    // var boostIcon = new Image(30, 30);
-    // var ripIcon = new Image(30, 30);
-    // var timeIcon = new Image(30, 30);
-    // boostIcon.src = "../img/astronaut.svg";
-    // ripIcon.src = "../img/tombstone.svg";
-    // timeIcon.src = "../img/uhr-2.svg";
     let userdiv = document.getElementById(vote.user);
     let votediv = userdiv.childNodes[1];
     votediv.innerHTML = "";
@@ -221,23 +245,20 @@ function updateVote(vote) {
 
     votediv.setAttribute("class", "test");
     vote1p.innerText = vote.bewertung1;
-    // vote1p.appendChild(boostIcon);
-    // votediv.appendChild(boostIcon);
     votediv.appendChild(vote1p);
     vote2p.innerText = vote.bewertung2;
-    // votediv.appendChild(ripIcon);
     votediv.appendChild(vote2p);
     vote3p.innerText = vote.zeit;
     votediv.appendChild(vote3p)
 
-    // votediv.innerHTML = boostIcon+ vote.bewertung1 +
-    //     " RIP:" + vote.bewertung2 + " Zeit:" + vote.zeit;
-
     updateUserVote(vote.user);
-    //   userdiv.append(bewertungsP)
     userdiv.classList.add("hasVoted");
 }
 
+/**
+ * udatet alle Votes
+ * @param votes Liste von Votes
+ */
 function updateVotes(votes) {
 
     votes.forEach(
@@ -247,22 +268,32 @@ function updateVotes(votes) {
     )
 }
 
+/**
+ * Macht die Votes auf Clientseite sichtbar
+ */
 function showVotes() {
     let voteList = document.getElementsByClassName("test");
     Array.prototype.forEach.call(voteList, function (voteElement) {
         voteElement.style.display = "inline-block";
     });
 
-
 }
 
+/**
+ * Setzt das Feature welches bewertet werden soll
+ * @param title Der Titel
+ * @param description die Beschreibung
+ * @param id Die Id der Features
+ */
 function setSelectedFeature(title, description, id) {
     document.getElementById("selected-feature-name").innerText = title;
     document.getElementById("selected-feature-descr").innerText = description;
-    //document.getElementById(""+message.id).classList.add("selected-feature");
     featureBar.select(id);
 }
 
+/**
+ * Resettet das Zwischenergebnis. Die Rot hinterlegten Felder werden entfernt
+ */
 function resetResult() {
     document.getElementById("result").style.display = "none";
     document.getElementById("voting").style.display = "block";
@@ -271,7 +302,10 @@ function resetResult() {
     document.getElementById("time-res").classList.remove("bigDif");
 }
 
-// called when server calls
+/**
+ * Reagiert auf die Serverbefehle
+ * @param payload Nachricht vom Server
+ */
 function onMessageReceived(payload) {
     let message = JSON.parse(payload.body);
 
@@ -338,11 +372,17 @@ function onMessageReceived(payload) {
     }
 }
 
-function enableButton() {//welcher button???
+/**
+ * aktiviert den Button zum Voten
+ */
+function enableButton() {
     document.getElementById('voteButton').disabled = false;
     document.getElementById('voteButton').classList.add("button");
 }
 
+/**
+ * Fragt den Server nach dem aktuellem Result
+ */
 function requestResult() {
     if (stompClient) {
         message = selectetFeature;
@@ -352,6 +392,10 @@ function requestResult() {
     send = true;
 }
 
+/**
+ * Setzt das Zwischenergebnis
+ * @param feature das Feature welcher bewertet werden soll
+ */
 function setResult(feature) {
     document.getElementById("result").style.display = "block";
     document.getElementById("voting").style.display = "none";
@@ -379,22 +423,19 @@ function setResult(feature) {
     document.getElementById(feature.id).classList.add("wurdeBewertet");
 }
 
+/**
+ * große schwankungen in der Bewertungen wird ture wenn die Standardabweicher größer ist als 10 %
+ * @param messeage Standardabweichung
+ * @returns {boolean} ist der Unterschied zu groß dann true, sonst false
+ */
 function bigDif(messeage) {
     return 10 < messeage;
 }
 
-// function forceSend() {
-//     let message = {
-//         username: username,
-//         userStories: null,
-//         roomId: roomId,
-//         phase: 'FORCE_SEND'
-//     }
-//
-//     stompClient.send(`${topic}/forceSend`, {}, JSON.stringify(message));
-// }
-
-
+/**
+ * Löscht ein Feature und benachrichtigt den Server
+ * @param featureId Die Feature Id
+ */
 function deleteFeature(featureId) {
     let message = {
         featureId: featureId,
@@ -403,7 +444,10 @@ function deleteFeature(featureId) {
     stompClient.send(`${topic}/feature`, {}, JSON.stringify(message));
 }
 
-// update usernames when new user has been added
+/**
+ * Updatet die User die sich in diesem Raum befinden wenn ein neuer User beitrit
+ * @param users
+ */
 function updateUsernames(users) {
     usernames.empty();
     users.forEach(
@@ -418,8 +462,6 @@ function updateUsernames(users) {
             userdiv.id = username;
             userdiv.classList.add("userDiv");
             usernamep.classList.add("user")
-            // userdiv.classList.add("user");
-            //userdiv.innerHTML += username;
             userdiv.append(usernamep);
             userdiv.append(uservotep);
             usernames.append(userdiv);
@@ -427,7 +469,10 @@ function updateUsernames(users) {
     )
 }
 
-// fill board after merge
+/**
+ * Befüllt das Board im dem ausgewählten Feature. Hier als UserStory implementiert
+ * @param userStories Das Aktuelle Feature
+ */
 function fillBoard(userStories) {
     userStoryBoard.empty();
     userStories.forEach(
@@ -435,6 +480,9 @@ function fillBoard(userStories) {
     )
 }
 
+/**
+ * Sendet die Bewertung vom Server an den Client
+ */
 function sendBewertung() {
     let bewertung;
 
@@ -463,8 +511,11 @@ function sendBewertung() {
 
 }
 
+/**
+ * Sendet die Bewertung von einem Feature welches schon Bewertet worden ist. Damit der Server die Bewertung
+ * überschreiben kann.
+ */
 function sendBewertungAgain() {
-    console.log("test")
     if (stompClient) {
         let message = {
             featureId: selectetFeature,
@@ -477,6 +528,15 @@ function sendBewertungAgain() {
 
 }
 
+/**
+ * Fügt einer Ergebnistabelle ein Feature hinzu
+ * @param tableId Id von der Tabelle die erweiter werden soll
+ * @param name Name des Features
+ * @param beschreibung beschreibung des Features
+ * @param boost Boost Wert
+ * @param rip Rip wert
+ * @param time Aufwand in Tagen
+ */
 function addToTable(tableId, name, beschreibung, boost, rip, time) {
     var rowLength = document.getElementById(tableId).rows.length;
     var table = document.getElementById(tableId);
@@ -493,6 +553,9 @@ function addToTable(tableId, name, beschreibung, boost, rip, time) {
     cell5.innerHTML = time;
 }
 
+/**
+ * Aktualisiert das Ergebnis auf Serverseite
+ */
 function setErgebnis() {
     if (stompClient) {
         let message = {
@@ -503,6 +566,9 @@ function setErgebnis() {
     send = true;
 }
 
+/**
+ * wechselt von Bewertungsansicht zur Ergebnisansicht und wieder zurück
+ */
 function zeigErgebnis() {
     setErgebnis();
 
@@ -518,6 +584,11 @@ function zeigErgebnis() {
     }
 }
 
+/**
+ * wechselt zur Tabelle auf dem der Knopf gedrückt wurde
+ * @param evt von der Tabelle
+ * @param tableName Name der Tabelle
+ */
 function openTable(evt, tableName) {
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tabcontent");
@@ -538,12 +609,11 @@ $(function () {
 });
 
 $(document).ready(function () {
-    // get session variables
+    // ruft session variables  auf und setzt funktionen für die Buttons
     roomId = parseInt(sessionStorage.getItem("roomId"));
     username = sessionStorage.getItem("username");
     roomName = sessionStorage.getItem("roomName");
     roll = sessionStorage.getItem("roll");
-
     usernames.append(`<div>${username}</div>`);
     console.log(username);
     console.log(roll);
@@ -576,12 +646,7 @@ $(document).ready(function () {
     } else {
         document.getElementById("zeit").value = 0;
     }
-    // let ripbar = document.getElementById("rip-bar")
-    // var myBarChart = new Chart(ripbar, {
-    //     type: 'bar',
-    //     data: [12],
-    //     options: {}
-    // });
+
     //diagramm
     let data = {
         datasets: [{

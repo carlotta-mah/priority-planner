@@ -1,13 +1,18 @@
-
+/**
+ * Die Klasse UserStory beinhaltet ein Namen, eine Beschreibung und eine Id
+ *
+ * @author Mia Mahncke, Nedim Seroka
+ * @date 14.03.202
+ */
 class UserStory{
-
-
      constructor(name, beschreibung, id) {
          this._name = name;
          this._beschreibung = beschreibung;
          this._id = id;
      }
 
+
+     //Getter und Setter der Klasse
      get id(){
          return this._id;
      }
