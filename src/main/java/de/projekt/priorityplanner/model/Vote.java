@@ -27,18 +27,34 @@ public class Vote {
         this.roll = rolle;
     }
 
+    /**
+     * gibt den Usernamen zurück der gevotet hat
+     * @return name des Users
+     */
     public String getUser() {
         return user;
     }
 
+    /**
+     * gibt den Boostfaktor zurück (erster Bewertungspunkt)
+     * @return Den Boostfaktor
+     */
     public int getBewertung1() {
         return bewertung1;
     }
 
+    /**
+     * gibt den Survivalfactor zurück (zweiter Bewertungspunkt)
+     * @return Den Survivalfactor
+     */
     public int getBewertung2() {
         return bewertung2;
     }
 
+    /**
+     * Gibt die geschätzt zeit wieder
+     * @return Die Zeit
+     */
     public int getZeit() {
         return zeit;
     }
