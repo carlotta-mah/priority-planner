@@ -7,7 +7,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -33,7 +32,7 @@ class PriorityPlannerApplicationTests {
 		Database.n = 0;
 		Database.addRoom("ROOM");
 		IntStream.range(0, 1000)
-				.forEach(count -> Database.addUsername(1,"xy"+count, "Entwickler"));
+				.forEach(count -> Database.addUser(1,"xy"+count, "Entwickler"));
 		assertEquals(1000, Database.getRoom(1).getUsers().size());
 		IntStream.range(0, 1000)
 				.forEach(count -> Database.removeUser(1,"xy"+count));
@@ -43,7 +42,7 @@ class PriorityPlannerApplicationTests {
 	void addAndRemoveUsers(){
 		Database.n = 0;
 		Database.addRoom("ROOM");
-		Database.addUsername(1,"xy", "Entwickler");
+		Database.addUser(1,"xy", "Entwickler");
 		List<String> names = Database.getUsernames(1);
 		assertTrue(names.contains("xy"));
 		assertEquals(1, Database.getRoom(1).getUsers().size());
@@ -56,16 +55,16 @@ class PriorityPlannerApplicationTests {
 	void nameGenTest(){
 		Database.n = 0;
 		Database.addRoom("ROOM");
-		Database.addUsername(1,"xy", "Entwickler");
+		Database.addUser(1,"xy", "Entwickler");
 		assertFalse(Database.generateUniqueName("xy", 1).equals("xy"));
 	}
 	@Test
 	void createFeatures(){
 		Database.n = 0;
 		Database.addRoom("ROOM");
-		Database.addUsername(1,"xy", "Entwickler");
+		Database.addUser(1,"xy", "Entwickler");
 		Feature f = new Feature("Test", "Test", MessagePhase.FEATURE);
-		Database.addUserStory(1, f);
+		Database.addFeature(1, f);
 		assertEquals(1, Database.getRoom(1).getFeatures().size());
 		assertTrue(Database.getRoom(1).getFeatures().contains(f));
 		Database.deleteFeature(1, f.getId() );
@@ -76,9 +75,9 @@ class PriorityPlannerApplicationTests {
 	void voteTest(){
 		Database.n = 0;
 		Database.addRoom("ROOM");
-		Database.addUsername(1,"xy", "Entwickler");
+		Database.addUser(1,"xy", "Entwickler");
 		Feature f = new Feature("Test", "Test", MessagePhase.FEATURE);
-		Database.addUserStory(1, f);
+		Database.addFeature(1, f);
 		Database.addVote(new Vote("xy",1,1,1, MessagePhase.VOTE, "Entwickler"), 1, f.getId());
 		assertEquals(1, Database.getRoom(1).getFeatureById(f.getId()).getVotes().size());
 	}

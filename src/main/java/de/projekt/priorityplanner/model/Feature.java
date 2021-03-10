@@ -10,7 +10,7 @@ import java.util.*;
  * Voteliste und aus den Mittelwertuen und Standardabweichung.
  *
  * @author Mia Mahncke, Nedim Seroka
- * @data 14.03.2021
+ * @date 14.03.2021
  */
 @Data
 public class Feature {

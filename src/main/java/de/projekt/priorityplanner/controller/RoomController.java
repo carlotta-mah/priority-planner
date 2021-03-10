@@ -3,11 +3,9 @@ package de.projekt.priorityplanner.controller;
 import de.projekt.priorityplanner.Database;
 import de.projekt.priorityplanner.model.*;
 import lombok.extern.slf4j.Slf4j;
-import org.jsoup.Jsoup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.*;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -55,13 +52,7 @@ public class RoomController {
         // TODO: add username to actual Database
         // String s = generateUniqueName(message.getUsername(), Database.getUsernames(roomId));
         String s = message.getUsername();
-        Database.addUsername(roomId, s, message.getRoll());
-
-        // add Admin
-        if (Database.adminNull(roomId)) {
-            Database.setAdmin(roomId, headerAccessor.getSessionId());
-            admin = true;
-        }
+        Database.addUser(roomId, s, message.getRoll());
 
 
         headerAccessor.getSessionAttributes().put("username", s);
@@ -71,15 +62,6 @@ public class RoomController {
         Room room = Database.getRoom(roomId);
         room.setEvent(MessagePhase.ADDED_USER);
         messagingTemplate.convertAndSend("/queue/" + roomId, room);
-
-        // update all clients in room
-//        MessageToClient messageC = new MessageToClient(
-//                MessagePhase.ADDED_USER, Database.getUsernames(roomId), null, admin, Database.getUserStories(roomId));
-//        messagingTemplate.convertAndSend("/queue/" + roomId, messageC);
-
-//        MessageToClient messageS = new MessageToClient(
-//                MessagePhase.UPDATE, Database.getUsernames(roomId), null, admin, Database.getUserStories(roomId));
-//        messagingTemplate.convertAndSend("/queue/" + user, messageS);
 
     }
 
@@ -93,7 +75,7 @@ public class RoomController {
 //        return new MessageToClient(
 //                MessagePhase.UPDATE, Database.getUsernames(roomId), null, false, Database.getUserStories(roomId));
         MessageToClient out = new MessageToClient(
-                MessagePhase.UPDATE, Database.getUsernames(roomId), null, false, Database.getUserStories(roomId));
+                MessagePhase.UPDATE, Database.getUsernames(roomId), null, false, Database.getFeatures(roomId));
         simpMessagingTemplate.convertAndSend("/feature/queue/" + roomId, out);
 
     }
@@ -114,15 +96,11 @@ public class RoomController {
     @MessageMapping("/room/{roomId}/addFeature")
     public void addFeature(@DestinationVariable int roomId, @Payload Feature feature,
                            SimpMessageHeaderAccessor headerAccessor) {
-        if (Database.adminNull(roomId)) {
-            // TODO fehlermeldung
-        }
         switch (feature.getEvent()) {
-            // SEND Phase: add user stories to Database
             case FEATURE:
                 feature.setBoostMean(-1);
                 feature.setRipMean(-1);
-                Database.addUserStory(roomId, feature);
+                Database.addFeature(roomId, feature);
                 feature.setEvent(MessagePhase.FEATURE);
                 messagingTemplate.convertAndSend("/queue/feature/" + roomId, feature);
                 break;
@@ -209,7 +187,7 @@ public class RoomController {
     public void mergeStories(int room) {
         // update all clients in room
         MessageToClient messageC = new MessageToClient(
-                MessagePhase.MERGE, Database.getUserStories(room), null, false, Database.getUserStories(room));
+                MessagePhase.MERGE, Database.getFeatures(room), null, false, Database.getFeatures(room));
         messagingTemplate.convertAndSend("/queue/" + room, messageC);
     }
 
@@ -220,7 +198,7 @@ public class RoomController {
 
         // update all clients in room
         MessageToClient messageC = new MessageToClient(
-                MessagePhase.FORCE_SEND, null, null, false, Database.getUserStories(room));
+                MessagePhase.FORCE_SEND, null, null, false, Database.getFeatures(room));
         messagingTemplate.convertAndSend("/queue/" + room, messageC);
     }
 
