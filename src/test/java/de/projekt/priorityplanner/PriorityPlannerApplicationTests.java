@@ -3,6 +3,7 @@ package de.projekt.priorityplanner;
 import de.projekt.priorityplanner.model.Feature;
 import de.projekt.priorityplanner.model.MessagePhase;
 import de.projekt.priorityplanner.model.Vote;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -71,6 +72,7 @@ class PriorityPlannerApplicationTests {
 		assertEquals(0, Database.getRoom(1).getFeatures().size());
 	}
 	@Test
+	@DisplayName("voteTest adding votes")
 	void voteTest(){
 		Database.n = 0;
 		Database.addRoom("ROOM");
