@@ -2,6 +2,13 @@ package de.projekt.priorityplanner.model;
 
 import lombok.Data;
 
+/**
+ * Ein Vote. Ein Vote besteht aus einem Username als String, drei bewertungs Faktoren (bewertung 1, bewertung2, zeit)
+ * und der Rolle des Users
+ *
+ * @author Mia Mahncke, Nedim Seroka
+ * @data 14.03.2021
+ */
 @Data
 public class Vote {
     private String user;

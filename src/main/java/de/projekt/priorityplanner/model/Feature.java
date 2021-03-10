@@ -7,6 +7,13 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Ein Feature. Ein Feature besteht aus einem Titel, einer Beschreibung, einer
+ * Voteliste und aus den Mittelwertuen und Standardabweichung.
+ *
+ * @author Mia Mahncke, Nedim Seroka
+ * @data 14.03.2021
+ */
 @Data
 public class Feature {
     private String title;
@@ -22,6 +29,14 @@ public class Feature {
     private float timeStab;
     private Boolean isVoted = false;
 
+    /**
+     * Initalisiert das Feature. Titel und Beschreibung werden festgesetzt. Die Mittelwerte und Standardabweichung
+     * werten zu beginn auf 0 gesetzt.
+     *
+     * @param title Der Titel oder Name des Features
+     * @param description Eine Beschreibung des Features
+     * @param phase Die Phase in der man sich gerade bei der Komunikation befindet.
+     */
     public Feature(String title, String description, MessagePhase phase) {
         this.event = phase;
         this.title = title;
@@ -35,6 +50,11 @@ public class Feature {
         this.timeStab = 0;
     }
 
+    /**
+     * Fügt der Vote liste ein Vote hinzu.
+     *
+     * @param vote Eine Bewertung des Features
+     */
     public void addVote(Vote vote) {
         String voteName = vote.getUser();
         for (Vote voteVonList : votes) {
@@ -45,14 +65,27 @@ public class Feature {
         votes.add(vote);
     }
 
+    /**
+     * Gibt die Liste der Votes zurück.
+     * @return Voteliste. Behinhaltet alle Votes des Features
+     */
     public List<Vote> getVotes() {
         return votes;
     }
 
+    /**
+     * Gibt die Anzahl der Votes zurück
+     * @return Anzahl der Votes
+     */
     public int getNumberOfVotes() {
         return votes.size();
     }
 
+    /**
+     * Vertleicht zwei Features anhand der id.
+     * @param id Die Feature Id.
+     * @return true wenn die Id gleich ist, sonst false
+     */
     public boolean equals(int id) {
         if (this.id == id) {
             return true;
@@ -61,12 +94,17 @@ public class Feature {
         }
     }
 
+    /**
+     * Leert die Voteliste.
+     */
     public void resetVote(){
         votes.clear();
         this.isVoted = false;
     }
 
-
+    /**
+     * Berechnet alle Mittelwerte und Standardabweichungen mit hilfe der Result Klasse.
+     */
     public void calculateResult(){
         Result res = new Result(votes);
         this.boostMean = res.boostMean;
