@@ -25,8 +25,9 @@ class featureSidebar {
     }
 
 
-
     unselectAllFeatures() {
+        $(".selected-feature button.primary").text("Vote now");
+        $(".selected-feature button.primary").removeClass("voting");
         let featureList = document.getElementsByClassName("featureList");
         Array.prototype.forEach.call(featureList, function (featureElement) {
             featureElement.classList.remove("selected-feature");
@@ -35,12 +36,14 @@ class featureSidebar {
     }
 
     select(featureId) {
-        if(selectetFeature==null){
+        if (selectetFeature == null) {
             toggleElement(document.getElementById("greeting"))
             toggleElement(document.getElementById("voting-panel"))
         }
         selectetFeature = featureId;
         document.getElementById("" + featureId).classList.add("selected-feature");
+        $(".selected-feature button.primary").text("voting");
+        $(".selected-feature button.primary").addClass("voting");
         document.getElementById("" + featureId).classList.remove("wurdeBewertet");
     }
 
@@ -91,10 +94,10 @@ class featureSidebar {
         });
         newDiv.appendChild(button);
         var deleteButton = document.createElement("button");
-        deleteButton.innerHTML ="<i class=\"fas fa-trash-alt\"></i>";
+        deleteButton.innerHTML = "<i class=\"fas fa-trash-alt\"></i>";
         deleteButton.classList.add("delete-button");
         deleteButton.setAttribute("aria-labelledby", myId);
-        deleteButton.addEventListener("click", function (){
+        deleteButton.addEventListener("click", function () {
             that.sendDeleteFeature(this.getAttribute("aria-labelledby"));
         })
         newDiv.appendChild(deleteButton);
@@ -102,18 +105,23 @@ class featureSidebar {
         userStoryInput.val("");
         beschreibungInput.val("");
     }
+
     clearBoard() {
         userStoryBoardDiv.empty();
     }
 
     setButtonToRevote() {
-        let identifier = "#"+selectetFeature;
-        let featureButton = $("#select-" + selectetFeature );
-        featureButton.html("Vote again")
-        featureButton.click(sendBewertungAgain);
+        let featureButton = $("#select-" + selectetFeature);
+        $(".selected-feature button.primary").removeClass("voting");
+        featureButton.text("Vote again")
+        featureButton.click(function () {
+            selectetFeature = this.id;
+            sendBewertungAgain();
+
+        });
     }
 
-    addNextVote(){
+    addNextVote() {
         if (stompClient) {
             let message = {
                 phase: 'NEXT'
@@ -123,6 +131,7 @@ class featureSidebar {
         }
         send = true;
     }
+
     addBewertung(userstory) {
         let bewertung
 
@@ -153,8 +162,9 @@ class featureSidebar {
             }
         )
     }
-    deleteFeature(id){
-        if(selectetFeature === id){
+
+    deleteFeature(id) {
+        if (selectetFeature === id) {
             toggleElement(document.getElementById("greeting"));
             toggleElement(document.getElementById("voting-panel"));
             resetResult();
@@ -182,14 +192,16 @@ class featureSidebar {
         send = true;
 
     }
-    sendDeleteFeature(featureId){
+
+    sendDeleteFeature(featureId) {
         let message = {
-            id : featureId,
+            id: featureId,
             phase: 'DELETE'
         }
         stompClient.send(`${topic}/addFeature`, {}, JSON.stringify(message));
     }
-    showOpenInputButton(){
+
+    showOpenInputButton() {
         let open = document.getElementById("open-feature-input-row");
         let close = document.getElementById("feature-input-row");
         open.style.display = "block";
@@ -198,8 +210,8 @@ class featureSidebar {
     }
 
     cancelInput() {
-        document.getElementById("userStoryInput").value ="";
-        document.getElementById("beschreibungInput").value="";
+        document.getElementById("userStoryInput").value = "";
+        document.getElementById("beschreibungInput").value = "";
         let open = document.getElementById("open-feature-input-row");
         let input = document.getElementById("feature-input-row");
         toggleElement(open);

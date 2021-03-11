@@ -15,8 +15,10 @@ function validate(evt) {
         var key = theEvent.keyCode || theEvent.which;
         key = String.fromCharCode(key);
     }
-    var regex = /[0-9]/;
-    if( !regex.test(key) ) {
+    var regex = /^[0-9]*$/;
+    // var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if( !regex.test(key)) {
+    // if(((charCode > 31 && (charCode < 48 || charCode > 57)))){
         theEvent.returnValue = false;
         if(theEvent.preventDefault) theEvent.preventDefault();
     }

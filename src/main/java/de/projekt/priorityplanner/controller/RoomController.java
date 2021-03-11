@@ -54,7 +54,6 @@ public class RoomController {
     @MessageMapping("/room/{roomId}/addUser")
     public void addUser(@DestinationVariable int roomId, @Payload MessageToServer message,
                         SimpMessageHeaderAccessor headerAccessor) {
-        // TODO: add username to actual Database
         String s = message.getUsername();
         Database.addUser(roomId, s, message.getRoll());
 

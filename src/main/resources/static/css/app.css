@@ -49,6 +49,9 @@ input, textarea, select {
     border-color: #031F33;
     border-radius: 0.6em;
 }
+.selected-feature button.voting, .selected-feature button.voting:hover, .selected-feature button.voting:focus {
+    background-color: var(--unselect-grey)!important;
+}
 
 .featureList h4, .featureList p {
     line-height: 1;

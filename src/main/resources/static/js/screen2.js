@@ -72,8 +72,6 @@ function onFeatureReceived(payload) {
  * Abonnieren den Websocket-Kanal, der der roomId entspricht, um Nachrichten vom Server zu empfangen
  */
 function registerInRoom() {
-    // TODO: popup window or something to set a username in case user didn't come from start window
-
     currentSubscription = stompClient.subscribe(`/user/queue/${roomId}`, onMessageReceived);
     currentSubscription = stompClient.subscribe(`/queue/${roomId}`, onMessageReceived);
     currentSubscription = stompClient.subscribe(`/queue/feature/${roomId}`, onFeatureReceived);
@@ -84,8 +82,6 @@ function registerInRoom() {
         {},
         JSON.stringify({username: username, roomId: roomId, roll: roll})
     );
-
-    // TODO: receive everything and show, meanwhile hide everything
 }
 
 /**
@@ -182,16 +178,7 @@ function onConnected() {
  * wird aufgerufen, wenn eine Websocket-Verbindung fehlschlägt
  */
 function onError() {
-    // TODO: something like go back to main page or show error page
-    window.location.href = "";
-}
-
-/**
- * gibt die aktuelle Id wider und erhöt den idGenerator um 1
- * @returns {number} aktuelle Id
- */
-function getId() {
-    return idGenerator++;
+    window.location.href = window.location.protocol + "//" + window.location.host;
 }
 
 /**
@@ -326,10 +313,7 @@ function onMessageReceived(payload) {
             featureBar.updateFeatures(message.userStories);
             break;
         case 'ADDVOTE':
-            //TODO:maybe check if feature is new
             featureBar.unselectAllFeatures();
-            $('.user')
-            //TODO rename elements!
             document.getElementById('selected-feature-name').value = message.title;
             document.getElementById('selected-feature-descr').value = message.description;
             document.getElementById("" + message.id).classList.add("selected-feature");
@@ -355,7 +339,6 @@ function onMessageReceived(payload) {
         case 'ALLVOTED':
             updateVote(message);
             showVotes();
-            //Todo: change votebutton of selected feature
             featureBar.setButtonToRevote();
             requestResult();
             break;
@@ -608,8 +591,13 @@ $(function () {
     $("#userStoryBoard").disableSelection();
 });
 
+
 $(document).ready(function () {
     // ruft session variables  auf und setzt funktionen für die Buttons
+    if(sessionStorage.getItem("roomId")== null || sessionStorage.getItem("username") == null || sessionStorage.getItem("roll")== null ){
+        alert("I am sorry, but you need to enter through the login page");
+        window.location.href = window.location.protocol + "//" + window.location.host;
+    }
     roomId = parseInt(sessionStorage.getItem("roomId"));
     username = sessionStorage.getItem("username");
     roomName = sessionStorage.getItem("roomName");

@@ -45,7 +45,6 @@ public class PageController {
      */
     @RequestMapping("/room/{roomId}")
     public String roomPage(@PathVariable("roomId") int roomId) {
-        // TODO: check in actual Database if roomId exists
         if(Database.containsRoom(roomId)) {
             return "screen2";
         }
