@@ -100,8 +100,8 @@ public class Database {
     }
 
     public static void removeRoom(int roomId) {
-            rooms1.remove(roomId);
-            counters.remove(roomId);
+        rooms1.remove(roomId);
+        counters.remove(roomId);
     }
 
     /**
@@ -131,14 +131,9 @@ public class Database {
      * @param roomId
      * @return Raum mit RaumID roomId
      */
-    static public Room getRoom(int roomId) {
+    static public Room getRoom(int roomId) throws NullPointerException {
         Room room = rooms1.get(roomId);
-        if (room != null) {
-            return room;
-        } else {
-            //TODO Exception
-        }
-        return null; //TODO remove this
+        return room;
     }
 
     /**
@@ -185,10 +180,10 @@ public class Database {
      * @param featureId ID des Features das aktiv gesetzt wird
      * @return das aktive Feature
      */
-    public static Feature selectFeature(int roomId, int featureId) throws NullPointerException{
+    public static Feature selectFeature(int roomId, int featureId) throws NullPointerException {
 
-            Room room = rooms1.get(roomId);
-            return room.selectFeature(featureId);
+        Room room = rooms1.get(roomId);
+        return room.selectFeature(featureId);
 
     }
 

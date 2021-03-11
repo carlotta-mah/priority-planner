@@ -150,7 +150,6 @@ public class RoomController {
     public void sendMessage(@DestinationVariable int roomId, @Payload MessageToServer message,
                             SimpMessageHeaderAccessor headerAccessor) throws IOException {
         int room = message.getRoomId();
-        String sessionId = headerAccessor.getSessionId();
 
         switch (message.getPhase()) {
             case ADDVOTE:
@@ -166,8 +165,12 @@ public class RoomController {
                 messagingTemplate.convertAndSend("/queue/" + room, vote);
                 break;
             case VOTEAGAIN:
-                Database.getRoom(message.getRoomId()).getFeatureById(message.getFeatureId()).resetVote();
-                selectVotingFeature(message);
+                try{
+                    Database.getRoom(message.getRoomId()).getFeatureById(message.getFeatureId()).resetVote();
+                    selectVotingFeature(message);
+                }catch (NullPointerException e){
+                    log.error("feature not found", e );
+                }
                 break;
             case NEXT:
                 Feature f = Database.getNextFeature(roomId);
@@ -195,12 +198,7 @@ public class RoomController {
 
             feature.add(selectedFeature.getTitle());
             feature.add(selectedFeature.getDescription());
-            //feature.add(selectedFeature.getId());
 
-
-            MessageToClient messageD = new MessageToClient(
-                    MessagePhase.ADDVOTE, feature);
-            //messagingTemplate.convertAndSend("/queue/" + roomId, messageD);
             messagingTemplate.convertAndSend("/queue/" + roomId, selectedFeature);
         }
         catch (NullPointerException e){
