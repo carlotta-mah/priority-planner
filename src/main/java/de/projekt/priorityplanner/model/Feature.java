@@ -49,17 +49,22 @@ public class Feature {
     }
 
     /**
-     * Fügt der Vote liste ein Vote hinzu.
+     * Fügt der Voteliste ein Vote hinzu.
      *
      * @param vote Eine Bewertung des Features
      */
     public synchronized void addVote(Vote vote) {
         String voteName = vote.getUser();
+        /*
         for (Vote voteVonList : votes) {
             if (voteVonList.getUser().equalsIgnoreCase(voteName)) {
                 votes.remove(voteVonList);
             }
         }
+        */
+
+        votes.removeIf(vote1 -> vote1.getUser().equalsIgnoreCase(voteName));
+
         votes.add(vote);
     }
 

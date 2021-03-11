@@ -80,20 +80,6 @@ public class RoomController {
 
     }
 
-    @Autowired
-    private SimpMessagingTemplate simpMessagingTemplate;
-
-   /*
-    @MessageMapping("/room/{roomId}/addTest")
-    @SendTo("/topic/update")
-    public void test(@DestinationVariable int roomId, Principal user, @Payload MessageToServer message,
-                     @Header("simpSessionId") String sessionId) {
-        MessageToClient out = new MessageToClient(
-                MessagePhase.UPDATE, Database.getUsernames(roomId), null, false, Database.getFeatures(roomId));
-        simpMessagingTemplate.convertAndSend("/feature/queue/" + roomId, out);
-
-    }
-*/
 
     /**
      * Sendet auf Nachfrage die aktuellen Ergebnisse an die Clients über die ergebnis Queue.
@@ -224,23 +210,6 @@ public class RoomController {
         //messagingTemplate.convertAndSend("/queue/" + roomId, messageD);
         messagingTemplate.convertAndSend("/queue/" + roomId, selectedFeature);
 
-    }
-
-    /**
-     * Wenn ein Client Nachricht forciert werden soll
-     * @param roomId Die RaumId
-     * @param message Die Nachricht vom Clienten
-     * @param headerAccessor Header der Nachricht
-     */
-    @MessageMapping("/room/{roomId}/forceSend")
-    private void forceSend(@DestinationVariable String roomId, @Payload MessageToServer message,
-                           SimpMessageHeaderAccessor headerAccessor) {
-        int room = message.getRoomId();
-
-        // update all clients in room
-        MessageToClient messageC = new MessageToClient(
-                MessagePhase.FORCE_SEND, null, null, false, Database.getFeatures(room));
-        messagingTemplate.convertAndSend("/queue/" + room, messageC);
     }
 
 }
