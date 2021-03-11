@@ -26,21 +26,7 @@ public class MessageToServer {
      * Erstellt eine UserSory aus der Message
      * @return Eine UserStory die in der Nachricht verschickt weurde
      */
-    public UserStory createUserStory() {
-        int bewertung1;
-        String bew1 = content.get(2);
-        bewertung1 = Integer.parseInt(bew1);
 
-        int bewertung2;
-        String bew2 = content.get(3);
-        bewertung2 = Integer.parseInt(bew2);
-
-        int zeit;
-        String z = content.get(4);
-        zeit = Integer.parseInt(z);
-
-        return new UserStory(content.get(0), content.get(1),bewertung1,bewertung2, zeit );
-    }
 
     /**
      * Erstellt ein Vote aus der Message.

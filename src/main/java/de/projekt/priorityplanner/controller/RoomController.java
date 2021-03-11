@@ -178,8 +178,6 @@ public class RoomController {
                 break;
             case VOTE:
                 Vote vote = message.createVote();
-                String userStoryName = message.getUserStoryName();
-                String userStoryBeschreibung = message.getUserStoryBeschreibung();
                 int raumId = message.getRoomId();
                 Database.addVote(vote, raumId, message.getFeatureId());
                 if (Database.allVoted(raumId)) {
