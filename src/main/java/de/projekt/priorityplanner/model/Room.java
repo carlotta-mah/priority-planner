@@ -172,5 +172,13 @@ public class Room {
         }
         return null;
     }
+
+    /**
+     * gibt an ob die User liste leer ist
+     * @return größe der user liste
+     */
+    public boolean isEmpty() {
+        return(users.size()==0);
+    }
 }
 
