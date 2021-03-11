@@ -3,11 +3,13 @@ package de.projekt.priorityplanner;
 import de.projekt.priorityplanner.model.Feature;
 import de.projekt.priorityplanner.model.MessagePhase;
 import de.projekt.priorityplanner.model.Vote;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,77 +17,115 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class PriorityPlannerApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
-	@Test
-	void parallelDatabaseCreateRoom(){
-		Database.n = 0;
-		IntStream.range(0, 1000)
-				.forEach(count ->
-						Database.addRoom(""+ count)
-				);
-		assertEquals(1000, Database.n);
-	}
-	@Test
-	void parallelAddUsers(){
-		Database.n = 0;
-		Database.addRoom("ROOM");
-		IntStream.range(0, 1000)
-				.forEach(count -> Database.addUser(1,"xy"+count, "Entwickler"));
-		assertEquals(1000, Database.getRoom(1).getUsers().size());
-		IntStream.range(0, 1000)
-				.forEach(count -> Database.removeUser(1,"xy"+count));
-		assertEquals(0, Database.getRoom(1).getUsers().size());
-	}
-	@Test
-	void addAndRemoveUsers(){
-		Database.n = 0;
-		Database.addRoom("ROOM");
-		Database.addUser(1,"xy", "Entwickler");
-		List<String> names = Database.getUsernames(1);
-		assertTrue(names.contains("xy"));
-		assertEquals(1, Database.getRoom(1).getUsers().size());
-		Database.removeUser(1, "xy");
-		names = Database.getUsernames(1);
-		assertFalse(names.contains("xy"));
-		assertEquals(0, Database.getRoom(1).getUsers().size());
-	}
-	@Test
-	void nameGenTest(){
-		Database.n = 0;
-		Database.addRoom("ROOM");
-		Database.addUser(1,"xy", "Entwickler");
-		assertFalse(Database.generateUniqueName("xy", 1).equals("xy"));
-	}
-	@Test
-	void createFeatures(){
-		Database.n = 0;
-		Database.addRoom("ROOM");
-		Database.addUser(1,"xy", "Entwickler");
-		Feature f = new Feature("Test", "Test", MessagePhase.FEATURE);
-		Database.addFeature(1, f);
-		assertEquals(1, Database.getRoom(1).getFeatures().size());
-		assertTrue(Database.getRoom(1).getFeatures().contains(f));
-		Database.deleteFeature(1, f.getId() );
-		assertEquals(0, Database.getRoom(1).getFeatures().size());
-	}
-	@Test
-	@DisplayName("voteTest adding votes")
-	void voteTest(){
-		Database.n = 0;
-		Database.addRoom("ROOM");
-		Database.addUser(1,"xy", "Entwickler");
-		Feature f = new Feature("Test", "Test", MessagePhase.FEATURE);
-		Database.addFeature(1, f);
-		Database.addVote(new Vote("xy",1,1,1, MessagePhase.VOTE, "Entwickler"), 1, f.getId());
-		assertEquals(1, Database.getRoom(1).getFeatureById(f.getId()).getVotes().size());
-	}
+    @BeforeEach
+    void resetDB() {
+        Database.n = 0;
+        Database.rooms1 = new ConcurrentHashMap();
+        Database.counters = new ConcurrentHashMap();
+    }
 
-	@Test
-	public void createRoom() throws Exception {
+    @Test
+    void contextLoads() {
+    }
 
-	}
+    @Test
+    void parallelDatabaseCreateRoom() {
+        Database.n = 0;
+        IntStream.range(0, 1000)
+                .forEach(count ->
+                        Database.addRoom("" + count)
+                );
+        assertEquals(999, Database.n);
+    }
+
+    @Test
+    void parallelAddUsers() {
+        Database.n = 0;
+        Database.addRoom("ROOM");
+        IntStream.range(0, 1000)
+                .forEach(count -> Database.addUser(0
+                        , "xy" + count, "Entwickler"));
+        assertEquals(1000, Database.getRoom(0
+        ).getUsers().size());
+        IntStream.range(0, 1000)
+                .forEach(count -> Database.removeUser(0
+                        , "xy" + count));
+        assertFalse(Database.containsRoom(0));
+    }
+
+    @Test
+    void addAndRemoveUsers() {
+        Database.addRoom("ROOM");
+        Database.addUser(0, "xy", "Entwickler");
+        List<String> names = Database.getUsernames(0);
+        assertTrue(names.contains("xy"));
+        assertEquals(1, Database.getRoom(0).getUsers().size());
+        Database.removeUser(0, "xy");
+        assertFalse(Database.containsRoom(0));
+    }
+
+    @Test
+    void nameGenTest() {
+        Database.n = 0;
+        Database.addRoom("ROOM");
+        Database.addUser(0
+                , "xy", "Entwickler");
+        assertFalse(Database.generateUniqueName("xy", 0
+        ).equals("xy"));
+    }
+
+    @Test
+    void createFeatures() {
+        Database.n = 0;
+        Database.addRoom("ROOM");
+        Database.addUser(0
+                , "xy", "Entwickler");
+        Feature f = new Feature("Test", "Test", MessagePhase.FEATURE);
+        Database.addFeature(0
+                , f);
+        assertEquals(1
+                , Database.getRoom(0
+                ).getFeatures().size());
+        assertTrue(Database.getRoom(0
+        ).getFeatures().contains(f));
+        Database.deleteFeature(0
+                , f.getId());
+        assertEquals(0, Database.getRoom(0
+        ).getFeatures().size());
+    }
+
+    @Test
+    @DisplayName("voteTest adding votes")
+    void voteTest() {
+        Database.n = 0;
+        Database.addRoom("ROOM");
+        Database.addUser(0, "xy", "Entwickler");
+        Feature f = new Feature("Test", "Test", MessagePhase.FEATURE);
+        Database.addFeature(0
+                , f);
+        Database.addVote(new Vote("xy", 0
+                        , 0
+                        , 0
+                        , MessagePhase.VOTE, "Entwickler"), 0
+                , f.getId());
+        assertEquals(1
+                , Database.getRoom(0
+                ).getFeatureById(f.getId()).getVotes().size());
+    }
+
+    @Test
+    void createAndDeleteRoom() {
+        Database.n = 0;
+        Database.addRoom("ROOM");
+        Database.addUser(0, "xy", "Entwickler");
+        assertTrue(Database.containsRoom(0));
+        Database.removeUser(0, "xy");
+        assertFalse(Database.containsRoom(0));
+        Database.addRoom("ROOM2");
+        Database.containsRoom(1);
+    }
+
+
 //	@Test
 //	void parallelRemoveUsers(){
 //	}
