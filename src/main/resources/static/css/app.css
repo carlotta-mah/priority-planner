@@ -710,3 +710,7 @@ th{
 .fas fa-cog{
     font-size:15px;
 }
+.menu.text-left{
+    text-align: left;
+    align-items: baseline;
+}
