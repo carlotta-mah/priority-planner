@@ -228,7 +228,7 @@ function resetVotingPanel() {
  * @param user der zu makierende User
  */
 function updateUserVote(user) {
-    document.getElementById(user).classList.add('hasVoted');
+    document.getElementById("user-"+user).classList.add('hasVoted');
 }
 
 /**
@@ -236,7 +236,7 @@ function updateUserVote(user) {
  * @param vote Der Vote der geupdatet werden soll
  */
 function updateVote(vote) {
-    let userdiv = document.getElementById(vote.user);
+    let userdiv = document.getElementById("user-"+vote.user);
     let votediv = userdiv.childNodes[1];
     votediv.innerHTML = "";
     let vote1p = document.createElement("p");
@@ -459,7 +459,7 @@ function updateUsernames(users) {
             uservotep.classList.add("vote");
             uservotep.style.display = "none";
 
-            userdiv.id = username;
+            userdiv.id = "user-"+username;
             userdiv.classList.add("userDiv");
             usernamep.classList.add("user")
             userdiv.append(usernamep);

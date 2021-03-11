@@ -64,7 +64,6 @@ public class RoomController {
         log.info("Received greeting message {}", message);
 
         Room room = Database.getRoom(roomId);
-        assert room != null;
         room.setEvent(MessagePhase.ADDED_USER);
         messagingTemplate.convertAndSend("/queue/" + roomId, room);
 
@@ -207,23 +206,6 @@ public class RoomController {
         catch (NullPointerException e){
             log.error("Active feature was null", e);
         }
-    }
-
-    /**
-     * Wenn ein Client Nachricht forciert werden soll
-     * @param roomId Die RaumId
-     * @param message Die Nachricht vom Clienten
-     * @param headerAccessor Header der Nachricht
-     */
-    @MessageMapping("/room/{roomId}/forceSend")
-    private void forceSend(@DestinationVariable String roomId, @Payload MessageToServer message,
-                           SimpMessageHeaderAccessor headerAccessor) {
-        int room = message.getRoomId();
-
-        // update all clients in room
-        MessageToClient messageC = new MessageToClient(
-                MessagePhase.FORCE_SEND, null, null, false, Database.getFeatures(room));
-        messagingTemplate.convertAndSend("/queue/" + room, messageC);
     }
 
 }
