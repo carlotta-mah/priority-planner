@@ -3,6 +3,7 @@ package de.projekt.priorityplanner.controller;
 import de.projekt.priorityplanner.Database;
 import de.projekt.priorityplanner.model.MessagePhase;
 import de.projekt.priorityplanner.model.MessageToClient;
+import de.projekt.priorityplanner.model.User;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
@@ -40,7 +41,7 @@ public class WebSocketEventListener {
         if ((username != null) && (roomId != null)) {
             logger.info("User Disconnected: " + username);
 
-            List<String> users= Database.removeUser(roomId, username);
+            List<User>users= Database.removeUser(roomId, username);
             MessageToClient message = new MessageToClient(MessagePhase.LEAVE, users, null, false, null);
             messagingTemplate.convertAndSend("/queue/" + roomId, message);
 

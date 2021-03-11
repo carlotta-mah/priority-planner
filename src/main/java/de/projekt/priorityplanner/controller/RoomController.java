@@ -4,15 +4,19 @@ import de.projekt.priorityplanner.Database;
 import de.projekt.priorityplanner.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.*;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.messaging.simp.SimpMessageType;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -31,9 +35,11 @@ public class RoomController {
 
     @Autowired
     private SimpMessageSendingOperations messagingTemplate;
-
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
     /**
      * Erstellt ein Neuen Raum und gibt die RoomId zurück
+     *
      * @param produktName Der Name des zu entwerfenden Produkt oder auch Name des Raums
      * @return Die RaumId
      */
@@ -46,8 +52,8 @@ public class RoomController {
     /**
      * Fügt ein User einem Raum hinzu und updatet alle anderen Clients duch eine update Message
      *
-     * @param roomId Die RaumId
-     * @param message Die Nachricht die vom Client geschickt worden ist
+     * @param roomId         Die RaumId
+     * @param message        Die Nachricht die vom Client geschickt worden ist
      * @param headerAccessor Header der Nachricht
      */
     // adds a username to a room and sends a updateMessage to all users of that room
@@ -73,7 +79,7 @@ public class RoomController {
      * Das Ergebnis beinhaltet die einteilung in
      * mustHave, shouldHave, couldHave und wontHave;
      *
-     * @param roomId Die RaumId
+     * @param roomId         Die RaumId
      * @param headerAccessor Header der Client Nachricht
      */
     @MessageMapping("/room/{roomId}/ergebnis")
@@ -93,8 +99,9 @@ public class RoomController {
     /**
      * Verwaltet das Hinzufügen und Löschen von Features über die Feature Queue.
      * Die Datenbank wird dementsprechend angepasst
-     * @param roomId Die RaumId
-     * @param feature Das Feature welches hinzugefügt oder gelöscht werden soll
+     *
+     * @param roomId         Die RaumId
+     * @param feature        Das Feature welches hinzugefügt oder gelöscht werden soll
      * @param headerAccessor Header der Nachricht
      */
     @MessageMapping("/room/{roomId}/addFeature")
@@ -120,7 +127,7 @@ public class RoomController {
      * Sendet auf Nachfrage das Aktuelle Result an die Clients über die Queue.
      * Das Result beinhaltet sämtliche Mittelwerte und Standdardabweichungen
      *
-     * @param roomId Die RaumId
+     * @param roomId    Die RaumId
      * @param featureId Header der Client Nachricht
      */
     @MessageMapping("room/{roomId}/result")
@@ -130,24 +137,27 @@ public class RoomController {
             feature.calculateResult();
             feature.setEvent(MessagePhase.RESULT);
             messagingTemplate.convertAndSend("/queue/" + roomId, feature);
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             log.error("Feature was null", e);
         }
 
     }
 
+
     /**
      * Verwaltet die Votes. Es wird zwichen den Fällen ADDVOTE, VOTE, VOTEAGAIN und NEXT unterschieden.
      * Die Clientseite wird entsprechen der Fälle synchronisiert.
-     * @param roomId Die RaumId
-     * @param message Die Nachricht vom Clienten
-     * @param headerAccessor Header der Nachricht
+     *
+     * @param roomId         Die RaumId
+     * @param message        Die Nachricht vom Clienten
+//     * @param headerAccessor Header der Nachricht
      * @throws IOException
      */
     @MessageMapping("/room/{roomId}/sendMessage")
     @SendTo("/queue/{roomId}")
-    public void sendMessage(@DestinationVariable int roomId, @Payload MessageToServer message,
-                            SimpMessageHeaderAccessor headerAccessor) throws IOException {
+//    SimpMessageHeaderAccessor headerAccessor
+    public void sendMessage(@DestinationVariable int roomId, @Payload MessageToServer message
+                            , @Header("simpSessionId") String sessionId) throws IOException {
         int room = message.getRoomId();
 
         switch (message.getPhase()) {
@@ -164,11 +174,11 @@ public class RoomController {
                 messagingTemplate.convertAndSend("/queue/" + room, vote);
                 break;
             case VOTEAGAIN:
-                try{
+                try {
                     Database.getRoom(message.getRoomId()).getFeatureById(message.getFeatureId()).resetVote();
                     selectVotingFeature(message);
-                }catch (NullPointerException e){
-                    log.error("feature not found", e );
+                } catch (NullPointerException e) {
+                    log.error("feature not found", e);
                 }
                 break;
             case NEXT:
@@ -181,11 +191,26 @@ public class RoomController {
                     messagingTemplate.convertAndSend("/queue/" + roomId, nullMessage);
                 }
                 break;
+            case REMOVE:
+                Database.removeUser(roomId, message.getUsername());
+                MessageToClient out = new MessageToClient(MessagePhase.REMOVE,
+                        Database.getUsernames(roomId));
+                messagingTemplate.convertAndSend("/queue/reply/"+roomId, out);
+//                String username = message.getUsername();
+//                log.info("want to remove user "+username);
+//                SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.create(SimpMessageType.MESSAGE);
+//                headerAccessor.setSessionId(sessionId);
+//                simpMessagingTemplate.convertAndSendToUser(sessionId, "/queue/reply", username);
+                break;
         }
     }
 
+
+
+
     /**
      * Befasst sich mit dem Fall das ein Feature zum Voten ausgewählt wird.
+     *
      * @param message Die Nachricht vom Client
      */
     public void selectVotingFeature(MessageToServer message) {
@@ -199,8 +224,7 @@ public class RoomController {
             feature.add(selectedFeature.getDescription());
 
             messagingTemplate.convertAndSend("/queue/" + roomId, selectedFeature);
-        }
-        catch (NullPointerException e){
+        } catch (NullPointerException e) {
             log.error("Active feature was null", e);
         }
     }

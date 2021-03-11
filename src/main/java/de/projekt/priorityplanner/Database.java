@@ -165,14 +165,19 @@ public class Database {
      * @param roomId   raumID von Raum aus dem User entfernt wird
      * @param username Name des User der entfernt wird
      * @return Liste der verbleibenden User
-     */
-    public static synchronized List<String> removeUser(int roomId, String username) {
+//     */
+//    public static synchronized List<String> removeUser(int roomId, String username) {
+//        Room room = rooms1.get(roomId);
+//        room.removeUser(username);
+//        reduceCounter(roomId);
+//        return room.getOnlyUserNames();
+//    }
+    public static synchronized List<User> removeUser(int roomId, String username) {
         Room room = rooms1.get(roomId);
         room.removeUser(username);
         reduceCounter(roomId);
-        return room.getOnlyUserNames();
+        return room.getUsers();
     }
-
     /**
      * Setzt das feature mit FeatureID featureid aktiv
      *
@@ -197,10 +202,13 @@ public class Database {
     public static synchronized String generateUniqueName(String name, int roomId) {
         String s = name;
         int i = 1;
-        while (getUsernames(roomId).contains(s + i)) {
-            i++;
+        if (rooms1.get(roomId).getOnlyUserNames().contains(s)) {
+            while (getUsernames(roomId).contains(s + i)) {
+                i++;
+            }
+            return s + i;
         }
-        return s + i;
+        return s;
     }
 
     /**

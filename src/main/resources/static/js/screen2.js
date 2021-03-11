@@ -37,13 +37,13 @@ let myDognutChart
 
 let ripList = [];
 let timeList = [];
-
+let socket
 
 /**
  * Verbindung über Websocket mit Server für die Kommunikation
  */
 function connect() {
-    let socket = new SockJS('/ws');
+    socket = new SockJS('/ws');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, onConnected, onError);
 }
@@ -68,6 +68,17 @@ function onFeatureReceived(payload) {
     }
 }
 
+function onRemove(payload) {
+    let message = JSON.parse(payload.body);
+    let usernames = message.userStories;
+    if (!usernames.includes(username)) {
+        alert("you are removed from room");
+        socket.close();
+        window.location.href = window.location.protocol + "//" + window.location.host;
+    }
+
+}
+
 /**
  * Abonnieren den Websocket-Kanal, der der roomId entspricht, um Nachrichten vom Server zu empfangen
  */
@@ -76,6 +87,7 @@ function registerInRoom() {
     currentSubscription = stompClient.subscribe(`/queue/${roomId}`, onMessageReceived);
     currentSubscription = stompClient.subscribe(`/queue/feature/${roomId}`, onFeatureReceived);
     currentSubscription = stompClient.subscribe(`/queue/ergebnis/${roomId}`, onErgebnisReceived);
+    currentSubscription = stompClient.subscribe(`/queue/reply/${roomId}`, onRemove);
 
 
     stompClient.send(`${topic}/addUser`,
@@ -215,7 +227,7 @@ function resetVotingPanel() {
  * @param user der zu makierende User
  */
 function updateUserVote(user) {
-    document.getElementById("user-"+user).classList.add('hasVoted');
+    document.getElementById("user-" + user).classList.add('hasVoted');
 }
 
 /**
@@ -223,7 +235,7 @@ function updateUserVote(user) {
  * @param vote Der Vote der geupdatet werden soll
  */
 function updateVote(vote) {
-    let userdiv = document.getElementById("user-"+vote.user);
+    let userdiv = document.getElementById("user-" + vote.user);
     let votediv = userdiv.childNodes[1];
     votediv.innerHTML = "";
     let vote1p = document.createElement("p");
@@ -289,6 +301,71 @@ function resetResult() {
     document.getElementById("time-res").classList.remove("bigDif");
 }
 
+function updateUserTable(users) {
+    $('#remove-table > tbody').empty();
+    users.forEach(user => {
+        let username = user.name;
+        let role = user.roll;
+        let deleteButton = $("<button>&times;</button>");
+        // let tr1 = $("<tr></tr>");
+        // let td = $("<td></td>");
+        // td.append()
+        // tr.append(username);
+        // tr.append(deleteButton);
+        deleteButton.click(function () {
+            if (stompClient) {
+                let message = {
+                    username: username,
+                    roomId: this.roomId,
+                    featureId: 0,
+                    roll: "",
+                    content: ["", ""],
+                    phase: 'REMOVE'
+                }
+                stompClient.send(`${topic}/sendMessage`, {}, JSON.stringify(message));
+            }
+            send = true;
+        });
+
+        $("#remove-table").find('tbody')
+            .append($('<tr>')
+                .append($('<td>')
+                    .append(username)
+                )
+                .append($('<td>')
+                    .append(role)
+                )
+                .append($('<td>')
+                    .append(deleteButton)
+                )
+            );
+    })
+}
+
+function updateUsernamesUsers(users) {
+    usernames.empty();
+    users.forEach(
+        user => {
+            let username = user.username;
+            let userdiv = document.createElement("div");
+            let uservotep = document.createElement("div");
+            let usernamep = document.createElement("p");
+            usernamep.innerText = username;
+            uservotep.classList.add("vote");
+            uservotep.style.display = "none";
+
+            userdiv.id = "user-" + username;
+            userdiv.classList.add("userDiv");
+            usernamep.classList.add("user")
+            userdiv.append(usernamep);
+            userdiv.append(uservotep);
+            usernames.append(userdiv);
+
+        }
+    )
+
+}
+
 /**
  * Reagiert auf die Serverbefehle
  * @param payload Nachricht vom Server
@@ -299,6 +376,7 @@ function onMessageReceived(payload) {
     switch (message.event) {
         case 'ADDED_USER':
             updateUsernames(message.onlyUserNames);
+            updateUserTable(message.users);
             featureBar.updateFeatures(message.features);
             if (message.activeFeature != null) {
                 document.getElementById('selected-feature-name').value = message.activeFeature.title;
@@ -330,7 +408,8 @@ function onMessageReceived(payload) {
             votingShown = true;
             break;
         case 'LEAVE':
-            updateUsernames(message.usernames);
+            updateUsernamesUsers(message.usernames);
+            updateUserTable(message.usernames);
             break;
         case 'VOTE':
             //updateUserVote(message.user, message.bewertung1, message.bewertung2, message.zeit);
@@ -422,10 +501,11 @@ function bigDif(messeage) {
 function deleteFeature(featureId) {
     let message = {
         featureId: featureId,
-        phase: DELETE
+        phase: 'DELETE'
     }
     stompClient.send(`${topic}/feature`, {}, JSON.stringify(message));
 }
+
 
 /**
  * Updatet die User die sich in diesem Raum befinden wenn ein neuer User beitrit
@@ -442,12 +522,13 @@ function updateUsernames(users) {
             uservotep.classList.add("vote");
             uservotep.style.display = "none";
 
-            userdiv.id = "user-"+username;
+            userdiv.id = "user-" + username;
             userdiv.classList.add("userDiv");
             usernamep.classList.add("user")
             userdiv.append(usernamep);
             userdiv.append(uservotep);
             usernames.append(userdiv);
+
         }
     )
 }
@@ -508,7 +589,6 @@ function sendBewertungAgain() {
         stompClient.send(`${topic}/sendMessage`, {}, JSON.stringify(message));
     }
     send = true;
-
 }
 
 /**
@@ -594,7 +674,7 @@ $(function () {
 
 $(document).ready(function () {
     // ruft session variables  auf und setzt funktionen für die Buttons
-    if(sessionStorage.getItem("roomId")== null || sessionStorage.getItem("username") == null || sessionStorage.getItem("roll")== null ){
+    if (sessionStorage.getItem("roomId") == null || sessionStorage.getItem("username") == null || sessionStorage.getItem("roll") == null) {
         alert("I am sorry, but you need to enter through the login page");
         window.location.href = window.location.protocol + "//" + window.location.host;
     }

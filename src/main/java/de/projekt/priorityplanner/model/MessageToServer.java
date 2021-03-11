@@ -22,11 +22,6 @@ public class MessageToServer {
     private LinkedList<String> content;
     private de.projekt.priorityplanner.model.MessagePhase phase;
 
-    /**
-     * Erstellt eine UserSory aus der Message
-     * @return Eine UserStory die in der Nachricht verschickt weurde
-     */
-
 
     /**
      * Erstellt ein Vote aus der Message.

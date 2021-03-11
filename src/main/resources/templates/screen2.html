@@ -48,7 +48,7 @@
             </div>
             <div class="grid-x grid-padding-x">
                 <div class="cell large-3">
-                    <h3 class="team-h">Team</h3>
+                    <h3 class="team-h">Team <a data-open="removeModal"><i class="fas fa-cog"></i></a></h3>
                     <div id="usernames"></div>
                 </div>
                 <div class="cell large-6">
@@ -109,7 +109,8 @@
 
                             <label for="zeit" id="zeitLabel" style="display:none">
                                 How many days for the implementation?</label>
-                            <input type="text" id="zeit" name="zeit" value="0" style="display:none" onkeypress='validate(event)'>
+                            <input type="text" id="zeit" name="zeit" value="0" style="display:none"
+                                   onkeypress='validate(event)'>
 
                             <button class="addMore primary button" title="erst Feature zum Voten hinzufügen"
                                     id="voteButton" disabled>
@@ -236,74 +237,74 @@
             </div>
         </div>
 
-    <div class="grid-container diagram">
+        <div class="grid-container diagram">
 
-        <h1 class="diagramUeberschrift">Your Features</h1>
-        <div class="grid-x grid-padding-x">
-            <div id="diagramBeschreibung" class="large-4">
+            <h1 class="diagramUeberschrift">Your Features</h1>
+            <div class="grid-x grid-padding-x">
+                <div id="diagramBeschreibung" class="large-4">
 
+                </div>
+                <div class="large-8">
+                    <canvas id="myDognutChart" style="width: 500px; height: 200px;"></canvas>
+                </div>
             </div>
-            <div class="large-8">
-                <canvas id="myDognutChart" style="width: 500px; height: 200px;"></canvas>
-            </div>
+
+            <button class="button primary" id="back">back</button>
+        </div>
+        <!-- Tab überschriften-->
+        <div class="tab  ">
+            <button id="defaultOpen" class="tablinks seite1" onclick="openTable(event, 'mustHave')">Must have
+            </button>
+            <button class="tablinks seite2" onclick="openTable(event, 'shouldHave')">Should have</button>
+            <button class="tablinks seite3" onclick="openTable(event, 'couldHave')">Could have</button>
+            <button class="tablinks seite4" onclick="openTable(event, 'wontHave')">Won't have</button>
         </div>
 
-        <button class="button primary" id="back">back</button>
-    </div>
-    <!-- Tab überschriften-->
-    <div class="tab  ">
-        <button id="defaultOpen" class="tablinks seite1" onclick="openTable(event, 'mustHave')">Must have
-        </button>
-        <button class="tablinks seite2" onclick="openTable(event, 'shouldHave')">Should have</button>
-        <button class="tablinks seite3" onclick="openTable(event, 'couldHave')">Could have</button>
-        <button class="tablinks seite4" onclick="openTable(event, 'wontHave')">Won't have</button>
-    </div>
 
-
-    <div id="mustHave" class="tabcontent">
-        <table id="mustHaveTable">
-            <tr class="colorFirstLine">
-                <th>Feature Name</th>
-                <th>Description</th>
-                <th>Boost Faktor</th>
-                <th>Survival Factor</th>
-                <th>Time in days</th>
-            </tr>
-        </table>
-    </div>
-    <div id="shouldHave" class="tabcontent">
-        <table id="shouldHaveTable">
-            <tr class="colorFirstLine">
-                <th>Feature Name</th>
-                <th>Description</th>
-                <th>Boost Faktor</th>
-                <th>Survival Factor</th>
-                <th>Time in days</th>
-            </tr>
-        </table>
-    </div>
-    <div id="couldHave" class="tabcontent">
-        <table id="couldHaveTable">
-            <tr class="colorFirstLine">
-                <th>Feature Name</th>
-                <th>Description</th>
-                <th>Boost Faktor</th>
-                <th>Survival Factor</th>
-                <th>Time in days</th>
-            </tr>
-        </table>
-    </div>
-    <div id="wontHave" class="tabcontent">
-        <table id="wontHaveTable">
-            <tr class="colorFirstLine">
-                <th>Feature Name</th>
-                <th>Description</th>
-                <th>Boost Faktor</th>
-                <th>Survival Factor</th>
-                <th>Time in days</th>
-            </tr>
-        </table>
-    </div>
+        <div id="mustHave" class="tabcontent">
+            <table id="mustHaveTable">
+                <tr class="colorFirstLine">
+                    <th>Feature Name</th>
+                    <th>Description</th>
+                    <th>Boost Faktor</th>
+                    <th>Survival Factor</th>
+                    <th>Time in days</th>
+                </tr>
+            </table>
+        </div>
+        <div id="shouldHave" class="tabcontent">
+            <table id="shouldHaveTable">
+                <tr class="colorFirstLine">
+                    <th>Feature Name</th>
+                    <th>Description</th>
+                    <th>Boost Faktor</th>
+                    <th>Survival Factor</th>
+                    <th>Time in days</th>
+                </tr>
+            </table>
+        </div>
+        <div id="couldHave" class="tabcontent">
+            <table id="couldHaveTable">
+                <tr class="colorFirstLine">
+                    <th>Feature Name</th>
+                    <th>Description</th>
+                    <th>Boost Faktor</th>
+                    <th>Survival Factor</th>
+                    <th>Time in days</th>
+                </tr>
+            </table>
+        </div>
+        <div id="wontHave" class="tabcontent">
+            <table id="wontHaveTable">
+                <tr class="colorFirstLine">
+                    <th>Feature Name</th>
+                    <th>Description</th>
+                    <th>Boost Faktor</th>
+                    <th>Survival Factor</th>
+                    <th>Time in days</th>
+                </tr>
+            </table>
+        </div>
 
     </div>
 
@@ -315,6 +316,24 @@
         ID in the joining
         section.</p>
     <p id="invite-hint-text">The Room-ID is: &nbsp; </p>
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="reveal" id="removeModal" data-reveal>
+    <h3>Members</h3>
+    <p>To remove a member, click the "x" next to their name.</p>
+    <table id="remove-table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Role</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
     <button class="close-button" data-close aria-label="Close modal" type="button">
         <span aria-hidden="true">&times;</span>
     </button>

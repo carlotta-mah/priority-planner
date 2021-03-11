@@ -40,6 +40,9 @@ public class User {
             case "Manager":
                 this.roll = UserRoll.Manager;
                 break;
+            case "User Experience":
+                this.roll = UserRoll.UserExperience;
+                break;
             default:
                 this.roll = UserRoll.KeineRolle;
                 break;
