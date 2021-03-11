@@ -3,24 +3,19 @@ package de.projekt.priorityplanner.controller;
 import de.projekt.priorityplanner.Database;
 import de.projekt.priorityplanner.model.*;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.*;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.messaging.simp.SimpMessageType;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Ein RoomController reguliert die Komunikation von Client und Server.
@@ -28,13 +23,11 @@ import java.util.List;
  * Änderungen auf Clientseite wird hier entgegen genommen verarbeitet und weitergeleitet.
  *
  * @author Mia Mahncke, Nedim Seroka
- * @data 14.03.2021
+ * @date 14.03.2021
  */
 @Slf4j
 @Controller
 public class RoomController {
-
-    private static final Logger logger = LoggerFactory.getLogger(WebSocketEventListener.class);
 
     @Autowired
     private SimpMessageSendingOperations messagingTemplate;
@@ -47,53 +40,35 @@ public class RoomController {
     @ResponseBody
     @RequestMapping("/create-room")
     public int createRoom(@RequestHeader("produktName") String produktName) {
-        // TODO: create new room in Database and return newly created ID
-        int roomId = Database.addRoom(produktName);
-        return roomId;
+        return Database.addRoom(produktName);
     }
 
     /**
      * Fügt ein User einem Raum hinzu und updatet alle anderen Clients duch eine update Message
      *
      * @param roomId Die RaumId
-     * @param user Der User der hinzugefügt werden soll
      * @param message Die Nachricht die vom Client geschickt worden ist
      * @param headerAccessor Header der Nachricht
      */
     // adds a username to a room and sends a updateMessage to all users of that room
     @MessageMapping("/room/{roomId}/addUser")
-    public void addUser(@DestinationVariable int roomId, Principal user, @Payload MessageToServer message,
+    public void addUser(@DestinationVariable int roomId, @Payload MessageToServer message,
                         SimpMessageHeaderAccessor headerAccessor) {
-        boolean admin = false;
         // TODO: add username to actual Database
         String s = message.getUsername();
         Database.addUser(roomId, s, message.getRoll());
 
 
-        headerAccessor.getSessionAttributes().put("username", s);
+        Objects.requireNonNull(headerAccessor.getSessionAttributes()).put("username", s);
         headerAccessor.getSessionAttributes().put("room_id", message.getRoomId());
         log.info("Received greeting message {}", message);
 
         Room room = Database.getRoom(roomId);
+        assert room != null;
         room.setEvent(MessagePhase.ADDED_USER);
         messagingTemplate.convertAndSend("/queue/" + roomId, room);
 
     }
-
-    @Autowired
-    private SimpMessagingTemplate simpMessagingTemplate;
-
-   /*
-    @MessageMapping("/room/{roomId}/addTest")
-    @SendTo("/topic/update")
-    public void test(@DestinationVariable int roomId, Principal user, @Payload MessageToServer message,
-                     @Header("simpSessionId") String sessionId) {
-        MessageToClient out = new MessageToClient(
-                MessagePhase.UPDATE, Database.getUsernames(roomId), null, false, Database.getFeatures(roomId));
-        simpMessagingTemplate.convertAndSend("/feature/queue/" + roomId, out);
-
-    }
-*/
 
     /**
      * Sendet auf Nachfrage die aktuellen Ergebnisse an die Clients über die ergebnis Queue.
@@ -110,8 +85,10 @@ public class RoomController {
 
         Ergebnis ergebnis = null;
         if (Database.containsRoom(roomId)) {
+            assert room != null;
             ergebnis = new Ergebnis(room);
         }
+        assert ergebnis != null;
         messagingTemplate.convertAndSend("/queue/ergebnis/" + roomId, ergebnis);
     }
 
@@ -150,10 +127,14 @@ public class RoomController {
      */
     @MessageMapping("room/{roomId}/result")
     public void getResult(@DestinationVariable int roomId, @Payload int featureId) {
-        Feature feature = Database.getRoom(roomId).getFeatureById(featureId);
-        feature.calculateResult();
-        feature.setEvent(MessagePhase.RESULT);
-        messagingTemplate.convertAndSend("/queue/" + roomId, feature);
+        try {
+            Feature feature = Database.getRoom(roomId).getFeatureById(featureId);
+            feature.calculateResult();
+            feature.setEvent(MessagePhase.RESULT);
+            messagingTemplate.convertAndSend("/queue/" + roomId, feature);
+        }catch (NullPointerException e){
+            log.error("Feature was null", e);
+        }
 
     }
 
@@ -208,20 +189,24 @@ public class RoomController {
      */
     public void selectVotingFeature(MessageToServer message) {
         int roomId = message.getRoomId();
-        Feature selectedFeature = Database.selectFeature(roomId, message.getFeatureId());
-        selectedFeature.setEvent(MessagePhase.ADDVOTE);
-        List<String> feature = new ArrayList<>();
+        try {
+            Feature selectedFeature = Database.selectFeature(roomId, message.getFeatureId());
+            selectedFeature.setEvent(MessagePhase.ADDVOTE);
+            List<String> feature = new ArrayList<>();
 
-        feature.add(selectedFeature.getTitle());
-        feature.add(selectedFeature.getDescription());
-        //feature.add(selectedFeature.getId());
+            feature.add(selectedFeature.getTitle());
+            feature.add(selectedFeature.getDescription());
+            //feature.add(selectedFeature.getId());
 
 
-        MessageToClient messageD = new MessageToClient(
-                MessagePhase.ADDVOTE, feature);
-        //messagingTemplate.convertAndSend("/queue/" + roomId, messageD);
-        messagingTemplate.convertAndSend("/queue/" + roomId, selectedFeature);
-
+            MessageToClient messageD = new MessageToClient(
+                    MessagePhase.ADDVOTE, feature);
+            //messagingTemplate.convertAndSend("/queue/" + roomId, messageD);
+            messagingTemplate.convertAndSend("/queue/" + roomId, selectedFeature);
+        }
+        catch (NullPointerException e){
+            log.error("Active feature was null", e);
+        }
     }
 
     /**

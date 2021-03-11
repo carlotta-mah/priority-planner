@@ -1,18 +1,16 @@
 package de.projekt.priorityplanner.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Ein Raum. Ein Raum besteht aus einer Id, einem Raumnamen, Liste von Features, Liste von Usern und
  * einem ausgewähltem Feature
  *
  * @author Mia Mahncke, Nedim Seroka
- * @data 14.03.2021
+ * @date 14.03.2021
  */
 @Data
 
@@ -111,16 +109,16 @@ public class Room {
      * Setzt das activeFeature auf das Feature welches als Parameter übergeben wird
      *
      * @param id Id des neuen aktven Feature
-     * @return
+     * @return das neue aktive Feature
      */
-    public Feature selectFeature(int id) {
+    public Feature selectFeature(int id) throws NullPointerException{
         for (Feature feature : features) {
             if (feature.equals(id)) {
                 activeFeature = feature;
                 return activeFeature;
             }
         }
-        return null;//TODO Fehlerbehandlung
+        throw new NullPointerException();
     }
 
     /**
@@ -129,20 +127,19 @@ public class Room {
      * @param id Id des gesuchten Features
      * @return Passendes Feature zur Id
      */
-    public synchronized Feature getFeatureById(int id) {
+    public synchronized Feature getFeatureById(int id) throws NullPointerException {
         for (Feature feature : features) {
             if (feature.getId() == id) {
                 return feature;
             }
         }
-        //TODO: fehlerbehandlung
-        return null;
+        throw new NullPointerException();
     }
 
     /**
      * gibt den aktuellen FeatureCount wieder
      *
-     * @return
+     * @return der aktuelle Feature-count
      */
     public int getFeatureCount() {
         return idCount;

@@ -185,9 +185,11 @@ public class Database {
      * @param featureId ID des Features das aktiv gesetzt wird
      * @return das aktive Feature
      */
-    public static Feature selectFeature(int roomId, int featureId) {
-        Room room = rooms1.get(roomId);
-        return room.selectFeature(featureId);
+    public static Feature selectFeature(int roomId, int featureId) throws NullPointerException{
+
+            Room room = rooms1.get(roomId);
+            return room.selectFeature(featureId);
+
     }
 
     /**
