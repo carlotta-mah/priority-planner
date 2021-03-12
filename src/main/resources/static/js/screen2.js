@@ -34,6 +34,7 @@ const userStoryBoardDiv = document.getElementById("userStoryBoard");
 //diagramm
 let ctxDognut;
 let myDognutChart
+let myBoostChart;
 
 let ripList = [];
 let timeList = [];
@@ -462,11 +463,111 @@ function setResult(feature) {
     document.getElementById("result").style.display = "block";
     document.getElementById("voting").style.display = "none";
 
-    document.getElementById("boostAuswertung").innerText = "Average: " + feature.boostMean + "\r";
-    document.getElementById("boostAuswertung").innerText += "Avg. Diff.: " + feature.boostStab;
+  //  document.getElementById("boostAuswertung").innerText = "Average: " + feature.boostMean + "\r";
+   // document.getElementById("boostAuswertung").innerText += "Avg. Diff.: " + feature.boostStab;
     if (bigDif(feature.boostStab)) {
         document.getElementById("boost-res").classList.add("bigDif");
     }
+
+    var stabGegenseite;
+    if(feature.boostStab<=10){
+        stabGegenseite = 10 - feature.boostStab;
+    }else{
+        stabGegenseite = 0;
+    }
+
+    document.getElementById("BarBoostMeanDiv").innerHTML =
+        "<canvas id=\"boostDiagramm\" style=\"width: 250px; height: 150px;\">test</canvas>";
+    document.getElementById("DiagramBoostStabDiv").innerHTML =
+        "<canvas id=\"boostStabDiagramm\" style=\"width: 250px; height: 150px;\">test</canvas>";
+    dataBar= {
+        labels: ["Avg"],
+        datasets: [{
+            data: [feature.boostMean],
+            backgroundColor: [
+                'rgba(0, 127, 255, 1)'
+            ],
+            borderWidth: 1,
+            maxBarThickness: 100,
+        },
+        {
+            backgroundColor: 'rgba(0, 127, 255, 0.5)',
+            borderColor:'rgba(0, 127, 255, 1)',
+            borderWidth: 1,
+            maxBarThickness: 100,
+            data: [100]
+        }]
+    };
+    data = {
+        datasets: [{
+            data: [feature.boostStab,
+                stabGegenseite],
+            backgroundColor: [
+                'rgb(212,23,23)',
+                'rgb(194,198,207)',
+            ],
+            maxBarThickness: 100,
+        }],
+
+        labels: [
+            'Stab',
+            'gegenwert'
+        ]
+    };
+    ctxBoost = document.getElementById('boostDiagramm').getContext('2d')
+    ctxBoostStab = document.getElementById('boostStabDiagramm').getContext('2d')
+    var myBarChart = new Chart(ctxBoost, {
+        type: 'bar',
+        data: dataBar,
+        options:{
+            title: {
+                fontColor: 'rgb(0,0,0)',
+                position: 'bottom',
+                display: true,
+                text: 'Average ' + feature.boostMean + ' %'
+            },
+            legend: {
+                display: false
+            },
+            tooltips: {
+                enabled: false
+            },
+            scales: {
+                yAxes:[{
+                    display:false,
+                    ticks:{
+                        beginAtZero:true,
+                        max: 100}}],
+                xAxes:[{
+                    display:false,
+                    stacked: true,
+                    categoryPercentage: 0.2,
+                }]
+            }
+        }
+    });
+
+    var myDoughnutChart1 = new Chart(ctxBoostStab, {
+        type: 'doughnut',
+        data: data,
+        options: {
+            title: {
+                fontColor: 'rgb(0,0,0)',
+                position: 'bottom',
+                display: true,
+                text: 'Avg. Diff. ' + feature.boostStab
+            },
+            legend: {
+                display: false
+            },
+            tooltips: {
+                enabled: false
+            }
+        }
+    });
+
+ 
+
 
     document.getElementById("ripAuswertung").innerText = "Average: " + feature.ripMean + "\r";
     document.getElementById("ripAuswertung").innerText += "Avg. Diff.: " + feature.ripStab;
@@ -715,7 +816,7 @@ $(document).ready(function () {
         document.getElementById("zeit").value = 0;
     }
 
-    //diagramm
+    //diagramme
     let data = {
         datasets: [{
             data: [document.getElementById("mustHaveTable").rows.length - 1,

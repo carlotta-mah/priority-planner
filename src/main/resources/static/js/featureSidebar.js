@@ -7,16 +7,26 @@ let beschreibungInput = $('#beschreibungInput')
 let openInputButton = $("#open-feature-input")
 let selectetFeature;
 
+/**
+ * Die Klasse featureSidebar erstellt die Sidebar von der screen2.html.
+ * Sie beinhaltet sämtliche Features. Über die Sidebar ist es möglich das nächste Feature auszuwählen welches
+ * gevotet werden soll.
+ */
 class featureSidebar {
 
+    /**
+     * Inizalisiert die Sidebar
+     */
     constructor(sidebar) {
         addFeatureButton.click(this.sendFeature);
         openInputButton.click(this.toggleFeatureInput);
         cancelFeature.click(this.cancelInput);
         document.getElementById("feature-input-row").style.display = "none"
-
     }
 
+    /**
+     * Wechselt die Ansicht von open-Feature zur feature ansicht bzw. andersrum.
+     */
     toggleFeatureInput() {
         let open = document.getElementById("open-feature-input-row");
         let input = document.getElementById("feature-input-row");
@@ -24,7 +34,9 @@ class featureSidebar {
         toggleElement(input);
     }
 
-
+    /**
+     * Entfernt das selected-feature token von der classList bei allen Features
+     */
     unselectAllFeatures() {
         $(".selected-feature button.primary").text("Vote now");
         $(".selected-feature button.primary").removeClass("voting");
@@ -35,6 +47,11 @@ class featureSidebar {
 
     }
 
+    /**
+     * wählt ein Feature aus das bewertet werden soll
+     *
+     * @param featureId Id des Feature welches ausgewehlt werden soll
+     */
     select(featureId) {
         if (selectetFeature == null) {
             toggleElement(document.getElementById("greeting"))
@@ -47,10 +64,12 @@ class featureSidebar {
         document.getElementById("" + featureId).classList.remove("wurdeBewertet");
     }
 
+    /**
+     * fügt eine UserStory bzw. Feature zum Board hinzu
+     * @param userstory das Feature welches dem Board hinzugefügt werden soll
+     */
     addToBoard(userstory) {
         const newDiv = document.createElement("div");
-        // const buttonGroup = document.createElement("div")
-        // buttonGroup.classList.add("button-group");
         let name = userstory.name;
         let beschreibung = userstory.beschreibung;
         let myId = userstory.id;
@@ -106,10 +125,16 @@ class featureSidebar {
         beschreibungInput.val("");
     }
 
+    /**
+     * lehrt das Board
+     */
     clearBoard() {
         userStoryBoardDiv.empty();
     }
 
+    /**
+     * setzt den RemoveButton
+     */
     setButtonToRevote() {
         let featureButton = $("#select-" + selectetFeature);
         $(".selected-feature button.primary").removeClass("voting");
@@ -121,17 +146,23 @@ class featureSidebar {
         });
     }
 
-    addNextVote() {
+    /**
+     * fügt das nächste Feature
+     */
+    addNextVote(){
         if (stompClient) {
             let message = {
                 phase: 'NEXT'
             }
-            // stompClient.send(`${topic}/sendMessage`, {}, JSON.stringify(message));
             stompClient.send(`${topic}/sendMessage`, {}, JSON.stringify(message));
         }
         send = true;
     }
 
+    /**
+     * Fügt die bewertung der Usersotry hinzu damit die Bewertung auch in der Sidebar zu sehen ist.
+     * @param userstory
+     */
     addBewertung(userstory) {
         let bewertung
 
@@ -154,6 +185,10 @@ class featureSidebar {
         send = true;
     }
 
+    /**
+     * Updatet ein bestimmtes Featuer welches als Parameter übergeben wird.
+     * @param userStories Diese Usersotry soll geupdatet werden
+     */
     updateFeatures(userStories) {
         userStoryBoard.empty();
         userStories.forEach(
@@ -163,8 +198,12 @@ class featureSidebar {
         )
     }
 
-    deleteFeature(id) {
-        if (selectetFeature === id) {
+    /**
+     * entfernt ein Feature aus der Sidebar
+     * @param id id des Features
+     */
+    deleteFeature(id){
+        if(selectetFeature === id){
             toggleElement(document.getElementById("greeting"));
             toggleElement(document.getElementById("voting-panel"));
             resetResult();
@@ -175,6 +214,10 @@ class featureSidebar {
         document.getElementById(id).remove();
     }
 
+    /**
+     * Sendet das aktuelle Feature an den Server unter dem event addFeature, damit der server das Feature speichern
+     * kann.
+     */
     sendFeature() {
         let name = document.getElementById("userStoryInput").value;
         let beschreibung = document.getElementById("beschreibungInput").value;
@@ -193,7 +236,10 @@ class featureSidebar {
 
     }
 
-    sendDeleteFeature(featureId) {
+    /**
+     * benachrichtigt denn Server das ein Feature gelöscht wurde
+     */
+    sendDeleteFeature(featureId){
         let message = {
             id: featureId,
             phase: 'DELETE'
@@ -201,7 +247,10 @@ class featureSidebar {
         stompClient.send(`${topic}/addFeature`, {}, JSON.stringify(message));
     }
 
-    showOpenInputButton() {
+    /**
+     * Wechselt die Ansicht von open-Feature zur feature ansicht bzw. andersrum.
+     */
+    showOpenInputButton(){
         let open = document.getElementById("open-feature-input-row");
         let close = document.getElementById("feature-input-row");
         open.style.display = "block";
@@ -209,6 +258,9 @@ class featureSidebar {
 
     }
 
+    /**
+     * Setzt denn Input des Namens und der Beschr4eibung auf ""
+     */
     cancelInput() {
         document.getElementById("userStoryInput").value = "";
         document.getElementById("beschreibungInput").value = "";
