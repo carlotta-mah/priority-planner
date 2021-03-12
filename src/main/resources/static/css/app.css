@@ -714,3 +714,22 @@ th{
     text-align: left;
     align-items: baseline;
 }
+.resultHeader{
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+
+    text-transform: uppercase;
+    background-color: var(--light-purple);
+    color: white;
+    padding: 10px;
+    width: max-content;
+    font-size: 13px;
+    font-weight: bold;
+    margin: 0!important;
+    padding: 2px 4px;
+    align-items: center;
+}
+.resultHeader img{
+    height: 13px;
+}

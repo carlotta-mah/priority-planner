@@ -463,23 +463,22 @@ function setResult(feature) {
     document.getElementById("result").style.display = "block";
     document.getElementById("voting").style.display = "none";
 
-  //  document.getElementById("boostAuswertung").innerText = "Average: " + feature.boostMean + "\r";
-   // document.getElementById("boostAuswertung").innerText += "Avg. Diff.: " + feature.boostStab;
     if (bigDif(feature.boostStab)) {
         document.getElementById("boost-res").classList.add("bigDif");
     }
 
-    var stabGegenseite;
+    var agreementBoost;
     if(feature.boostStab<=10){
-        stabGegenseite = 10 - feature.boostStab;
+        agreementBoost = 10 - feature.boostStab;
     }else{
-        stabGegenseite = 0;
+        agreementBoost = 0;
     }
 
+    //Boost Diagramme
     document.getElementById("BarBoostMeanDiv").innerHTML =
-        "<canvas id=\"boostDiagramm\" style=\"width: 250px; height: 150px;\">test</canvas>";
+        "<canvas id=\"boostDiagramm\" style=\"width: 250px; height: 100px;\">test</canvas>";
     document.getElementById("DiagramBoostStabDiv").innerHTML =
-        "<canvas id=\"boostStabDiagramm\" style=\"width: 250px; height: 150px;\">test</canvas>";
+        "<canvas id=\"boostStabDiagramm\" style=\"width: 250px; height: 100px;\">test</canvas>";
     dataBar= {
         labels: ["Avg"],
         datasets: [{
@@ -500,23 +499,19 @@ function setResult(feature) {
     };
     data = {
         datasets: [{
-            data: [feature.boostStab,
-                stabGegenseite],
+            data: [agreementBoost,
+                feature.boostStab
+                ],
             backgroundColor: [
-                'rgb(212,23,23)',
-                'rgb(194,198,207)',
+                'rgb(0,127,255)',
+                'rgba(194,198,207,0)',
             ],
             maxBarThickness: 100,
         }],
-
-        labels: [
-            'Stab',
-            'gegenwert'
-        ]
     };
     ctxBoost = document.getElementById('boostDiagramm').getContext('2d')
     ctxBoostStab = document.getElementById('boostStabDiagramm').getContext('2d')
-    var myBarChart = new Chart(ctxBoost, {
+    new Chart(ctxBoost, {
         type: 'bar',
         data: dataBar,
         options:{
@@ -541,13 +536,13 @@ function setResult(feature) {
                 xAxes:[{
                     display:false,
                     stacked: true,
-                    categoryPercentage: 0.2,
+                    categoryPercentage: 0.1,
                 }]
             }
         }
     });
 
-    var myDoughnutChart1 = new Chart(ctxBoostStab, {
+    new Chart(ctxBoostStab, {
         type: 'doughnut',
         data: data,
         options: {
@@ -555,7 +550,7 @@ function setResult(feature) {
                 fontColor: 'rgb(0,0,0)',
                 position: 'bottom',
                 display: true,
-                text: 'Avg. Diff. ' + feature.boostStab
+                text: 'Agreement'
             },
             legend: {
                 display: false
@@ -566,16 +561,111 @@ function setResult(feature) {
         }
     });
 
- 
 
 
-    document.getElementById("ripAuswertung").innerText = "Average: " + feature.ripMean + "\r";
-    document.getElementById("ripAuswertung").innerText += "Avg. Diff.: " + feature.ripStab;
+    //document.getElementById("ripAuswertung").innerText = "Average: " + feature.ripMean + "\r";
+    //document.getElementById("ripAuswertung").innerText += "Avg. Diff.: " + feature.ripStab;
     if (bigDif(feature.ripStab)) {
         document.getElementById("rip-res").classList.add("bigDif");
     }
 
-    document.getElementById("timeAuswertung").innerText = "Average: " + feature.timeMean + "\r";
+    var agreementRip;
+    if(feature.ripStab<=10){
+        agreementRip = 10 - feature.ripStab;
+    }else{
+        agreementRip = 0;
+    }
+
+    //Survival Diagramme
+    document.getElementById("BarRipMeanDiv").innerHTML =
+        "<canvas id=\"ripDiagramm\" style=\"width: 250px; height: 100px;\">test</canvas>";
+    document.getElementById("DiagramRipStabDiv").innerHTML =
+        "<canvas id=\"ripStabDiagramm\" style=\"width: 250px; height: 100px;\">test</canvas>";
+    dataBarRip= {
+        labels: ["Avg"],
+        datasets: [{
+            data: [feature.ripMean],
+            backgroundColor: [
+                'rgba(0, 127, 255, 1)'
+            ],
+            borderWidth: 1,
+            maxBarThickness: 100,
+        },
+            {
+                backgroundColor: 'rgba(0, 127, 255, 0.5)',
+                borderColor:'rgba(0, 127, 255, 1)',
+                borderWidth: 1,
+                maxBarThickness: 100,
+                data: [100]
+            }]
+    };
+    dataRip = {
+        datasets: [{
+            data: [agreementRip,
+                feature.ripStab
+            ],
+            backgroundColor: [
+                'rgb(0,127,255)',
+                'rgba(194,198,207,0)',
+            ],
+            maxBarThickness: 100,
+        }],
+    };
+    ctxBoost = document.getElementById('ripDiagramm').getContext('2d')
+    ctxBoostStab = document.getElementById('ripStabDiagramm').getContext('2d')
+    new Chart(ctxBoost, {
+        type: 'bar',
+        data: dataBarRip,
+        options:{
+            title: {
+                fontColor: 'rgb(0,0,0)',
+                position: 'bottom',
+                display: true,
+                text: 'Average ' + feature.ripMean + ' %'
+            },
+            legend: {
+                display: false
+            },
+            tooltips: {
+                enabled: false
+            },
+            scales: {
+                yAxes:[{
+                    display:false,
+                    ticks:{
+                        beginAtZero:true,
+                        max: 100}}],
+                xAxes:[{
+                    display:false,
+                    stacked: true,
+                    categoryPercentage: 0.1,
+                }]
+            }
+        }
+    });
+
+    new Chart(ctxBoostStab, {
+        type: 'doughnut',
+        data: dataRip,
+        options: {
+            title: {
+                fontColor: 'rgb(0,0,0)',
+                position: 'bottom',
+                display: true,
+                text: 'Agreement'
+            },
+            legend: {
+                display: false
+            },
+            tooltips: {
+                enabled: false
+            }
+        }
+    });
+
+
+
+    document.getElementById("timeAuswertung").innerText = "Average: " + feature.timeMean + " days" + "\r";
     document.getElementById("timeAuswertung").innerText += "Avg. Diff.: " + feature.timeStab;
     if (bigDif(feature.timeStab)) {
         document.getElementById("time-res").classList.add("bigDif");
