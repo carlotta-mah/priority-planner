@@ -189,9 +189,10 @@ public class RoomController {
                 }
                 break;
             case REMOVE:
-                Database.removeUser(roomId, message.getUsername());
+                List<String> usernames = Database.getUsernames(roomId);
+                usernames.remove(message.getUsername());
                 MessageToClient out = new MessageToClient(MessagePhase.REMOVE,
-                        Database.getUsernames(roomId));
+                        usernames);
                 messagingTemplate.convertAndSend("/queue/reply/"+roomId, out);
 //                String username = message.getUsername();
 //                log.info("want to remove user "+username);
