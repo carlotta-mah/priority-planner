@@ -40,6 +40,12 @@ let ripList = [];
 let timeList = [];
 let socket
 
+//current feature lists
+let musthavesList;
+let shouldhavesList;
+let clouldhavesList;
+let wonthavesList;
+
 /**
  * Verbindung über Websocket mit Server für die Kommunikation
  */
@@ -96,6 +102,37 @@ function registerInRoom() {
     );
 }
 
+function createResSCV() {
+    const rows = [
+        ["Name", "Description", "Boost-Average", "RIP-Average", "Time-Average", "Category"]
+    ];
+
+    function addToRows(f, cat) {
+        let row = [f.title, f.description, f.boostMean, f.ripMean, f.timeMean, cat];
+        rows.push(row);
+    }
+
+    musthavesList.forEach(f => addToRows(f, "must have"));
+
+    shouldhavesList.forEach(f => addToRows(f, "should have"));
+    clouldhavesList.forEach(f => addToRows(f, "could have"));
+    wonthavesList.forEach(f => addToRows(f, "wont have"));
+
+    console.log(rows);
+
+    let csvContent = "data:text/csv;charset=utf-8,"
+        + rows.map(e => e.join(",")).join("\n");
+    return csvContent;
+}
+
+function saveCSV() {
+
+    let csv = createResSCV();
+    let download = document.getElementById("download");
+    let encodedUri = encodeURI(csv);
+    download.setAttribute("href", encodedUri);
+}
+
 /**
  * Wenn sich das Ergebgnis in der Datenbank ändert sich das durch diese Funktion auch im Client
  * @param payload Das aktuelle Ergebnis
@@ -105,6 +142,11 @@ function onErgebnisReceived(payload) {
     mustHaveAnzahl = 0;
     mustHaveTime = 0;
     featureAnzahl = 0;
+    musthavesList = message.mustHave;
+    shouldhavesList = message.shouldHave;
+    clouldhavesList = message.couldHave;
+    wonthavesList = message.wontHave;
+   $("#download").click(saveCSV);
 
     $("#mustHaveTable tr:not(:first)").remove();
     message.mustHave.forEach(feature => {
@@ -463,16 +505,16 @@ function setResult(feature) {
     document.getElementById("result").style.display = "block";
     document.getElementById("voting").style.display = "none";
 
-  //  document.getElementById("boostAuswertung").innerText = "Average: " + feature.boostMean + "\r";
-   // document.getElementById("boostAuswertung").innerText += "Avg. Diff.: " + feature.boostStab;
+    //  document.getElementById("boostAuswertung").innerText = "Average: " + feature.boostMean + "\r";
+    // document.getElementById("boostAuswertung").innerText += "Avg. Diff.: " + feature.boostStab;
     if (bigDif(feature.boostStab)) {
         document.getElementById("boost-res").classList.add("bigDif");
     }
 
     var stabGegenseite;
-    if(feature.boostStab<=10){
+    if (feature.boostStab <= 10) {
         stabGegenseite = 10 - feature.boostStab;
-    }else{
+    } else {
         stabGegenseite = 0;
     }
 
@@ -480,7 +522,7 @@ function setResult(feature) {
         "<canvas id=\"boostDiagramm\" style=\"width: 250px; height: 150px;\">test</canvas>";
     document.getElementById("DiagramBoostStabDiv").innerHTML =
         "<canvas id=\"boostStabDiagramm\" style=\"width: 250px; height: 150px;\">test</canvas>";
-    dataBar= {
+    dataBar = {
         labels: ["Avg"],
         datasets: [{
             data: [feature.boostMean],
@@ -490,13 +532,13 @@ function setResult(feature) {
             borderWidth: 1,
             maxBarThickness: 100,
         },
-        {
-            backgroundColor: 'rgba(0, 127, 255, 0.5)',
-            borderColor:'rgba(0, 127, 255, 1)',
-            borderWidth: 1,
-            maxBarThickness: 100,
-            data: [100]
-        }]
+            {
+                backgroundColor: 'rgba(0, 127, 255, 0.5)',
+                borderColor: 'rgba(0, 127, 255, 1)',
+                borderWidth: 1,
+                maxBarThickness: 100,
+                data: [100]
+            }]
     };
     data = {
         datasets: [{
@@ -519,7 +561,7 @@ function setResult(feature) {
     var myBarChart = new Chart(ctxBoost, {
         type: 'bar',
         data: dataBar,
-        options:{
+        options: {
             title: {
                 fontColor: 'rgb(0,0,0)',
                 position: 'bottom',
@@ -533,13 +575,15 @@ function setResult(feature) {
                 enabled: false
             },
             scales: {
-                yAxes:[{
-                    display:false,
-                    ticks:{
-                        beginAtZero:true,
-                        max: 100}}],
-                xAxes:[{
-                    display:false,
+                yAxes: [{
+                    display: false,
+                    ticks: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }],
+                xAxes: [{
+                    display: false,
                     stacked: true,
                     categoryPercentage: 0.2,
                 }]
@@ -565,8 +609,6 @@ function setResult(feature) {
             }
         }
     });
-
- 
 
 
     document.getElementById("ripAuswertung").innerText = "Average: " + feature.ripMean + "\r";
@@ -746,6 +788,7 @@ function zeigErgebnis() {
     } else {
         document.body.classList.add("ergebnisBody");
     }
+
 }
 
 /**
