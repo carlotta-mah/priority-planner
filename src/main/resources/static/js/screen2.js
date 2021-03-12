@@ -73,9 +73,8 @@ function onRemove(payload) {
     let message = JSON.parse(payload.body);
     let usernames = message.userStories;
     if (!usernames.includes(username)) {
-        alert("you are removed from room");
-        socket.close();
         window.location.href = window.location.protocol + "//" + window.location.host;
+        socket.close();
     }
 
 }
@@ -347,7 +346,7 @@ function updateUsernamesUsers(users) {
     usernames.empty();
     users.forEach(
         user => {
-            let username = user.username;
+            let username = user.name;
             let userdiv = document.createElement("div");
             let uservotep = document.createElement("div");
             let usernamep = document.createElement("p");
@@ -409,8 +408,9 @@ function onMessageReceived(payload) {
             votingShown = true;
             break;
         case 'LEAVE':
-            updateUsernamesUsers(message.usernames);
-            updateUserTable(message.usernames);
+            let users = message.usernames;
+            updateUsernamesUsers(users);
+            updateUserTable(users);
             break;
         case 'VOTE':
             //updateUserVote(message.user, message.bewertung1, message.bewertung2, message.zeit);
