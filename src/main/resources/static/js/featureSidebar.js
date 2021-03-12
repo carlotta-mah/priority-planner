@@ -137,10 +137,11 @@ class featureSidebar {
      */
     setButtonToRevote() {
         let featureButton = $("#select-" + selectetFeature);
+        let featureID = selectetFeature;
         $(".selected-feature button.primary").removeClass("voting");
         featureButton.text("Vote again")
         featureButton.click(function () {
-            selectetFeature = this.id;
+            selectetFeature = featureID;
             sendBewertungAgain();
 
         });
