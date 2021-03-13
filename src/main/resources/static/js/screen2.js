@@ -27,6 +27,7 @@ let roomId;
 let topic;
 let currentSubscription;
 let stompClient;
+let passwort;
 let admin;
 let send;
 const userStoryBoardDiv = document.getElementById("userStoryBoard");
@@ -916,6 +917,7 @@ $(document).ready(function () {
     }
     roomId = parseInt(sessionStorage.getItem("roomId"));
     username = sessionStorage.getItem("username");
+    passwort = sessionStorage.getItem("passwort");
     roomName = sessionStorage.getItem("roomName");
     roll = sessionStorage.getItem("roll");
     usernames.append(`<div>${username}</div>`);
@@ -927,7 +929,8 @@ $(document).ready(function () {
     myname2.text(username);
     projectname.text(roomName);
     projectname2.text(roomName);
-    invitehinttext.html("<b> &nbsp; Your Room ID is &nbsp;" + roomId + "." + "</b>");
+    invitehinttext.html("<b> &nbsp; Your Room ID is &nbsp;" + roomId + "." + "</b><br>");
+    invitehinttext.append("<b> &nbsp; Your Room Password is &nbsp;" + passwort + "." + "</b>");
     votingShown = true;
 
     let featureElement = document.getElementById("featurePanel");
