@@ -17,6 +17,7 @@ import java.util.List;
 public class Room {
     private int id;
     private String roomName;
+    private String passwort;
     private List<Feature> features;
     private List<User> users;
     private Feature activeFeature;
@@ -33,9 +34,10 @@ public class Room {
      * @param activeFeature Das ausgewählte Feature
      * @param event         Das Event
      */
-    public Room(int id, String roomName, List<Feature> features, List<User> users, Feature activeFeature, MessagePhase event) {
+    public Room(int id, String roomName, List<Feature> features, List<User> users, Feature activeFeature, MessagePhase event, String pw) {
         this.id = id;
         this.roomName = roomName;
+        this.passwort = pw;
         this.features = features;
         this.users = users;
         this.activeFeature = activeFeature;

@@ -33,7 +33,7 @@ class PriorityPlannerApplicationTests {
         Database.n = 0;
         IntStream.range(0, 1000)
                 .forEach(count ->
-                        Database.addRoom("" + count)
+                        Database.addRoom("" + count, "")
                 );
         assertEquals(999, Database.n);
     }
@@ -41,7 +41,7 @@ class PriorityPlannerApplicationTests {
     @Test
     void parallelAddUsers() {
         Database.n = 0;
-        Database.addRoom("ROOM");
+        Database.addRoom("ROOM","");
         IntStream.range(0, 1000)
                 .forEach(count -> Database.addUser(0
                         , "xy" + count, "Entwickler"));
@@ -55,7 +55,7 @@ class PriorityPlannerApplicationTests {
 
     @Test
     void addAndRemoveUsers() {
-        Database.addRoom("ROOM");
+        Database.addRoom("ROOM", "");
         Database.addUser(0, "xy", "Entwickler");
         List<String> names = Database.getUsernames(0);
         assertTrue(names.contains("xy"));
@@ -67,7 +67,7 @@ class PriorityPlannerApplicationTests {
     @Test
     void nameGenTest() {
         Database.n = 0;
-        Database.addRoom("ROOM");
+        Database.addRoom("ROOM", "");
         Database.addUser(0
                 , "xy", "Entwickler");
         assertFalse(Database.generateUniqueName("xy", 0
@@ -77,7 +77,7 @@ class PriorityPlannerApplicationTests {
     @Test
     void createFeatures() {
         Database.n = 0;
-        Database.addRoom("ROOM");
+        Database.addRoom("ROOM", "");
         Database.addUser(0
                 , "xy", "Entwickler");
         Feature f = new Feature("Test", "Test", MessagePhase.FEATURE);
@@ -98,7 +98,7 @@ class PriorityPlannerApplicationTests {
     @DisplayName("voteTest adding votes")
     void voteTest() {
         Database.n = 0;
-        Database.addRoom("ROOM");
+        Database.addRoom("ROOM", "");
         Database.addUser(0, "xy", "Entwickler");
         Feature f = new Feature("Test", "Test", MessagePhase.FEATURE);
         Database.addFeature(0
@@ -116,12 +116,12 @@ class PriorityPlannerApplicationTests {
     @Test
     void createAndDeleteRoom() {
         Database.n = 0;
-        Database.addRoom("ROOM");
+        Database.addRoom("ROOM", "");
         Database.addUser(0, "xy", "Entwickler");
         assertTrue(Database.containsRoom(0));
         Database.removeUser(0, "xy");
         assertFalse(Database.containsRoom(0));
-        Database.addRoom("ROOM2");
+        Database.addRoom("ROOM2","");
         Database.containsRoom(1);
     }
 

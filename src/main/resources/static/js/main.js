@@ -8,6 +8,8 @@ let createRoomButton = $('#createRoomButton');
 let joinRoomButton = $('#joinRoomButton');
 
 
+let passwortInput;
+let passwortEnter;
 let admin = "false";
 let roomName
 let username;
@@ -19,22 +21,20 @@ let roll;
  */
 // creates a new room and joins it
 async function createRoom() {
-    /*
-    roomId = await fetch('/create-room')
-        .then(r => r.json())
-        .catch()
-    */
+
     roll = document.getElementById("create-rollen").value;
     if(roll == ""){
         alert("Please choose your Role");
         return false;
     }
+    passwortInput = document.getElementById("setRoomPasswort").value;
     roomName = produktInput.val();
     const Http = new XMLHttpRequest();
     const url = '/create-room/';
 
     Http.open("GET", url);
     Http.setRequestHeader("produktName", roomName);
+    Http.setRequestHeader("passwort", passwortInput);
     Http.send();
 
     Http.onreadystatechange = (e) => {
@@ -83,6 +83,7 @@ function joinRoom(roomId) {
 function joinExistingRoom2(roomId){
     if(roomId) {
         username = nameInput.val();
+        passwortEnter = document.getElementById("enterRoomPasswort").value;
         roll = document.getElementById("joiner-rollen").value;
         if(roll == ""){
             alert("Please choose your Role");
@@ -103,6 +104,7 @@ function joinExistingRoom2(roomId){
         Http.open("GET", url);
         Http.setRequestHeader("username", username);
         Http.setRequestHeader("roomId", roomId);
+        Http.setRequestHeader("passwort", passwortEnter)
         Http.send();
 
 
@@ -114,7 +116,12 @@ function joinExistingRoom2(roomId){
                 sessionStorage.setItem("username", username);
                 roomName = request[1];
                 sessionStorage.setItem("roomName",roomName);
-                window.location.href = `/room/${roomId}`;
+                if(request[2] === "true"){
+                    window.location.href = `/room/${roomId}`;
+                }else{
+                    alert("The Password is wrong");
+                }
+
             }
         }
     }

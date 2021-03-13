@@ -61,7 +61,8 @@ public class PageController {
      */
     @RequestMapping("/test/room/{roomId}" )
     @ResponseBody
-    public List userName(@RequestHeader("username") String username, @RequestHeader("roomId") int roomId){
+    public List userName(@RequestHeader("username") String username, @RequestHeader("roomId") int roomId,
+    @RequestHeader("passwort") String pw){
         //int i = Integer.parseInt(roomId);
         List<String> list = new LinkedList<>();
         String s = "";
@@ -71,6 +72,15 @@ public class PageController {
         list.add(s);
         String raumName = Database.getRoom(roomId).getRoomName();
         list.add(raumName);
+
+        String passwort = Database.getRoom(roomId).getPasswort();
+        String passwortTrue;
+        if (passwort.equals(pw)||passwort.equals("")){
+            passwortTrue = "true";
+        } else{
+            passwortTrue = "false";
+        }
+        list.add(passwortTrue);
 
         return list;
     }

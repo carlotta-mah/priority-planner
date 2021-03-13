@@ -509,11 +509,11 @@ function setResult(feature) {
         document.getElementById("boost-res").classList.add("bigDif");
     }
 
-    var stabGegenseite;
+    var agreementBoost;
     if (feature.boostStab <= 10) {
-        stabGegenseite = 10 - feature.boostStab;
+        agreementBoost = 10 - feature.boostStab;
     } else {
-        stabGegenseite = 0;
+        agreementBoost = 0;
     }
 
     //Boost Diagramme

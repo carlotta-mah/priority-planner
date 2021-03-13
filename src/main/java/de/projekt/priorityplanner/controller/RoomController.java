@@ -42,8 +42,8 @@ public class RoomController {
      */
     @ResponseBody
     @RequestMapping("/create-room")
-    public int createRoom(@RequestHeader("produktName") String produktName) {
-        return Database.addRoom(produktName);
+    public int createRoom(@RequestHeader("produktName") String produktName, @RequestHeader("passwort") String pw) {
+        return Database.addRoom(produktName, pw);
     }
 
     /**

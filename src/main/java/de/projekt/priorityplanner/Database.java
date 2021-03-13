@@ -25,10 +25,11 @@ public class Database {
      * @param roomName Name des Raums
      * @return RaumID
      */
-    static public synchronized int addRoom(String roomName) {
+    static public synchronized int addRoom(String roomName, String passwort) {
         n = findUniqueId();
         //rooms.put(n, new LinkedList<String>());
-        Room room = new Room(n, roomName, Collections.synchronizedList(new ArrayList<Feature>()), Collections.synchronizedList(new ArrayList<User>()), null, null);
+        Room room = new Room(n, roomName, Collections.synchronizedList(new ArrayList<Feature>()),
+                Collections.synchronizedList(new ArrayList<User>()), null, null, passwort);
         rooms1.put(n, room);
         //userStories.put(n, new LinkedList<UserStory>());
         counters.put(n, 0);

@@ -42,6 +42,8 @@
                                 <option value="Manager">Manager</option>
                             </select>
 
+                            <label for="setRoomPasswort">Set your Password</label>
+                            <input id="setRoomPasswort" type="password">
                             <button class="button primary" id="createRoomButton">New Room</button>
                         </div>
                     </div>
@@ -67,7 +69,9 @@
                             <label for="room-id">Room ID</label>
                             <input id="room-id" type="text" placeholder="Room ID"
                                    onkeyup='validate(event)' onkeypress='validate(event)' onkeydown="joinRoomByEnter(this)">
-<!--                            -->
+                            <label for="enterRoomPasswort">Password</label>
+                            <input id="enterRoomPasswort" type="password">
+
                             <button class="button primary" id="joinRoomButton">Join Room</button>
 
 
