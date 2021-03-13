@@ -151,6 +151,12 @@ function joinRoomByEnter(idInTest){
         joinExistingRoom2(idInTest.value);
     }
 }
+
+function joinRoomByEnterPw(){
+    if(event.key === 'Enter') {
+        joinExistingRoom2(document.getElementById("room-id").value);
+    }
+}
 $(document).ready(function () {
     createRoomButton.click(createRoom);
     joinRoomButton.click(() => {
