@@ -27,12 +27,13 @@ public class User {
     private void setUserRoll(String rolle){
         switch(rolle){
             case "Gründer":
-                this.roll = UserRoll.Gründer;
+                this.roll = UserRoll.Founder;
                 break;
             case "Product Owner":
                 this.roll = UserRoll.ProductOwner;
+                break;
             case "Entwickler":
-                this.roll = UserRoll.Entwickler;
+                this.roll = UserRoll.Developer;
                 break;
             case "Nutzer":
                 this.roll = UserRoll.UserExperience;
