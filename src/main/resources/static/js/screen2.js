@@ -30,6 +30,7 @@ let stompClient;
 let passwort;
 let admin;
 let send;
+let developerInTheHous;
 const userStoryBoardDiv = document.getElementById("userStoryBoard");
 
 //diagramm
@@ -216,7 +217,7 @@ function onErgebnisReceived(payload) {
             ],
         }],
 
-        labels: ['Must have', 'Should have', 'Could have', 'wont Have'],
+        labels: ['Must have', 'Should have', 'Could have', "Won't have"],
     };
 
     myDognutChart.update();
@@ -290,8 +291,11 @@ function updateVote(vote) {
     votediv.appendChild(vote1p);
     vote2p.innerText = vote.bewertung2;
     votediv.appendChild(vote2p);
-    vote3p.innerText = vote.zeit;
-    votediv.appendChild(vote3p)
+    if(vote.roll == "Entwickler"){
+        vote3p.innerText = vote.zeit;
+        votediv.appendChild(vote3p);
+    }
+
 
     updateUserVote(vote.user);
     userdiv.classList.add("hasVoted");
@@ -421,6 +425,14 @@ function onMessageReceived(payload) {
             updateUsernames(message.onlyUserNames);
             updateUserTable(message.users);
             featureBar.updateFeatures(message.features);
+            let currUser = message.users;
+            developerInTheHous = false;
+            currUser.forEach(
+                user => {
+                    if(user.roll == "Developer"){
+                        developerInTheHous = true;
+                    }
+                });
             if (message.activeFeature != null) {
                 document.getElementById('selected-feature-name').value = message.activeFeature.title;
                 document.getElementById('selected-feature-descr').value = message.activeFeature.description;
@@ -454,6 +466,13 @@ function onMessageReceived(payload) {
             let users = message.usernames;
             updateUsernamesUsers(users);
             updateUserTable(users);
+            developerInTheHous = false;
+            users.forEach(
+                username => {
+                   if(username.roll == "Developer"){
+                       developerInTheHous = true;
+                   }
+                });
             break;
         case 'VOTE':
             //updateUserVote(message.user, message.bewertung1, message.bewertung2, message.zeit);
@@ -527,14 +546,15 @@ function setResult(feature) {
         datasets: [{
             data: [feature.boostMean],
             backgroundColor: [
-                'rgba(0, 127, 255, 1)'
+                'rgba(3, 21, 107, 1)'
             ],
+
             borderWidth: 1,
             maxBarThickness: 100,
         },
             {
-                backgroundColor: 'rgba(0, 127, 255, 0.5)',
-                borderColor: 'rgba(0, 127, 255, 1)',
+                backgroundColor: 'rgba(3, 21, 107, 0.5)',
+                borderColor: 'rgba(3, 21, 107, 1)',
                 borderWidth: 1,
                 maxBarThickness: 100,
                 data: [100]
@@ -546,9 +566,10 @@ function setResult(feature) {
                 feature.boostStab
                 ],
             backgroundColor: [
-                'rgb(0,127,255)',
+                'rgba(3, 21, 107, 1)',
                 'rgba(194,198,207,0)',
             ],
+            borderColor: 'rgba(3, 21, 107, 1)',
             maxBarThickness: 100,
         }],
     };
@@ -609,8 +630,7 @@ function setResult(feature) {
  
 
 
-    //document.getElementById("ripAuswertung").innerText = "Average: " + feature.ripMean + "\r";
-    //document.getElementById("ripAuswertung").innerText += "Avg. Diff.: " + feature.ripStab;
+
     if (bigDif(feature.ripStab)) {
         document.getElementById("rip-res").classList.add("bigDif");
     }
@@ -632,14 +652,14 @@ function setResult(feature) {
         datasets: [{
             data: [feature.ripMean],
             backgroundColor: [
-                'rgba(0, 127, 255, 1)'
+                'rgba(3, 21, 107, 1)'
             ],
             borderWidth: 1,
             maxBarThickness: 100,
         },
             {
-                backgroundColor: 'rgba(0, 127, 255, 0.5)',
-                borderColor:'rgba(0, 127, 255, 1)',
+                backgroundColor: 'rgba(3, 21, 107, 0.5)',
+                borderColor:'rgba(3, 21, 107, 1)',
                 borderWidth: 1,
                 maxBarThickness: 100,
                 data: [100]
@@ -651,9 +671,10 @@ function setResult(feature) {
                 feature.ripStab
             ],
             backgroundColor: [
-                'rgb(0,127,255)',
+                'rgba(3, 21, 107, 1)',
                 'rgba(194,198,207,0)',
             ],
+            borderColor: 'rgba(3, 21, 107, 1)',
             maxBarThickness: 100,
         }],
     };
@@ -709,8 +730,10 @@ function setResult(feature) {
         }
     });
 
-
-
+    document.getElementById("time-res").style.display = "none";
+    if(developerInTheHous){
+        document.getElementById("time-res").style.display = "block";
+    }
     document.getElementById("timeAuswertung").innerText = "Average: " + feature.timeMean + " days" + "\r";
     document.getElementById("timeAuswertung").innerText += "Avg. Diff.: " + feature.timeStab;
     if (bigDif(feature.timeStab)) {
@@ -969,7 +992,7 @@ $(document).ready(function () {
             ],
         }],
 
-        labels: ['Must have', 'Should have', 'Could have', 'wont Have'],
+        labels: ['Must have', 'Should have', 'Could have', "Won't Have"],
     };
     ctxDognut = document.getElementById('myDognutChart').getContext('2d')
     let configDognut = {
