@@ -64,6 +64,7 @@ function joinRoom(roomId) {
         }
 
         // Variablen werden im Storage gespeichert damit sie auf der nächsten seite zur verfügung stehen
+        sessionStorage.setItem("passwort", passwortInput);
         sessionStorage.setItem("roomName", roomName);
         sessionStorage.setItem("roomId", roomId);
         sessionStorage.setItem("username", username);
@@ -117,6 +118,7 @@ function joinExistingRoom2(roomId){
                 roomName = request[1];
                 sessionStorage.setItem("roomName",roomName);
                 if(request[2] === "true"){
+                    sessionStorage.setItem("passwort", passwortEnter);
                     window.location.href = `/room/${roomId}`;
                 }else{
                     alert("The Password is wrong");
@@ -149,6 +151,12 @@ function creatRoomByEnter(){
 function joinRoomByEnter(idInTest){
     if(event.key === 'Enter') {
         joinExistingRoom2(idInTest.value);
+    }
+}
+
+function joinRoomByEnterPw(){
+    if(event.key === 'Enter') {
+        joinExistingRoom2(document.getElementById("room-id").value);
     }
 }
 $(document).ready(function () {

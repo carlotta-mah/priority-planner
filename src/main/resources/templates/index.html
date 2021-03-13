@@ -43,7 +43,7 @@
                             </select>
 
                             <label for="setRoomPasswort">Set your Password</label>
-                            <input id="setRoomPasswort" type="password">
+                            <input id="setRoomPasswort" type="password" onkeydown="creatRoomByEnter()">
                             <button class="button primary" id="createRoomButton">New Room</button>
                         </div>
                     </div>
@@ -70,7 +70,7 @@
                             <input id="room-id" type="text" placeholder="Room ID"
                                    onkeyup='validate(event)' onkeypress='validate(event)' onkeydown="joinRoomByEnter(this)">
                             <label for="enterRoomPasswort">Password</label>
-                            <input id="enterRoomPasswort" type="password">
+                            <input id="enterRoomPasswort" type="password" onkeydown="joinRoomByEnterPw()">
 
                             <button class="button primary" id="joinRoomButton">Join Room</button>
 
