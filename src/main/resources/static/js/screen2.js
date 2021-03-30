@@ -6,6 +6,7 @@ let nextButton = $('#next');
 let votingpanel = $('#voting-panel')
 let ergebnisButton = $('#ergebnis');
 let bewertungButton = $('#ergebnis2');
+let refreshButton = $('#refresh');
 let backButton = $('#back');
 let votingShown;
 let voteAgainButton = $('#voteAgain');
@@ -220,6 +221,7 @@ function resetVotingPanel() {
     document.querySelector("#bewertung1").value = 50;
     document.querySelector("#bewertung2").value = 50;
     document.querySelector("#zeit").value = 0;
+    document.getElementById("youHaveVoted").style.display = "none";
 }
 
 /**
@@ -765,6 +767,7 @@ function fillBoard(userStories) {
  * Sendet die Bewertung vom Server an den Client
  */
 function sendBewertung() {
+    document.getElementById("youHaveVoted").style.display = "inline-block";
     let bewertung;
 
     let name = document.getElementById("selected-feature-name").value;
@@ -797,6 +800,7 @@ function sendBewertung() {
  * überschreiben kann.
  */
 function sendBewertungAgain() {
+
     if (stompClient) {
         let message = {
             featureId: selectetFeature,
@@ -863,6 +867,13 @@ function zeigErgebnis() {
         document.body.classList.add("ergebnisBody");
     }
 
+    refreshDiagram();
+}
+
+/**
+ * aktualisiert das Diagramm auf der Ergebniss Seite
+ */
+function refreshDiagram(){
 
     //aktualisiert das Diagramm
     myDognutChart.data = {
@@ -969,6 +980,7 @@ $(document).ready(function () {
     ergebnisButton.click(zeigErgebnis);
     bewertungButton.click(zeigErgebnis)
     backButton.click(zeigErgebnis);
+    refreshButton.click(refreshDiagram);
 
     //if user has created the room show force send button
     admin = (sessionStorage.getItem("admin"));
