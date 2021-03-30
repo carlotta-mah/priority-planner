@@ -967,7 +967,9 @@ $(document).ready(function () {
     projectname.text(roomName);
     projectname2.text(roomName);
     invitehinttext.html("<b> &nbsp; Your Room ID is &nbsp;" + roomId + "." + "</b><br>");
-    invitehinttext.append("<b> &nbsp; Your Room Password is &nbsp;" + passwort + "." + "</b>");
+    if(passwort != ""){
+        invitehinttext.append("<b> &nbsp; Your Room Password is &nbsp;" + passwort + "." + "</b>");
+    }
     votingShown = true;
 
     let featureElement = document.getElementById("featurePanel");
