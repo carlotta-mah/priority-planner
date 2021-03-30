@@ -1,12 +1,13 @@
 package de.projekt.priorityplanner;
 
-import de.projekt.priorityplanner.model.Feature;
-import de.projekt.priorityplanner.model.MessagePhase;
-import de.projekt.priorityplanner.model.Vote;
+import de.projekt.priorityplanner.controller.RoomController;
+import de.projekt.priorityplanner.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,6 +24,9 @@ class PriorityPlannerApplicationTests {
         Database.rooms1 = new ConcurrentHashMap();
         Database.counters = new ConcurrentHashMap();
     }
+    @Autowired
+    private RoomController controller;
+
 
     @Test
     void contextLoads() {
@@ -41,7 +45,7 @@ class PriorityPlannerApplicationTests {
     @Test
     void parallelAddUsers() {
         Database.n = 0;
-        Database.addRoom("ROOM","");
+        Database.addRoom("ROOM", "");
         IntStream.range(0, 1000)
                 .forEach(count -> Database.addUser(0
                         , "xy" + count, "Entwickler"));
@@ -121,12 +125,45 @@ class PriorityPlannerApplicationTests {
         assertTrue(Database.containsRoom(0));
         Database.removeUser(0, "xy");
         assertFalse(Database.containsRoom(0));
-        Database.addRoom("ROOM2","");
+        Database.addRoom("ROOM2", "");
         Database.containsRoom(1);
     }
 
+    @Test
+    void resultTest() {
+        Database.n = 0;
+        int roomId = Database.addRoom("ROOM", "");
+        Database.addUser(0, "xy", "Entwickler");
+        Feature f = new Feature("Test", "Test", MessagePhase.FEATURE);
+        Database.addFeature(0
+                , f);
+        Database.addVote(new Vote("xy", 0
+                        , 0
+                        , 0
+                        , MessagePhase.VOTE, "Entwickler"), 0
+                , f.getId());
+        Ergebnis ergebnis = new Ergebnis(Database.getRoom(roomId));
+        assertFalse(ergebnis.getWontHave().isEmpty());
 
-//	@Test
-//	void parallelRemoveUsers(){
-//	}
+    }
+
+    @Test
+    void createRoomInController(){
+        Database.n = 0;
+        controller.createRoom("produkt", "1234");
+        assertTrue(Database.containsRoom(0));
+    }
+
+
+    @Test
+    void addFeatureInController(){
+        Database.n = 0;
+
+        controller.createRoom("produkt", "1234");
+        assertTrue(Database.containsRoom(0));
+        controller.addFeature(0, new Feature("test", "", MessagePhase.FEATURE), SimpMessageHeaderAccessor.create());
+        assertEquals(1
+                , Database.getRoom(0
+                ).getFeatures().size());
+    }
 }

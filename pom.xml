@@ -69,7 +69,6 @@
 			<artifactId>spring-websocket</artifactId>
 			<version>5.2.2.RELEASE</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-messaging</artifactId>
@@ -86,9 +85,24 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
+		</dependency>
 
     </dependencies>
-
+	<profiles>
+		<profile>
+			<id>integration-tests</id>
+		</profile>
+		<profile>
+			<id>unit-tests</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+	</profiles>
 	<build>
 		<plugins>
 			<plugin>
@@ -111,6 +125,20 @@
 					<parallel>methods</parallel>
 					<threadCount>10</threadCount>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-help-plugin</artifactId>
+				<version>3.2.0</version>
+				<executions>
+					<execution>
+						<id>show-profiles</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>active-profiles</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 
 		</plugins>
