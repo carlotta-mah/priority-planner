@@ -142,7 +142,7 @@ class PriorityPlannerApplicationTests {
                         , 0
                         , MessagePhase.VOTE, "Entwickler"), 0
                 , f.getId());
-        Ergebnis ergebnis = new Ergebnis(Database.getRoom(roomId));
+        Outcome ergebnis = new Outcome(Database.getRoom(roomId));
         assertFalse(ergebnis.getWontHave().isEmpty());
 
     }

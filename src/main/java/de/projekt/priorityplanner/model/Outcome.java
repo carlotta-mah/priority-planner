@@ -11,7 +11,7 @@ import java.util.List;
  */
 
 @Data
-public class Ergebnis {
+public class Outcome {
     private List<Feature> mustHave;
     private List<Feature> shouldHave;
     private List<Feature> couldHave;
@@ -25,7 +25,7 @@ public class Ergebnis {
      *
      * @param room Der Raum von dem das Ergebnis ertellt werden soll.
      */
-    public Ergebnis(Room room) {
+    public Outcome(Room room) {
         mustHave = new LinkedList<>();
         shouldHave = new LinkedList<>();
         couldHave = new LinkedList<>();

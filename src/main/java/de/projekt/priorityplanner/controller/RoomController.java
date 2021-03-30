@@ -84,10 +84,10 @@ public class RoomController {
                             SimpMessageHeaderAccessor headerAccessor) {
         Room room = Database.getRoom(roomId);
 
-        Ergebnis ergebnis = null;
+        Outcome ergebnis = null;
         if (Database.containsRoom(roomId)) {
             assert room != null;
-            ergebnis = new Ergebnis(room);
+            ergebnis = new Outcome(room);
         }
         assert ergebnis != null;
         messagingTemplate.convertAndSend("/queue/ergebnis/" + roomId, ergebnis);
