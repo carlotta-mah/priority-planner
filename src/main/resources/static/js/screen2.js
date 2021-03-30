@@ -17,9 +17,9 @@ let invitehinttext = $('#invite-hint-text')
 
 
 let featureBar;
-let mustHaveTime;
-let mustHaveAnzahl;
-let featureAnzahl;
+let mustHaveTime = 0;
+let mustHaveAnzahl = 0;
+let featureAnzahl = 0;
 
 //algemeine Variablen
 let username;
@@ -176,51 +176,7 @@ function onErgebnisReceived(payload) {
         featureAnzahl++;
     });
 
-    //Ausgaben beschreibung
-    document.getElementById("diagramBeschreibung").innerHTML = "";
-    let diagramBeschreibung = document.createElement("h3");
-    let anzahlMustHave = document.createElement("h1");
-    anzahlMustHave.classList.add("zahl1");
-    anzahlMustHave.innerHTML = mustHaveAnzahl;
-    let anzahlFeatures = document.createElement("h3");
-    anzahlFeatures.classList.add("zahl2");
-    anzahlFeatures.innerHTML = featureAnzahl;
-    let timeFuerMustHave = document.createElement("h3");
-    timeFuerMustHave.classList.add("zahl2");
-    timeFuerMustHave.innerHTML = mustHaveTime;
 
-
-    diagramBeschreibung.classList.add("diagramSchrift");
-    diagramBeschreibung.appendChild(anzahlFeatures);
-    diagramBeschreibung.innerHTML += " Features in total" + "<br />";
-    diagramBeschreibung.appendChild(anzahlMustHave);
-    diagramBeschreibung.innerHTML += " of them are must haves" + "<br />";
-    diagramBeschreibung.appendChild(timeFuerMustHave);
-    diagramBeschreibung.innerHTML += " days for the must haves" + "<br />";
-
-
-    document.getElementById("diagramBeschreibung").appendChild(diagramBeschreibung);
-
-
-    //aktualisiert das Diagramm
-    myDognutChart.data = {
-        datasets: [{
-            data: [document.getElementById("mustHaveTable").rows.length - 1,
-                document.getElementById("shouldHaveTable").rows.length - 1,
-                document.getElementById("couldHaveTable").rows.length - 1,
-                document.getElementById("wontHaveTable").rows.length - 1],
-            backgroundColor: [
-                'rgb(23,212,205)',
-                'rgb(3,31,51)',
-                'rgb(170,170,170)',
-                'rgb(127,127,127)',
-            ],
-        }],
-
-        labels: ['Must have', 'Should have', 'Could have', "Won't have"],
-    };
-
-    myDognutChart.update();
 }
 
 /**
@@ -486,6 +442,7 @@ function onMessageReceived(payload) {
             break;
         case 'RESULT':
             setResult(message)
+            setErgebnis();
             break;
         case'EMPTY':
             toggleElement(document.getElementById("greeting"));
@@ -905,6 +862,52 @@ function zeigErgebnis() {
     } else {
         document.body.classList.add("ergebnisBody");
     }
+
+
+    //aktualisiert das Diagramm
+    myDognutChart.data = {
+        datasets: [{
+            data: [document.getElementById("mustHaveTable").rows.length - 1,
+                document.getElementById("shouldHaveTable").rows.length - 1,
+                document.getElementById("couldHaveTable").rows.length - 1,
+                document.getElementById("wontHaveTable").rows.length - 1],
+            backgroundColor: [
+                'rgb(23,212,205)',
+                'rgb(3,31,51)',
+                'rgb(170,170,170)',
+                'rgb(127,127,127)',
+            ],
+        }],
+
+        labels: ['Must have', 'Should have', 'Could have', "Won't have"],
+    };
+
+    myDognutChart.update();
+
+    //Ausgaben beschreibung
+    document.getElementById("diagramBeschreibung").innerHTML = "";
+    let diagramBeschreibung = document.createElement("h3");
+    let anzahlMustHave = document.createElement("h1");
+    anzahlMustHave.classList.add("zahl1");
+    anzahlMustHave.innerHTML = mustHaveAnzahl;
+    let anzahlFeatures = document.createElement("h3");
+    anzahlFeatures.classList.add("zahl2");
+    anzahlFeatures.innerHTML = featureAnzahl;
+    let timeFuerMustHave = document.createElement("h3");
+    timeFuerMustHave.classList.add("zahl2");
+    timeFuerMustHave.innerHTML = mustHaveTime;
+
+
+    diagramBeschreibung.classList.add("diagramSchrift");
+    diagramBeschreibung.appendChild(anzahlFeatures);
+    diagramBeschreibung.innerHTML += " Features in total" + "<br />";
+    diagramBeschreibung.appendChild(anzahlMustHave);
+    diagramBeschreibung.innerHTML += " of them are must haves" + "<br />";
+    diagramBeschreibung.appendChild(timeFuerMustHave);
+    diagramBeschreibung.innerHTML += " days for the must haves" + "<br />";
+
+
+    document.getElementById("diagramBeschreibung").appendChild(diagramBeschreibung);
 }
 
 /**
