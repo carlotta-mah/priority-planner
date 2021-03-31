@@ -10,11 +10,13 @@
 	</parent>
 	<groupId>priorityplanner</groupId>
 	<artifactId>priority-planner</artifactId>
+	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>priority-planner</name>
 	<description>Priority Planner project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>
+		<tomcat.version>9.0.44</tomcat.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -90,6 +92,11 @@
 			<artifactId>h2</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
 
     </dependencies>
 	<profiles>
@@ -104,6 +111,7 @@
 		</profile>
 	</profiles>
 	<build>
+		<finalName>${artifactId}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -126,6 +134,7 @@
 					<threadCount>10</threadCount>
 				</configuration>
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-help-plugin</artifactId>
@@ -137,6 +146,24 @@
 						<goals>
 							<goal>active-profiles</goal>
 						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${project.build.directory}/generated-sources/wrappers</source>
+							</sources>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
