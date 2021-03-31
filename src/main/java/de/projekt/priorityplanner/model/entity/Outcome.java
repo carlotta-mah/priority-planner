@@ -1,4 +1,4 @@
-package de.projekt.priorityplanner.model;
+package de.projekt.priorityplanner.model.entity;
 
 import lombok.Data;
 import java.util.LinkedList;

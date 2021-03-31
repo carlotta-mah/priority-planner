@@ -1,5 +1,6 @@
 package de.projekt.priorityplanner.model;
 
+import de.projekt.priorityplanner.model.entity.Vote;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

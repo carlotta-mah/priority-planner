@@ -2,6 +2,9 @@ package de.projekt.priorityplanner;
 
 import de.projekt.priorityplanner.controller.RoomController;
 import de.projekt.priorityplanner.model.*;
+import de.projekt.priorityplanner.model.entity.Feature;
+import de.projekt.priorityplanner.model.entity.Outcome;
+import de.projekt.priorityplanner.model.entity.Vote;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

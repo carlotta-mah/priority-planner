@@ -1,7 +1,10 @@
 package de.projekt.priorityplanner;
 
 
-import de.projekt.priorityplanner.model.*;
+import de.projekt.priorityplanner.model.entity.Feature;
+import de.projekt.priorityplanner.model.entity.Room;
+import de.projekt.priorityplanner.model.entity.User;
+import de.projekt.priorityplanner.model.entity.Vote;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;

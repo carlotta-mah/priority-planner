@@ -2,6 +2,10 @@ package de.projekt.priorityplanner.controller;
 
 import de.projekt.priorityplanner.Database;
 import de.projekt.priorityplanner.model.*;
+import de.projekt.priorityplanner.model.entity.Feature;
+import de.projekt.priorityplanner.model.entity.Outcome;
+import de.projekt.priorityplanner.model.entity.Room;
+import de.projekt.priorityplanner.model.entity.Vote;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.*;

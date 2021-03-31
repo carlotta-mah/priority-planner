@@ -1,5 +1,6 @@
-package de.projekt.priorityplanner.model;
+package de.projekt.priorityplanner.model.entity;
 
+import de.projekt.priorityplanner.model.MessagePhase;
 import lombok.Data;
 
 /**

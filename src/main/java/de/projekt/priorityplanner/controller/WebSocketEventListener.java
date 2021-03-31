@@ -3,7 +3,7 @@ package de.projekt.priorityplanner.controller;
 import de.projekt.priorityplanner.Database;
 import de.projekt.priorityplanner.model.MessagePhase;
 import de.projekt.priorityplanner.model.MessageToClient;
-import de.projekt.priorityplanner.model.User;
+import de.projekt.priorityplanner.model.entity.User;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 

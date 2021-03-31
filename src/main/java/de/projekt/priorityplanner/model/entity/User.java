@@ -1,4 +1,4 @@
-package de.projekt.priorityplanner.model;
+package de.projekt.priorityplanner.model.entity;
 
 /**
  * Ein User. Ein User besteht aus einem Namen und einer UserRolle.

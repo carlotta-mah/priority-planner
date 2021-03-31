@@ -1,4 +1,4 @@
-package de.projekt.priorityplanner.model;
+package de.projekt.priorityplanner.model.entity;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
