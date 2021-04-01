@@ -974,7 +974,7 @@ $(document).ready(function () {
 
     let featureElement = document.getElementById("featurePanel");
     featureBar = new featureSidebar(featureElement);
-    topic = `/app/room/${roomId}`; // /app
+    topic = window.location.href//`/app/room/${roomId}`; // /app
 
     nextButton.click(featureBar.addNextVote);
     voteAgainButton.click(sendBewertungAgain);
