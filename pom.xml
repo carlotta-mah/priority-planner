@@ -12,10 +12,10 @@
 	<artifactId>priority-planner</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>priority-planner</name>
-	<description>Priority Planner project for Spring Boot</description>
+	<name>MVP-finder</name>
+	<description>MVP Finder project for Spring Boot</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>8</java.version>
 		<tomcat.version>9.0.44</tomcat.version>
 	</properties>
 	<dependencies>
@@ -111,7 +111,7 @@
 		</profile>
 	</profiles>
 	<build>
-		<finalName>${artifactId}</finalName>
+		<finalName>${name}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

@@ -30,7 +30,7 @@ async function createRoom() {
     passwortInput = document.getElementById("setRoomPasswort").value;
     roomName = produktInput.val();
     const Http = new XMLHttpRequest();
-    const url = '/create-room/';
+    const url = window.location.href + '/create-room/';
 
     Http.open("GET", url);
     Http.setRequestHeader("produktName", roomName);
