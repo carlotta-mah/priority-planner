@@ -72,7 +72,7 @@ function joinRoom(roomId) {
         sessionStorage.setItem("admin", admin);
 
         // switch page
-        window.location.href = window.location.href+`/room/${roomId}`;
+        window.location.href = window.location.href+`room/${roomId}`;
     }
 }
 
@@ -119,7 +119,7 @@ function joinExistingRoom2(roomId){
                 sessionStorage.setItem("roomName",roomName);
                 if(request[2] === "true"){
                     sessionStorage.setItem("passwort", passwortEnter);
-                    window.location.href = window.location.href+`/room/${roomId}`;
+                    window.location.href = window.location.href+`room/${roomId}`;
                 }else{
                     alert("The Password is wrong");
                 }
