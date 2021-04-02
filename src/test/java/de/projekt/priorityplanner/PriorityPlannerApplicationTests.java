@@ -169,4 +169,84 @@ class PriorityPlannerApplicationTests {
                 , Database.getRoom(0
                 ).getFeatures().size());
     }
+
+
+    @Test
+    void deleteFeaturesTest() {
+        Database.n = 0;
+        Database.addRoom("ROOM", "");
+        Database.addUser(0
+                , "xy", "Entwickler");
+        Feature f = new Feature("Test", "Test", MessagePhase.FEATURE);
+        Database.addFeature(0, f);
+        Database.deleteFeature(0, f.getId());
+
+        assertTrue( Database.getRoom(0
+        ).getFeatures().isEmpty());
+    }
+
+    @Test
+    void MustHaveListTest() {
+        Database.n = 0;
+        Database.addRoom("ROOM", "");
+        Database.addUser(0
+                , "xy", "Entwickler");
+        Feature mustHaveFeature = new Feature("Test", "Test", MessagePhase.FEATURE);
+
+        Vote v = new Vote("xy",100,100,3, MessagePhase.VOTE, "Entwickler");
+        mustHaveFeature.addVote(v);
+        mustHaveFeature.calculateResult();
+
+        Database.addFeature(0,mustHaveFeature);
+        assertEquals(mustHaveFeature, new Outcome(Database.getRoom(0)).getMustHave().get(0));
+    }
+
+    @Test
+    void shouldHaveListTest() {
+        Database.n = 0;
+        Database.addRoom("ROOM", "");
+        Database.addUser(0
+                , "xy", "Entwickler");
+        Feature shouldHaveFeature = new Feature("Test", "Test", MessagePhase.FEATURE);
+
+        Vote v = new Vote("xy",60,60,3, MessagePhase.VOTE, "Entwickler");
+        shouldHaveFeature.addVote(v);
+        shouldHaveFeature.calculateResult();
+
+        Database.addFeature(0,shouldHaveFeature);
+        assertEquals(shouldHaveFeature, new Outcome(Database.getRoom(0)).getShouldHave().get(0));
+    }
+
+    @Test
+    void couldHaveListTest() {
+        Database.n = 0;
+        Database.addRoom("ROOM", "");
+        Database.addUser(0
+                , "xy", "Entwickler");
+        Feature couldHaveFeature = new Feature("Test", "Test", MessagePhase.FEATURE);
+
+        Vote v = new Vote("xy",100,0,3, MessagePhase.VOTE, "Entwickler");
+        couldHaveFeature.addVote(v);
+        couldHaveFeature.calculateResult();
+
+        Database.addFeature(0,couldHaveFeature);
+        assertEquals(couldHaveFeature, new Outcome(Database.getRoom(0)).getCouldHave().get(0));
+    }
+
+    @Test
+    void wontHaveListTest() {
+        Database.n = 0;
+        Database.addRoom("ROOM", "");
+        Database.addUser(0
+                , "xy", "Entwickler");
+        Feature wontHaveFeature = new Feature("Test", "Test", MessagePhase.FEATURE);
+
+        Vote v = new Vote("xy",0,0,3, MessagePhase.VOTE, "Entwickler");
+        wontHaveFeature.addVote(v);
+        wontHaveFeature.calculateResult();
+
+        Database.addFeature(0,wontHaveFeature);
+        assertEquals(wontHaveFeature, new Outcome(Database.getRoom(0)).getWontHave().get(0));
+    }
+
 }
