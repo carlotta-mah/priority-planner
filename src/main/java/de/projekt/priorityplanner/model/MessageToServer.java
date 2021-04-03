@@ -1,8 +1,11 @@
 package de.projekt.priorityplanner.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import de.projekt.priorityplanner.model.entity.Vote;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.LinkedList;
 
@@ -14,6 +17,7 @@ import java.util.LinkedList;
  * @data 14.03.2021
  */
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class MessageToServer {
     private String username;
@@ -23,7 +27,12 @@ public class MessageToServer {
     private LinkedList<String> content;
     private de.projekt.priorityplanner.model.MessagePhase phase;
 
-
+    @JsonCreator
+    public MessageToServer(@JsonProperty("username")String username, @JsonProperty("roomId")int roomId, @JsonProperty("roll")String roll){
+        this.username = username;
+        this.roomId = roomId;
+        this.roll = roll;
+    }
     /**
      * Erstellt ein Vote aus der Message.
      * @return Eine Bewerung in Form der Klasse Vote

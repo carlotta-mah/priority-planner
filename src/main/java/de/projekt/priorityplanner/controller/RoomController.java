@@ -38,17 +38,17 @@ public class RoomController {
     private SimpMessageSendingOperations messagingTemplate;
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
-    /**
-     * Erstellt ein Neuen Raum und gibt die RoomId zurück
-     *
-     * @param produktName Der Name des zu entwerfenden Produkt oder auch Name des Raums
-     * @return Die RaumId
-     */
-    @ResponseBody
-    @RequestMapping("/create-room")
-    public int createRoom(@RequestHeader("produktName") String produktName, @RequestHeader("passwort") String pw) {
-        return Database.addRoom(produktName, pw);
-    }
+//    /**
+//     * Erstellt ein Neuen Raum und gibt die RoomId zurück
+//     *
+//     * @param produktName Der Name des zu entwerfenden Produkt oder auch Name des Raums
+//     * @return Die RaumId
+//     */
+//    @ResponseBody
+//    @RequestMapping("/create-room")
+//    public int createRoom(@RequestHeader("produktName") String produktName, @RequestHeader("passwort") String pw) {
+//        return Database.addRoom(produktName, pw);
+//    }
 
     /**
      * Fügt ein User einem Raum hinzu und updatet alle anderen Clients duch eine update Message
@@ -59,7 +59,7 @@ public class RoomController {
      */
     // adds a username to a room and sends a updateMessage to all users of that room
     @MessageMapping("/room/{roomId}/addUser")
-    public void addUser(@DestinationVariable int roomId, @Payload MessageToServer message,
+    public String addUser(@DestinationVariable int roomId, @Payload MessageToServer message,
                         SimpMessageHeaderAccessor headerAccessor) {
         String s = message.getUsername();
         Database.addUser(roomId, s, message.getRoll());
@@ -72,7 +72,7 @@ public class RoomController {
         Room room = Database.getRoom(roomId);
         room.setEvent(MessagePhase.ADDED_USER);
         messagingTemplate.convertAndSend("/queue/" + roomId, room);
-
+        return s;
     }
 
     /**
@@ -93,7 +93,9 @@ public class RoomController {
             assert room != null;
             ergebnis = new Outcome(room);
         }
+        log.info("ergebnisanfrage");
         assert ergebnis != null;
+        log.info("sending to:" +"/queue/ergebnis/" + roomId +"outcome:" + ergebnis.toString());
         messagingTemplate.convertAndSend("/queue/ergebnis/" + roomId, ergebnis);
     }
 

@@ -17,6 +17,17 @@ import java.util.List;
 public class PageController {
 
     /**
+     * Erstellt ein Neuen Raum und gibt die RoomId zurück
+     *
+     * @param produktName Der Name des zu entwerfenden Produkt oder auch Name des Raums
+     * @return Die RaumId
+     */
+    @ResponseBody
+    @RequestMapping("/create-room")
+    public int createRoom(@RequestHeader("produktName") String produktName, @RequestHeader("passwort") String pw) {
+        return Database.addRoom(produktName, pw);
+    }
+    /**
      * Gib die Index Seite bzw. Startseite als Html String zurück.
      *
      * @return index.html als String
