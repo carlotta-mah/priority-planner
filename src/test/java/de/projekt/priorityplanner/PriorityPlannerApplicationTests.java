@@ -1,5 +1,6 @@
 package de.projekt.priorityplanner;
 
+import de.projekt.priorityplanner.controller.PageController;
 import de.projekt.priorityplanner.controller.RoomController;
 import de.projekt.priorityplanner.model.*;
 import de.projekt.priorityplanner.model.entity.Feature;
@@ -29,7 +30,8 @@ class PriorityPlannerApplicationTests {
     }
     @Autowired
     private RoomController controller;
-
+    @Autowired
+    private PageController pageController;
 
     @Test
     void contextLoads() {
@@ -153,7 +155,8 @@ class PriorityPlannerApplicationTests {
     @Test
     void createRoomInController(){
         Database.n = 0;
-        controller.createRoom("produkt", "1234");
+        pageController.createRoom("produkt", "1234");
+//        controller.createRoom("produkt", "1234");
         assertTrue(Database.containsRoom(0));
     }
 
@@ -161,8 +164,8 @@ class PriorityPlannerApplicationTests {
     @Test
     void addFeatureInController(){
         Database.n = 0;
-
-        controller.createRoom("produkt", "1234");
+        pageController.createRoom("produkt", "1234");
+//        controller.createRoom("produkt", "1234");
         assertTrue(Database.containsRoom(0));
         controller.addFeature(0, new Feature("test", "", MessagePhase.FEATURE), SimpMessageHeaderAccessor.create());
         assertEquals(1

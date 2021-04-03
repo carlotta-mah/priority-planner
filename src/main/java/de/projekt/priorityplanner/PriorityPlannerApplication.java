@@ -1,8 +1,11 @@
 package de.projekt.priorityplanner;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 
 @SpringBootApplication
 public class PriorityPlannerApplication extends SpringBootServletInitializer {
@@ -11,4 +14,12 @@ public class PriorityPlannerApplication extends SpringBootServletInitializer {
 		SpringApplication.run(PriorityPlannerApplication.class, args);
 	}
 
+	@Bean
+	public MappingJackson2MessageConverter mappingJackson2MessageConverter(ObjectMapper objectMapper) {
+		MappingJackson2MessageConverter jacksonMessageConverter = new MappingJackson2MessageConverter();
+		jacksonMessageConverter.setObjectMapper(objectMapper);
+		jacksonMessageConverter.setSerializedPayloadClass(String.class);
+		jacksonMessageConverter.setStrictContentTypeMatch(true);
+		return jacksonMessageConverter;
+	}
 }
