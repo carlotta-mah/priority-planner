@@ -155,7 +155,7 @@ public class PriorityPlannerIntegrationTests {
         session.subscribe("/user/queue/" + roomId, new DefaultStompFrameHandler());
         session.subscribe("/queue/" + roomId, new DefaultStompFrameHandler());
         session.subscribe("/queue/feature/" + roomId, new DefaultStompFrameHandler());
-        session.subscribe("/queue/ergebnis/" + roomId, new DefaultStompFrameHandler());
+//        session.subscribe("/queue/ergebnis/" + roomId, new DefaultStompFrameHandler());
 
     }
 
@@ -169,202 +169,36 @@ public class PriorityPlannerIntegrationTests {
         Database.addVote(new Vote("User", 50, 50, 2, MessagePhase.VOTE, "Entwickler"), 0, f.getId());
         StompSession session = webSocketStompClient
                 .connect(URL, new StompSessionHandlerAdapter() {
-                }).get(4, SECONDS);
-        session.subscribe("/queue/ergebnis/" + roomId, new StompFrameHandler() {
-            @Override
-            public Type getPayloadType(StompHeaders headers) {
-                return Outcome.class;
-            }
+                    @Override
+                    public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
+                        logger.info("New session established inside: " + session.getSessionId());
+                        session.subscribe("/queue/ergebnis/" + roomId, this);
+                        logger.info("now sending request");
+                        session.send("/app/queue/ergebnis/" + roomId, null);
+                        }
 
-            @Override
-            public void handleFrame(StompHeaders stompHeaders, Object o) {
-                System.out.println("Received message: " + o);
-                blockingQueueO.add((Outcome) o);
-            }
-        });
+                    @Override
+                    public Type getPayloadType(StompHeaders headers) {
+                        logger.info("Type: String");
+                        return String.class;
+
+                    }
+
+                    @Override
+                    public void handleFrame(StompHeaders stompHeaders, Object o) {
+                        System.out.println("Received message: " + o);
+                        blockingQueueO.add((Outcome) o);
+                    }
+                }).get(4, SECONDS);
+
 
         Thread.sleep(1000);
         session.send("/app/room/"+roomId +"/ergebnis",null);
         Thread.sleep(1000);
-    Outcome o = new Outcome(Database.getRoom(0));
 
-//    assertEquals(o, blockingQueueO.poll(5, SECONDS));
 }
 
-//    @Test
-//    public void addUserIntegrationTest() throws Exception {
-//        Database.n = 0;
-//        Database.addRoom("test", "1234");
-//        int roomId = 0;
-//        JSONObject jo = new JSONObject();
-//        jo.put("username", "User");
-//        jo.put("roomId", 0);
-//        jo.put("roll", "Entwickler");
-//        String usermsg = jo.toString();
-//        StompSession session = webSocketStompClient
-//                .connect(URL, new StompSessionHandlerAdapter() {
-//                    @Override
-//                    public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
-//                        logger.info("New session established : " + session.getSessionId());
-//                        session.subscribe("/queue/" + roomId, new StompFrameHandler() {
-//                            @Override
-//                            public Type getPayloadType(StompHeaders headers) {
-//                                logger.info("payload is asked"+headers.toString());
-//                                return MessageToServer.class;
-//                            }
-//                            @Override
-//                            public void handleFrame(StompHeaders stompHeaders, Object o) {
-////            blockingQueue.offer(new String((byte[]) o));
-//                                System.out.println("Received message: " + o);
-//                                blockingQueue.add((String) o);
-//                            }
-//                        });
-//                    }
-//                })
-//                .get(4, SECONDS);
-//        logger.info("New session established : " + session.getSessionId());
-//        StompHeaders stmph = new StompHeaders();
-//        session.subscribe("/queue/" + roomId, new StompFrameHandler() {
-//            @Override
-//            public Type getPayloadType(StompHeaders headers) {
-//                logger.info("payload is asked"+headers.toString());
-//                return MessageToServer.class;
-//            }
-//            @Override
-//            public void handleFrame(StompHeaders stompHeaders, Object o) {
-////            blockingQueue.offer(new String((byte[]) o));
-//                System.out.println("Received message: " + o);
-//                blockingQueue.add((String) o);
-//            }
-//        });
-//        ObjectMapper mapper = new ObjectMapper();
-//        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-//        mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
-//        String jsonString = mapper.writeValueAsString(jo);
-//        logger.info("Warum passiert dsa?");
-//        stmph.setDestination("/app/room/" + roomId + "/addUser");
-//        logger.info("Warum passiert dsa2?");
-//        session.send("/app/room/" + roomId + "/ergebnis", null);
-////        session.send("/room/" + roomId + "/addUser", jsonString);
-////        session.send("/app/room/" + roomId + "/addUser", usermsg);
-//        logger.info("Warum passiert dsa3?");
-////        if (!latch.await(1, TimeUnit.SECONDS)) {
-////            fail("Message not received");
-////        }
-////        Thread.sleep(6000);
-//////
-//////        session.subscribe("/user/queue/"+roomId, new DefaultStompFrameHandler());
-////        session.subscribe("/queue/" + roomId, new DefaultStompFrameHandler());
-////        StompHeaders stmph = new StompHeaders();
-////        stmph.setDestination("/app/room/" + roomId + "/ergebnis");
-////        session.send(stmph, usermsg);
-////        session.subscribe("/queue/feature/"+roomId, new DefaultStompFrameHandler());
-//////        session.subscribe("/queue/ergebnis/"+roomId, new DefaultStompFrameHandler());
-//        MessageToServer joMsg = new MessageToServer("User", 0, "Entwickler");
-//////        jo.put("featureId", "0");
-//////        jo.put("content", "[]");
-//////        jo.put("phase", "VOTE");
-////        Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-////        logger.info(jo.toString());
-//////        ObjectMapper mapper = new ObjectMapper();
-//////        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-//////        mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
-//////        String jsonString = mapper.writeValueAsString(jo);
-//////        logger.info(jsonString);
-////
-////
-////        //        MessageToServer msgToServer = new MessageToServer("username", 0, 0, "Entwickler", new LinkedList<>(), MessagePhase.ADDED_USER);
-//////        JSONObject obj = new JSONObject(msgToServer);
-////        stmph.setContentType(MediaType.APPLICATION_JSON);
-////        stmph.setContentLength(usermsg.length());
-//////        session.send(URL+"/addUser", usermsg.getBytes()); usermsg.getBytes()
-//////        session.send("/app/room/" +roomId +"/addUser", jo);
-////////        "{'username':'username','roomId':0,'roll':'Entwickler'}"
-//////        Message<byte[]> builmessage = MessageBuilder.withPayload(jsonString.getBytes("UTF-8")).build();
-//////        Message<String> buildUsermsg = MessageBuilder.withPayload(usermsg).build();
-//////        logger.info(buildUsermsg.toString());
-//////        messagingTemplate.send("/app/room/" + roomId + "/addUser", buildUsermsg);
-//////        MvcResult result = mvc.perform(get("/addUserr")
-//////                .contentType(MediaType.APPLICATION_JSON)
-//////                .content(jsonString)
-//////                .characterEncoding("utf-8"))
-//////                .andExpect(status().isOk())
-//////                .andReturn();
-//////        String message = "MESSAGE TEST";
-//////        session.send(URL+"/addUser", message.getBytes());
-//////        Assert.assertEquals("User", blockingQueue.poll(1, SECONDS));
-////
-////        List<Transport> transports = new ArrayList<>(2);
-////        transports.add(new WebSocketTransport(new StandardWebSocketClient()));
-////        transports.add(new RestTemplateXhrTransport());
-////        WebSocketClient client = new SockJsClient(transports);
-//////        WebSocketClient client = new StandardWebSocketClient();
-////        WebSocketStompClient stompClient = new WebSocketStompClient(client);
-////        stompClient.setMessageConverter(new MappingJackson2MessageConverter());
-////
-////
-////        StompSession session = stompClient.connect(URL, new StompSessionHandlerAdapter(){
-////            @Override
-////            public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
-////                session.subscribe("/queue/", this);
-////                session.send(stmph, usermsg);
-////                session.subscribe("/queue/feature/"+roomId, this);
-////                session.subscribe("/queue/ergebnis/"+roomId, this);
-////                session.send("/app/room/" + roomId + "/addUser", usermsg);
-////            }
-////            @Override
-////            public Type getPayloadType(StompHeaders headers) {
-//////                return String.class;
-//////                return byte[].class;
-//////                return MessageToServer.class;
-////                return JSONObject.class;
-////            }
-////
-////            @Override
-////            public void handleFrame(StompHeaders headers, Object payload) {
-////                Message msg = (Message) payload;
-////                logger.info("Received : " + msg.getPayload() + " from : " + msg.getHeaders());
-////            }
-////            }).get(1, SECONDS);
-////        session.send(stmph, usermsg);
-////                new StompSessionHandler() {
-////            @Override
-////            public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
-////                session.subscribe("/queue/", this);
-////                session.send("/app/room/" + roomId + "/addUser", usermsg.getBytes());
-////            }
-////
-////            @Override
-////            public void handleException(StompSession session, StompCommand command, StompHeaders headers, byte[] payload, Throwable exception) {
-////            }
-////
-////            @Override
-////            public void handleTransportError(StompSession session, Throwable exception) {
-////
-////            }
-////
-////            @Override
-////            public Type getPayloadType(StompHeaders headers) {
-//////                return String.class;
-////                return byte[].class;
-////            }
-//
-////            @Override
-////            public void handleFrame(StompHeaders headers, Object payload) {
-////                Message msg = (Message) payload;
-////                logger.info("Received : " + msg.getPayload() + " from : " + msg.getHeaders());
-////            }
-////        }).get(1, SECONDS);;
-//
-////        new Scanner(System.in).nextLine();
-////
-////        List<String> namelist = Database.getRoom(0).getOnlyUserNames();
-////        Assert.assertTrue(Database.containsRoom(0));
-////        Assert.assertTrue(Database.getRoom(0).
-////                getOnlyUserNames().
-////                contains("User"));
-//    }
-//
+
 class DefaultStompFrameHandler implements StompFrameHandler {
     @Override
     public Type getPayloadType(StompHeaders stompHeaders) {
