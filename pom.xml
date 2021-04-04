@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>priorityplanner</groupId>
 	<artifactId>priority-planner</artifactId>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>MVP-finder</name>
 	<description>MVP Finder project for Spring Boot</description>
