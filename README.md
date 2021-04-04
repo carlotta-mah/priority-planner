@@ -11,7 +11,7 @@ You can build a jar file from command line:
 
 ```
 git clone https://github.com/carlotta-mah/priority-planner
-./mvnw package
+mvn clean package
 java -jar target/*.jar
 ```
 You can then access the MVP-Finder here: http://localhost:8080/
