@@ -14,12 +14,4 @@ public class PriorityPlannerApplication extends SpringBootServletInitializer {
 		SpringApplication.run(PriorityPlannerApplication.class, args);
 	}
 
-	@Bean
-	public MappingJackson2MessageConverter mappingJackson2MessageConverter(ObjectMapper objectMapper) {
-		MappingJackson2MessageConverter jacksonMessageConverter = new MappingJackson2MessageConverter();
-		jacksonMessageConverter.setObjectMapper(objectMapper);
-		jacksonMessageConverter.setSerializedPayloadClass(String.class);
-		jacksonMessageConverter.setStrictContentTypeMatch(true);
-		return jacksonMessageConverter;
-	}
 }

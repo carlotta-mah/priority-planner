@@ -67,7 +67,7 @@ public class RoomController {
 
         Objects.requireNonNull(headerAccessor.getSessionAttributes()).put("username", s);
         headerAccessor.getSessionAttributes().put("room_id", message.getRoomId());
-        log.info("Received greeting message {}", message);
+//        log.info("Received greeting message {}", message);
 
         Room room = Database.getRoom(roomId);
         room.setEvent(MessagePhase.ADDED_USER);

@@ -16,6 +16,18 @@ import java.util.List;
 @Controller
 public class PageController {
 
+
+    /**
+     * Gib die Index Seite bzw. Startseite als Html String zurück.
+     * @return index.html als String
+     */
+    @RequestMapping
+    public String indexPage() {
+        System.out.println("System: "+(System.getProperty("sun.arch.data.model")));
+
+        return "index";
+    }
+
     /**
      * Erstellt ein Neuen Raum und gibt die RoomId zurück
      *
@@ -23,18 +35,9 @@ public class PageController {
      * @return Die RaumId
      */
     @ResponseBody
-    @RequestMapping("/create-room")
+    @RequestMapping("create-room")
     public int createRoom(@RequestHeader("produktName") String produktName, @RequestHeader("passwort") String pw) {
         return Database.addRoom(produktName, pw);
-    }
-    /**
-     * Gib die Index Seite bzw. Startseite als Html String zurück.
-     *
-     * @return index.html als String
-     */
-    @RequestMapping
-    public String indexPage() {
-        return "index";
     }
 
     /**
@@ -42,7 +45,7 @@ public class PageController {
      *
      * @return doc.html als String
      */
-    @RequestMapping("/docs")
+    @RequestMapping("docs")
     public String docs() {
         return "doc";
     }
@@ -54,7 +57,7 @@ public class PageController {
      * @param roomId Die RaumId. Für die Raum zuordung.
      * @return screen2.html als String
      */
-    @RequestMapping("/room/{roomId}")
+    @RequestMapping("room/{roomId}")
     public String roomPage(@PathVariable("roomId") int roomId) {
         if(Database.containsRoom(roomId)) {
             return "screen2";
@@ -70,7 +73,7 @@ public class PageController {
      * @param roomId Die RaumId. Für die Raum zuordung.
      * @return
      */
-    @RequestMapping("/test/room/{roomId}" )
+    @RequestMapping("test/room/{roomId}" )
     @ResponseBody
     public List userName(@RequestHeader("username") String username, @RequestHeader("roomId") int roomId,
     @RequestHeader("passwort") String pw){
